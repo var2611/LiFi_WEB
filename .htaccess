@@ -19,6 +19,8 @@
     RewriteCond %{REQUEST_FILENAME} !-f
 #    RewriteRule ^ index.php [L]
     RewriteRule ^(.+)$ /index.php/$1 [L]
+#    RewriteRule ^$ public/index.php [L]
+#    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
 
     #Disable index view
     options -Indexes
