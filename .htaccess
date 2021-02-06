@@ -27,8 +27,8 @@
 
     #hide a Specifuc File
     <Files .env>
-#    order allow,deny
-#    Deny from all
-        Require all denied
+       order allow,deny
+       Deny from all
+       Require all denied
     </Files>
 </IfModule>
