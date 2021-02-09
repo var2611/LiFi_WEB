@@ -12,9 +12,41 @@ use Mockery\Exception;
 
 class UserController extends Controller
 {
+
+
     public function demo()
     {
-        echo "Demo Working";
+        // Test
+        $key = 'rzp_test_GUVGJTiE5i9WJP';
+        $secret = 'RdknMJYiNOToqWHvgepYIM1H';
+        $api_url='@api.razorpay.com/v1/';
+
+        $server_key = 'AAAAy-1xPcY:APA91bHqJD_2NS_shwPWZcT3HkbtrVRprO4JOi-8AVGTEnBgubVPcDVSMz8Ld2VApCDPozPiXsvJC00BhOxSgcqD8VB8y45LaFcZVo901GixNd_5tknJoEaRT2ZTKuXfAm6E_eC5Leyc';
+//        echo "Demo Working";
+        $data['test'] = 'Demo';
+
+//        $data['test'] = send("918460113626","test");
+        $this->set_return_response_success($data, "User Logged In Successfully.");
+//        $this->set_return_response_unauthorised("Username or Password is incorrect.");
+
+
+//        test();
+        return $this->return_response();
+
+    }
+
+    public function demo1()
+    {
+
+
+        $data['test'] = 'Demo';
+//
+//        $data = send("918460113626","test");
+        $this->set_return_response_success($data, "User Logged In Successfully.");
+//        $this->set_return_response_unauthorised("Username or Password is incorrect.");
+
+        return $this->return_response();
+
     }
 
     /**
@@ -61,6 +93,7 @@ class UserController extends Controller
 
             try {
 
+
                 $input = $request->all();
                 $checkUserExist = User::whereEmail($input['email'])->first();
                 if (empty($checkUserExist)) {
@@ -104,5 +137,46 @@ class UserController extends Controller
         }
 
         return $this->return_response();
+    }
+
+    public function smsToMobile(Request $request){
+        $rules = [
+            'mobile' => 'required',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+
+            try {
+//
+                $input = $request->all();
+                $otp = rand(1000,9999);
+                if (!empty($otp)) {
+
+                    $data['otp'] = $otp;
+//                    print_r("Mobile");
+//
+                    test();
+//
+//                    if (isset($request->mobile)) {
+//                        print_r("Mobile");
+//                        send($request->mobile,$otp);
+//                    }
+
+                    $this->set_return_response_success($data, "User has been registered successfully.");
+                } else {
+                    $this->set_return_response_unsuccessful("User with provided email already exists.");
+                }
+
+            } catch (Exception $exception) {
+                $this->set_return_response_exception($exception);
+            }
+
+        }
+
+        return $this->return_response();
+    }
+
+    function test(){
+//    print_r("test");
     }
 }

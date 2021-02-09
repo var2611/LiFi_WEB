@@ -16,12 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('demo', [UserController::class, 'demo']);
+//Route::post('demo1', [UserController::class, 'demo1']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
+Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
+
+//Route::post('demo1', 'UserController@demo1');
+
 
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('userDetails', [UserController::class, 'user_details']);
+
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
