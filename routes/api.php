@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
  * LiFi Led Test API Start
  * */
 
-Route::post('ledUpdate', [LiFiController::class, 'led_update']);
-Route::post('getLedBrightnessStatus', [LiFiController::class, 'led_brightness_status']);
-Route::post('getLedStatus', [LiFiController::class, 'led_status']);
+Route::get('ledUpdate', [LiFiController::class, 'led_update']);
+Route::get('getLedBrightnessStatus', [LiFiController::class, 'led_brightness_status']);
+Route::get('getLedStatus', [LiFiController::class, 'led_status']);
 
 /*
  * LiFi Led Test API End

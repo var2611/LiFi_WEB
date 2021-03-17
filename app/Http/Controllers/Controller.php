@@ -15,7 +15,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public $response = array('test_data' => array(), 'data' => null, 'message' => '');
+//    public $response = array('test_data' => array(), 'data' => null, 'message' => '');
+    public $response = array('data' => null, 'message' => '');
     public $status = 405;
     public $statusArr = [
         'success' => 200,

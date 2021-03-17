@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\LedLight;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use function Webmozart\Assert\Tests\StaticAnalysis\null;
 
 class LiFiController extends Controller
 {
@@ -23,22 +24,25 @@ class LiFiController extends Controller
 
             $attribute = null;
             $values = null;
+            $id = null;
 
             if ($request['id'] ?? null) {
                 $attribute['id'] = $request['id'];
+                $id = $request['id'];
             }
 
             $values['status'] = $request['status'];
+            $status = $request['status'];
             $values['brightness'] = $request['brightness'];
+            $brightness = $request['brightness'];
 
             if ($attribute) {
-                $led_light = LedLight::updateOrCreate($values);
+                $led_light = LedLight::whereId($id)->first();
+                $led_light->status = $status;
+                $led_light->brightness = $brightness;
+                $led_light->save();
 
                 $createOrUpdate = 'Update';
-            } else {
-                $led_light = LedLight::create($values);
-
-                $createOrUpdate = 'Create';
             }
 
             if ($led_light) {
