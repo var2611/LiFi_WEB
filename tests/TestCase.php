@@ -10,7 +10,6 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-
     public function test()
     {
         self::expectNotToPerformAssertions();

@@ -43,6 +43,24 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $razor_customer_id
+ * @property string|null $mobile
+ * @property mixed|null $firebase_token
+ * @property int|null $is_active
+ * @property int|null $is_visible
+ * @property string|null $deleted_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @method static Builder|User whereCreatedBy($value)
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereDeletedBy($value)
+ * @method static Builder|User whereFirebaseToken($value)
+ * @method static Builder|User whereIsActive($value)
+ * @method static Builder|User whereIsVisible($value)
+ * @method static Builder|User whereMobile($value)
+ * @method static Builder|User whereRazorCustomerId($value)
+ * @method static Builder|User whereUpdatedBy($value)
  */
 class User extends Authenticatable
 {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\LiFiController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,14 +16,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('demo', [UserController::class, 'demo']);
-//Route::post('demo1', [UserController::class, 'demo1']);
+/*
+ * LiFi Led Test API Start
+ * */
+
+Route::post('ledUpdate', [LiFiController::class, 'led_update']);
+Route::post('getLedBrightnessStatus', [LiFiController::class, 'led_brightness_status']);
+Route::post('getLedStatus', [LiFiController::class, 'led_status']);
+
+/*
+ * LiFi Led Test API End
+ * */
+
+Route::post('demo1', [UserController::class, 'demo1']);
+Route::post('createUser', [UserController::class, 'createUser']);
+Route::post('createUser1', [UserController::class, 'createUser1']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
 
 //Route::post('demo1', 'UserController@demo1');
-
 
 
 Route::group(['middleware' => 'auth:api'], function () {
