@@ -5,9 +5,6 @@ namespace App\Http\Controllers\api;
 
 
 use App\Http\Controllers\Controller;
-use App\Mail\Mailer;
-use Illuminate\Http\JsonResponse;
-use Mail;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
@@ -16,7 +13,10 @@ class TestController extends Controller
 {
     public function demoV()
     {
-        echo "test";
+        echo "test,";
+        echo "test2";
+//        echo '1';
+
     }
 
     public function new_mail()

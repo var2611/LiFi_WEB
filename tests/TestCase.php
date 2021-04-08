@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Http\Controllers\api\UserController;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 

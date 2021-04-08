@@ -89,8 +89,10 @@ class UserController extends Controller
     public function login()
     {
         if (Auth::attempt(['mobile' => request('mobile'), 'password' => request('password')])) {
+//        if (Auth::attempt(['mac_address' => request('mac_address'), 'password' => request('password')])) {
+
             $user = Auth::user();
-            $data['token'] = $user->createToken('MyApp')->accessToken;
+            $data['token'] = create_user_auth_token($user);
 
             $userData = User::where('id', $user->id)
                 ->first(['id', 'name', 'mobile', 'email']);
@@ -131,7 +133,7 @@ class UserController extends Controller
                 if (empty($checkUserExist)) {
                     $input['password'] = bcrypt($input['password']);
                     $user = User::create($input);
-                    $data['token'] = $user->createToken('MyApp')->accessToken;
+                    $data['token'] = create_user_auth_token($user);
                     $data['name'] = $user->name;
 
                     $this->set_return_response_success($data, "User has been registered successfully.");

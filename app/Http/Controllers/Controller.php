@@ -88,6 +88,24 @@ class Controller extends BaseController
         return response()->json($this->response, $this->status, []);
     }
 
+    /**
+     * @param int $response_id
+     * @param $data
+     */
+    public function return_response_pole(int $response_id, $data)
+    {
+        if ($response_id === 1) {
+            echo "#01AUTH:$data$";
+            exit();
+        } elseif ($response_id === 00) {
+            echo "#00FAIL:$data$";
+            exit();
+        } else {
+            echo $data;
+            exit();
+        }
+    }
+
     public function set_return_response_success($data, $message)
     {
         $this->status = $this->statusArr['success'];

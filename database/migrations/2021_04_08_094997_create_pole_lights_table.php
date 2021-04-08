@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreatePoleLightsTable extends Migration
 {
     use MigrationTrait;
 
@@ -16,15 +16,11 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('pole_lights', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('mobile');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->binary('firebase_token');
-            $table->rememberToken();
+            $table->foreignId('pole_id')->constrained();
+            $table->tinyInteger('status')->default('0');
+            $table->tinyInteger('brightness')->default('100');
             $this->runColumns($table);
         });
     }
@@ -36,6 +32,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-//        Schema::dropIfExists('users');
+        Schema::dropIfExists('pole_lights');
     }
 }

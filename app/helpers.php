@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 function test()
 {
 //    print_r("test");
@@ -45,4 +47,14 @@ function sendSMS($mobile, $message)
 //    } else {
 //showResultFailed();
 //    }
+}
+
+/**
+ * @param User $user
+ * @return string
+ */
+function create_user_auth_token(User $user): string
+{
+    return $user->createToken('MyApp')->accessToken;
+
 }

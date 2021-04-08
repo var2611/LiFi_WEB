@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\api\LiFiController;
-use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\TestController;
+use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('ledUpdate', [LiFiController::class, 'led_update']);
 Route::get('getLedBrightnessStatus', [LiFiController::class, 'led_brightness_status']);
 Route::get('getLedStatus', [LiFiController::class, 'led_status']);
-Route::get('new_mail', [TestController::class, 'new_mail']);
+Route::post('poleLogin', [LiFiController::class, 'pole_login']);
+
 
 /*
  * LiFi Led Test API End
@@ -36,6 +37,9 @@ Route::post('createUser1', [UserController::class, 'createUser1']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
+Route::get('new_mail', [TestController::class, 'new_mail']);
+Route::get('demoV', [TestController::class, 'demoV']);
+
 
 //Route::post('demo1', 'UserController@demo1');
 

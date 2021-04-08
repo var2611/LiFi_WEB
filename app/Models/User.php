@@ -61,6 +61,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereMobile($value)
  * @method static Builder|User whereRazorCustomerId($value)
  * @method static Builder|User whereUpdatedBy($value)
+ * @property string|null $mac_address For Pole Only
+ * @method static Builder|User whereMacAddress($value)
  */
 class User extends Authenticatable
 {
@@ -77,6 +79,7 @@ class User extends Authenticatable
         'email',
         'password',
         'firebase_token',
+        'mac_address',
     ];
 
     /**
@@ -97,4 +100,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Set as username any column from users table
+    public function findForPassport($username)
+    {
+        $customUsername = 'mac_address';
+        return $this->where($customUsername, $username)->first();
+    }
 }

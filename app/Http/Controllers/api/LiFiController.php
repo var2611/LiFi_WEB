@@ -3,7 +3,6 @@
 
 namespace App\Http\Controllers\api;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\LedLight;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +10,7 @@ use Illuminate\Http\Request;
 
 class LiFiController extends Controller
 {
+
     public function led_update(Request $request): JsonResponse
     {
         $rules = [
