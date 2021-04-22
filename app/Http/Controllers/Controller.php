@@ -15,6 +15,13 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public $pole_fail_data_value = "00";
+    public $pole_auth_value = "01";
+    public $pole_last_update_value = "02";
+    public $pole_brightness_data_value = "03";
+    public $pole_status_data_value = "04";
+    public $pole_day_data_value = "05";
+
 //    public $response = array('test_data' => array(), 'data' => null, 'message' => '');
     public $response = array('data' => null, 'message' => '');
     public $status = 405;
@@ -89,21 +96,42 @@ class Controller extends BaseController
     }
 
     /**
-     * @param int $response_id
+     * @param $response_id
      * @param $data
      */
-    public function return_response_pole(int $response_id, $data)
+    public function return_response_pole($response_id, $data)
     {
-        if ($response_id === 1) {
-            echo "#01AUTH:$data$";
-            exit();
-        } elseif ($response_id === 00) {
-            echo "#00FAIL:$data$";
-            exit();
+        $this->response['api_status_code'] = 200;
+
+        if ($response_id == $this->pole_auth_value) {
+//            echo "#:" . $this->pole_auth_value . ":$data";
+            echo "$data";
+        } elseif ($response_id == $this->pole_last_update_value) {
+//            echo "#:" . $this->pole_last_update_value . ":$data$";
+            echo "$data";
+        } elseif ($response_id == $this->pole_brightness_data_value) {
+//            echo "#:" . $this->pole_brightness_data_value . ":$data$";
+            echo "$data";
+        } elseif ($response_id == $this->pole_status_data_value) {
+//            echo "#:" . $this->pole_status_data_value . ":$data$";
+            echo "$data";
+        } elseif ($response_id === 05) {
+//            echo "#:" . $this->pole_day_data_value . ":$data$";
+            echo "$data";
+        } elseif ($response_id === 10) {
+            echo "#:10:$data";
+        } elseif ($response_id == $this->pole_fail_data_value) {
+//            $this->response['status'] = 403;
+            http_response_code(403);
+            echo "#:" . $this->pole_fail_data_value . ":$data$";
+        } elseif ($response_id === "time") {
+//            echo "#:" . $this->pole_day_data_value . ":$data$";
+            echo "$data";
         } else {
             echo $data;
-            exit();
         }
+//        return response();
+        exit();
     }
 
     public function set_return_response_success($data, $message)

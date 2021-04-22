@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
@@ -16,6 +17,9 @@ class TestController extends Controller
         echo "test,";
         echo "test2";
 //        echo '1';
+
+        $mac_address = strtoupper($request->mac ?? null);
+        $user = User::where('mac_address', $mac_address)->first(['id']);
 
     }
 

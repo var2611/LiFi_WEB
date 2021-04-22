@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\PoleLight
@@ -17,27 +20,53 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_by
  * @property string $updated_by
  * @property string|null $deleted_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight query()
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereBrightness($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereDeletedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereIsVisible($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight wherePoleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PoleLight whereUpdatedBy($value)
+ * @method static Builder|PoleLight newModelQuery()
+ * @method static Builder|PoleLight newQuery()
+ * @method static Builder|PoleLight query()
+ * @method static Builder|PoleLight whereBrightness($value)
+ * @method static Builder|PoleLight whereCreatedAt($value)
+ * @method static Builder|PoleLight whereCreatedBy($value)
+ * @method static Builder|PoleLight whereDeletedAt($value)
+ * @method static Builder|PoleLight whereDeletedBy($value)
+ * @method static Builder|PoleLight whereId($value)
+ * @method static Builder|PoleLight whereIsActive($value)
+ * @method static Builder|PoleLight whereIsVisible($value)
+ * @method static Builder|PoleLight wherePoleId($value)
+ * @method static Builder|PoleLight whereStatus($value)
+ * @method static Builder|PoleLight whereUpdatedAt($value)
+ * @method static Builder|PoleLight whereUpdatedBy($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Pole $Pole
  */
 class PoleLight extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'pole_id',
+        'status',
+        'brightness',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'deleted_at',
+        'is_active',
+        'is_visible',
+    ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function Pole(): BelongsTo
+    {
+        return $this->belongsTo(Pole::class, 'id');
+    }
 }

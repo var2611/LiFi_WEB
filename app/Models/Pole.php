@@ -62,5 +62,23 @@ class Pole extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'user_id',
+        'longitude',
+        'latitude',
+        'location',
+        'mac_address',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'deleted_at',
+        'is_active',
+        'is_visible',
+    ];
 }

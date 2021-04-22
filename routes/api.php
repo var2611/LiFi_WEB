@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\api\LiFiController;
+use App\Http\Controllers\api\PoleController;
 use App\Http\Controllers\api\TestController;
 use App\Http\Controllers\api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +24,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('ledUpdate', [LiFiController::class, 'led_update']);
 Route::get('getLedBrightnessStatus', [LiFiController::class, 'led_brightness_status']);
 Route::get('getLedStatus', [LiFiController::class, 'led_status']);
-Route::post('poleLogin', [LiFiController::class, 'pole_login']);
+
+Route::post('poleLogin', [PoleController::class, 'login']);
+Route::post('poleTime', [PoleController::class, 'getCurrentTime']);
 
 
 /*
@@ -47,8 +49,13 @@ Route::get('demoV', [TestController::class, 'demoV']);
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('userDetails', [UserController::class, 'user_details']);
 
-});
+    Route::post('poleMain', [PoleController::class, 'poleMain']);
+    Route::get('poleLastUpdateStatus', [PoleController::class, 'pole_last_update_status']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    //POLE Application API
+    Route::get('editPoleDayData', [PoleController::class, 'edit_pole_day_data']);
 });
+//
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
