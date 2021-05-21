@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttendanceManagerTable extends Migration
+class CreateAttendancesTable extends Migration
 {
     use MigrationTrait;
 
@@ -16,7 +16,7 @@ class CreateAttendanceManagerTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendance_manager', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('name');
@@ -24,8 +24,8 @@ class CreateAttendanceManagerTable extends Migration
             $table->date('date');
             $table->timestamp('in_time')->nullable();;
             $table->timestamp('out_time')->nullable();;
-            $table->string('hours_worked');
-            $table->string('difference');
+            $table->string('hours_worked')->nullable();
+            $table->string('difference')->nullable();
             $table->tinyInteger('status');
             $this->runColumns($table);
         });

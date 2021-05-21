@@ -14590,7 +14590,542 @@
      
 }
 
-        namespace Illuminate\Http { 
+        namespace LaravelViews\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class LaravelViews {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function components()
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->components();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function create($view)
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->create($view);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function layout($layout, $section = null, $data = [])
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->layout($layout, $section, $data);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function section($section)
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->section($section);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function data($data)
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->data($data);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function css($options = '')
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->css($options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function js($options = '')
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->js($options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function render()
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->render();
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class Variants {
+                    /**
+         * Uses the button component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function button($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->button($variant);
+        }
+                    /**
+         * Uses the alert component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function alert($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->alert($variant);
+        }
+                    /**
+         * Uses the paginator component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function paginator($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->paginator($variant);
+        }
+                    /**
+         * Uses the badge component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function badge($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->badge($variant);
+        }
+                    /**
+         * Uses the img component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function img($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->img($variant);
+        }
+                    /**
+         * Uses the icon component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function featherIcon($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->featherIcon($variant);
+        }
+                    /**
+         * Get the class string for the component and variant selected
+         *
+         * @param String $element Set the internal element of the component if there are any
+         * @static 
+         */ 
+        public static function class($element = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->class($element);
+        }
+                    /**
+         * Get the title of the variant and componente selected
+         *
+         * @static 
+         */ 
+        public static function title()
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->title();
+        }
+                    /**
+         * Get the icon of the variant and componente selected
+         *
+         * @static 
+         */ 
+        public static function icon()
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->icon();
+        }
+         
+    }
+            /**
+     * 
+     *
+     * @see \LaravelViews\UI\UI
+     */ 
+        class UI {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function badge($title, $type = 'default')
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->badge($title, $type);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function avatar($src)
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->avatar($src);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function link($title, $to)
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->link($title, $to);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function icon($icon, $type = 'default', $class = '')
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->icon($icon, $type, $class);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function attributes($attributes, $options = [])
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->attributes($attributes, $options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function component($view, $data)
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->component($view, $data);
+        }
+         
+    }
+     
+}
+
+    namespace Livewire { 
+            /**
+     * 
+     *
+     * @see \Livewire\LivewireManager
+     */ 
+        class Livewire {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function component($alias, $viewClass = null)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->component($alias, $viewClass);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getAlias($class, $default = null)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getAlias($class, $default);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getComponentAliases()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getComponentAliases();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getClass($alias)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getClass($alias);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getInstance($component, $id)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getInstance($component, $id);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function mount($name, $params = [])
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->mount($name, $params);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function dummyMount($id, $tagName)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->dummyMount($id, $tagName);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function test($name, $params = [])
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->test($name, $params);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function visit($browser, $class, $queryString = '')
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->visit($browser, $class, $queryString);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function actingAs($user, $driver = null)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->actingAs($user, $driver);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function addPersistentMiddleware($middleware)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->addPersistentMiddleware($middleware);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setPersistentMiddleware($middleware)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->setPersistentMiddleware($middleware);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getPersistentMiddleware()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getPersistentMiddleware();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function styles($options = [])
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->styles($options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function scripts($options = [])
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->scripts($options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isLivewireRequest()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isLivewireRequest();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isDefinitelyLivewireRequest()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isDefinitelyLivewireRequest();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isProbablyLivewireRequest()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isProbablyLivewireRequest();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function originalUrl()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->originalUrl();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function originalPath()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->originalPath();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function originalMethod()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->originalMethod();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getRootElementTagName($dom)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->getRootElementTagName($dom);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function dispatch($event, ...$params)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->dispatch($event, ...$params);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function listen($event, $callback)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->listen($event, $callback);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isOnVapor()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isOnVapor();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function withQueryParams($queryParams)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->withQueryParams($queryParams);
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Http { 
             /**
      * 
      *
@@ -14647,6 +15182,40 @@
      
 }
 
+    namespace Illuminate\Testing { 
+            /**
+     * 
+     *
+     * @mixin \Illuminate\Http\Response
+     */ 
+        class TestResponse {
+                    /**
+         * 
+         *
+         * @see \Livewire\LivewireServiceProvider::registerTestMacros()
+         * @param mixed $component
+         * @static 
+         */ 
+        public static function assertSeeLivewire($component)
+        {
+                        return \Illuminate\Testing\TestResponse::assertSeeLivewire($component);
+        }
+                    /**
+         * 
+         *
+         * @see \Livewire\LivewireServiceProvider::registerTestMacros()
+         * @param mixed $component
+         * @static 
+         */ 
+        public static function assertDontSeeLivewire($component)
+        {
+                        return \Illuminate\Testing\TestResponse::assertDontSeeLivewire($component);
+        }
+         
+    }
+     
+}
+
     namespace Illuminate\Routing { 
             /**
      * 
@@ -14694,6 +15263,92 @@
         public static function emailVerification()
         {
                         return \Illuminate\Routing\Router::emailVerification();
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\View { 
+            /**
+     * 
+     *
+     */ 
+        class ComponentAttributeBag {
+                    /**
+         * 
+         *
+         * @see \Livewire\LivewireServiceProvider::registerViewMacros()
+         * @param mixed $name
+         * @static 
+         */ 
+        public static function wire($name)
+        {
+                        return \Illuminate\View\ComponentAttributeBag::wire($name);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class View {
+                    /**
+         * 
+         *
+         * @see \Livewire\Macros\ViewMacros::extends()
+         * @param mixed $view
+         * @param mixed $params
+         * @static 
+         */ 
+        public static function extends($view, $params = [])
+        {
+                        return \Illuminate\View\View::extends($view, $params);
+        }
+                    /**
+         * 
+         *
+         * @see \Livewire\Macros\ViewMacros::layout()
+         * @param mixed $view
+         * @param mixed $params
+         * @static 
+         */ 
+        public static function layout($view, $params = [])
+        {
+                        return \Illuminate\View\View::layout($view, $params);
+        }
+                    /**
+         * 
+         *
+         * @see \Livewire\Macros\ViewMacros::layoutData()
+         * @param mixed $data
+         * @static 
+         */ 
+        public static function layoutData($data = [])
+        {
+                        return \Illuminate\View\View::layoutData($data);
+        }
+                    /**
+         * 
+         *
+         * @see \Livewire\Macros\ViewMacros::section()
+         * @param mixed $section
+         * @static 
+         */ 
+        public static function section($section)
+        {
+                        return \Illuminate\View\View::section($section);
+        }
+                    /**
+         * 
+         *
+         * @see \Livewire\Macros\ViewMacros::slot()
+         * @param mixed $slot
+         * @static 
+         */ 
+        public static function slot($slot)
+        {
+                        return \Illuminate\View\View::slot($slot);
         }
          
     }
@@ -17841,6 +18496,10 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
+            class LaravelViews extends \LaravelViews\Facades\LaravelViews {}
+            class Variants extends \LaravelViews\Facades\Variants {}
+            class UI extends \LaravelViews\Facades\UI {}
+            class Livewire extends \Livewire\Livewire {}
      
 }
 

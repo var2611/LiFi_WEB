@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -63,6 +64,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereUpdatedBy($value)
  * @property string|null $mac_address For Pole Only
  * @method static Builder|User whereMacAddress($value)
+ * @property-read User|null $createdBy
  */
 class User extends Authenticatable
 {
@@ -101,10 +103,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     // Set as username any column from users table
     public function findForPassport($username)
     {
         $customUsername = 'mac_address';
         return $this->where($customUsername, $username)->first();
+    }
+
+    public function UserEmployee(){
+        return $this->hasOne(UserEmployee::class, 'user_id');
     }
 }
