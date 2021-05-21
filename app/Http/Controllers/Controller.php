@@ -134,6 +134,18 @@ class Controller extends BaseController
         exit();
     }
 
+    public function return_response_att_error($message_data)
+    {
+        http_response_code(403);
+        $this->return_response_att($message_data);
+    }
+
+    public function return_response_att($message_data)
+    {
+        echo $message_data;
+        exit();
+    }
+
     public function set_return_response_success($data, $message)
     {
         $this->status = $this->statusArr['success'];
