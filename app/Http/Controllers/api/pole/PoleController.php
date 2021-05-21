@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\pole;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pole;
+use App\Models\Device;
 use App\Models\PoleDayData;
 use App\Models\PoleLastState;
 use App\Models\PoleLight;
@@ -107,16 +107,10 @@ class PoleController extends Controller
                         $user = Auth::user();
                         $token = create_user_auth_token($user);
 
-                        $input = array();
-                        $input['name'] = $name;
-                        $input['mac_address'] = $mac_address;
-                        $input['user_id'] = $user->id;
-                        $input['created_by'] = Auth::user()->id;
-                        $input['updated_by'] = Auth::user()->id;
-                        $pole = Pole::create($input);
+                        $device = create_new_device($user, $name, $mac_address, 1);
 
                         $input = array();
-                        $input['pole_id'] = $pole->id;
+                        $input['device_id'] = $device->id;
                         $input['created_by'] = Auth::user()->id;
                         $input['updated_by'] = Auth::user()->id;
                         $pole_light = PoleLight::create($input);
@@ -164,7 +158,7 @@ class PoleController extends Controller
 
     private function getPoleData(string $fetchData, string $pole_value)
     {
-        return PoleLight::wherePoleId(Pole::whereUserId(Auth::user()->id)->first(['id'])->id)->first([$fetchData]);
+        return PoleLight::whereDeviceId(Device::whereUserId(Auth::user()->id)->first(['id'])->id)->first([$fetchData]);
 
     }
 
@@ -175,7 +169,7 @@ class PoleController extends Controller
     public function pole_last_update_status()
     {
         if (Auth::user()) {
-            $pole_brightness = PoleLastState::wherePoleId(Pole::whereUserId(Auth::user()->id)->first(['id'])->id)->first(['change_value_code'])->change_value_code;
+            $pole_brightness = PoleLastState::whereDeviceId(Device::whereUserId(Auth::user()->id)->first(['id'])->id)->first(['change_value_code'])->change_value_code;
 
             if ($pole_brightness) {
 //                $data = $pole_brightness->change_value_code;
@@ -192,7 +186,7 @@ class PoleController extends Controller
     public function edit_pole_day_data(Request $request)
     {
         $rules = [
-            'pole_id' => 'required',
+            'device_id' => 'required',
             'mon_on' => 'required',
             'mon_off' => 'required',
             'tue_on' => 'required',
@@ -214,14 +208,14 @@ class PoleController extends Controller
 
         if ($this->ApiValidator($request->all(), $rules)) {
             try {
-                $pole_id = $request->pole_id;
+                $device_id = $request->device_id;
 
                 if ($request->has('id')) {
                     $attribute['id'] = $request->id;
                 }
 
                 $value = array();
-                $value['pole_id'] = $pole_id;
+                $value['device_id'] = $device_id;
                 $value['mon_on'] = $request->mon_on;
                 $value['mon_off'] = $request->mon_off;
                 $value['tue_on'] = $request->tue_on;

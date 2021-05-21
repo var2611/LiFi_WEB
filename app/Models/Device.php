@@ -13,12 +13,19 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Token;
 
 /**
- * App\Models\Pole
+ * App\Models\Device
  *
  * @property int $id
- * @property string $name
+ * @property string|null $name
+ * @property int $user_id
+ * @property int $device_type_id
+ * @property string|null $mac_address
+ * @property string|null $location
+ * @property string|null $latitude
+ * @property string|null $longitude
  * @property int $is_active
  * @property int $is_visible
  * @property string $created_by
@@ -31,34 +38,30 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $clients_count
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read Collection|Token[] $tokens
  * @property-read int|null $tokens_count
- * @method static Builder|Pole newModelQuery()
- * @method static Builder|Pole newQuery()
- * @method static Builder|Pole query()
- * @method static Builder|Pole whereCreatedAt($value)
- * @method static Builder|Pole whereCreatedBy($value)
- * @method static Builder|Pole whereDeletedAt($value)
- * @method static Builder|Pole whereDeletedBy($value)
- * @method static Builder|Pole whereId($value)
- * @method static Builder|Pole whereIsActive($value)
- * @method static Builder|Pole whereIsVisible($value)
- * @method static Builder|Pole whereName($value)
- * @method static Builder|Pole whereUpdatedAt($value)
- * @method static Builder|Pole whereUpdatedBy($value)
+ * @method static Builder|Device newModelQuery()
+ * @method static Builder|Device newQuery()
+ * @method static Builder|Device query()
+ * @method static Builder|Device whereCreatedAt($value)
+ * @method static Builder|Device whereCreatedBy($value)
+ * @method static Builder|Device whereDeletedAt($value)
+ * @method static Builder|Device whereDeletedBy($value)
+ * @method static Builder|Device whereDeviceTypeId($value)
+ * @method static Builder|Device whereId($value)
+ * @method static Builder|Device whereIsActive($value)
+ * @method static Builder|Device whereIsVisible($value)
+ * @method static Builder|Device whereLatitude($value)
+ * @method static Builder|Device whereLocation($value)
+ * @method static Builder|Device whereLongitude($value)
+ * @method static Builder|Device whereMacAddress($value)
+ * @method static Builder|Device whereName($value)
+ * @method static Builder|Device whereUpdatedAt($value)
+ * @method static Builder|Device whereUpdatedBy($value)
+ * @method static Builder|Device whereUserId($value)
  * @mixin Eloquent
- * @property string $longitude
- * @property string $latitude
- * @property string $location
- * @property string $mac_address
- * @method static Builder|Pole whereLatitude($value)
- * @method static Builder|Pole whereLocation($value)
- * @method static Builder|Pole whereLongitude($value)
- * @method static Builder|Pole whereMacAddress($value)
- * @property int $user_id
- * @method static Builder|Pole whereUserId($value)
  */
-class Pole extends Authenticatable
+class Device extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -70,10 +73,11 @@ class Pole extends Authenticatable
     protected $fillable = [
         'name',
         'user_id',
+        'device_type_id',
+        'mac_address',
+        'location',
         'longitude',
         'latitude',
-        'location',
-        'mac_address',
         'created_by',
         'updated_by',
         'deleted_by',

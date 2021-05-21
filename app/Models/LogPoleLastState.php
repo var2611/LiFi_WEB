@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\LogPoleLastState
  *
  * @property int $id
- * @property int $pole_id
+ * @property int $device_id
  * @property string|null $change_value_code
  * @property string|null $change_value
  * @property int $is_active
@@ -18,26 +21,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $created_by
  * @property string $updated_by
  * @property string|null $deleted_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Pole $Pole
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState query()
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereChangeValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereChangeValueCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereDeletedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereIsVisible($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState wherePoleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LogPoleLastState whereUpdatedBy($value)
- * @mixin \Eloquent
+ * @property-read Device $Device
+ * @method static Builder|LogPoleLastState newModelQuery()
+ * @method static Builder|LogPoleLastState newQuery()
+ * @method static Builder|LogPoleLastState query()
+ * @method static Builder|LogPoleLastState whereChangeValue($value)
+ * @method static Builder|LogPoleLastState whereChangeValueCode($value)
+ * @method static Builder|LogPoleLastState whereCreatedAt($value)
+ * @method static Builder|LogPoleLastState whereCreatedBy($value)
+ * @method static Builder|LogPoleLastState whereDeletedAt($value)
+ * @method static Builder|LogPoleLastState whereDeletedBy($value)
+ * @method static Builder|LogPoleLastState whereDeviceId($value)
+ * @method static Builder|LogPoleLastState whereId($value)
+ * @method static Builder|LogPoleLastState whereIsActive($value)
+ * @method static Builder|LogPoleLastState whereIsVisible($value)
+ * @method static Builder|LogPoleLastState whereUpdatedAt($value)
+ * @method static Builder|LogPoleLastState whereUpdatedBy($value)
+ * @mixin Eloquent
  */
 class LogPoleLastState extends Model
 {
@@ -49,7 +52,7 @@ class LogPoleLastState extends Model
      * @var array
      */
     protected $fillable = [
-        'pole_id',
+        'device_id',
         'change_value_code',
         'change_value',
         'created_by',
@@ -63,8 +66,8 @@ class LogPoleLastState extends Model
     /**
      * @return BelongsTo
      */
-    public function Pole(): BelongsTo
+    public function Device(): BelongsTo
     {
-        return $this->belongsTo(Pole::class, 'id');
+        return $this->belongsTo(Device::class, 'id');
     }
 }

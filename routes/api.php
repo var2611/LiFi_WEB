@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\api\LiFiController;
-use App\Http\Controllers\api\PoleController;
+use App\Http\Controllers\api\attendance\LiFiAttendanceController;
+use App\Http\Controllers\api\pole\LiFiPoleController;
+use App\Http\Controllers\api\pole\PoleController;
 use App\Http\Controllers\api\TestController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,9 @@ use Illuminate\Support\Facades\Route;
  * LiFi Led Test API Start
  * */
 
-Route::get('ledUpdate', [LiFiController::class, 'led_update']);
-Route::get('getLedBrightnessStatus', [LiFiController::class, 'led_brightness_status']);
-Route::get('getLedStatus', [LiFiController::class, 'led_status']);
+Route::get('ledUpdate', [LiFiPoleController::class, 'led_update']);
+Route::get('getLedBrightnessStatus', [LiFiPoleController::class, 'led_brightness_status']);
+Route::get('getLedStatus', [LiFiPoleController::class, 'led_status']);
 
 Route::post('poleLogin', [PoleController::class, 'login']);
 Route::post('poleTime', [PoleController::class, 'getCurrentTime']);
@@ -31,6 +32,16 @@ Route::post('poleTime', [PoleController::class, 'getCurrentTime']);
 
 /*
  * LiFi Led Test API End
+ * */
+
+/*
+ * Start LiFi LiFi Attendance API
+ * */
+
+Route::post('att/login', [LiFiAttendanceController::class, 'login']);
+
+/*
+ * End LiFi LiFi Attendance API
  * */
 
 Route::post('demo1', [UserController::class, 'demo1']);
@@ -54,6 +65,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //POLE Application API
     Route::get('editPoleDayData', [PoleController::class, 'edit_pole_day_data']);
+
+    //LiFi Attendance API
+    Route::post('att/saveAtt', [LiFiAttendanceController::class, 'saveAttendance']);
+
 });
 //
 //Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -44,8 +44,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|UserEmployee whereUserId($value)
  * @method static Builder|UserEmployee whereUserRoleId($value)
  * @mixin Eloquent
- * @property-read \App\Models\User $User
- * @property-read \App\Models\UserRole $UserRole
+ * @property-read User $User
+ * @property-read UserRole $UserRole
  */
 class UserEmployee extends Model
 {

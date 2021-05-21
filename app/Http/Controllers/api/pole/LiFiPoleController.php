@@ -1,14 +1,14 @@
 <?php
 
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\pole;
 
 use App\Http\Controllers\Controller;
 use App\Models\LedLight;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class LiFiController extends Controller
+class LiFiPoleController extends Controller
 {
 
     public function led_update(Request $request): JsonResponse

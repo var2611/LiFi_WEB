@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePolesTable extends Migration
+class CreateLogAttendancesTable extends Migration
 {
     use MigrationTrait;
 
@@ -16,9 +16,14 @@ class CreatePolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('poles', function (Blueprint $table) {
+        Schema::create('log_attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
             $table->string('name');
+            $table->string('flash_code');
+            $table->date('date');
+            $table->timestamp('punch_time')->nullable();;
+            $table->tinyInteger('status');
             $this->runColumns($table);
         });
     }
@@ -30,6 +35,6 @@ class CreatePolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('poles');
+//        Schema::dropIfExists('attendance_manager');
     }
 }

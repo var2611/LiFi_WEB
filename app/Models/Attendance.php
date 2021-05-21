@@ -53,6 +53,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Attendance whereUpdatedBy($value)
  * @method static Builder|Attendance whereUserId($value)
  * @mixin Eloquent
+ * @property-read User $User
  */
 class Attendance extends Model
 {

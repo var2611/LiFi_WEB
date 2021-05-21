@@ -18,9 +18,9 @@ class CreatePoleLightsTable extends Migration
     {
         Schema::create('pole_lights', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pole_id')->constrained();
-            $table->tinyInteger('status')->default('0');
-            $table->tinyInteger('brightness')->default('100');
+            $table->foreignId('device_id')->constrained();
+            $table->tinyInteger('status')->nullable()->default('0');
+            $table->tinyInteger('brightness')->nullable()->default('100');
             $this->runColumns($table);
         });
     }

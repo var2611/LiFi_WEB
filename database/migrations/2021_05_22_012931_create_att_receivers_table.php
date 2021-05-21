@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterColumnsToPoleLightsTable extends Migration
+class CreateAttReceiversTable extends Migration
 {
+    use MigrationTrait;
+
     /**
      * Run the migrations.
      *
@@ -13,9 +16,10 @@ class AlterColumnsToPoleLightsTable extends Migration
      */
     public function up()
     {
-        Schema::table('pole_lights', function (Blueprint $table) {
-            $table->string('status')->nullable()->change();
-            $table->string('brightness')->nullable()->change();
+        Schema::create('att_receivers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('device_id')->constrained();
+            $this->runColumns($table);
         });
     }
 
@@ -26,8 +30,6 @@ class AlterColumnsToPoleLightsTable extends Migration
      */
     public function down()
     {
-        Schema::table('pole_lights', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('att_receivers');
     }
 }

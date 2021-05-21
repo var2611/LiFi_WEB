@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
  * App\Models\PoleLastState
  *
  * @property int $id
- * @property int $pole_id
+ * @property int $device_id
  * @property string|null $change_value_code
  * @property string|null $change_value
  * @property int $is_active
@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Pole $Pole
+ * @property-read Device $Device
  * @method static Builder|PoleLastState newModelQuery()
  * @method static Builder|PoleLastState newQuery()
  * @method static Builder|PoleLastState query()
@@ -34,10 +34,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PoleLastState whereCreatedBy($value)
  * @method static Builder|PoleLastState whereDeletedAt($value)
  * @method static Builder|PoleLastState whereDeletedBy($value)
+ * @method static Builder|PoleLastState whereDeviceId($value)
  * @method static Builder|PoleLastState whereId($value)
  * @method static Builder|PoleLastState whereIsActive($value)
  * @method static Builder|PoleLastState whereIsVisible($value)
- * @method static Builder|PoleLastState wherePoleId($value)
  * @method static Builder|PoleLastState whereUpdatedAt($value)
  * @method static Builder|PoleLastState whereUpdatedBy($value)
  * @mixin Eloquent
@@ -52,7 +52,7 @@ class PoleLastState extends Model
      * @var array
      */
     protected $fillable = [
-        'pole_id',
+        'device_id',
         'change_value_code',
         'change_value',
         'created_by',
@@ -66,8 +66,8 @@ class PoleLastState extends Model
     /**
      * @return BelongsTo
      */
-    public function Pole(): BelongsTo
+    public function Device(): BelongsTo
     {
-        return $this->belongsTo(Pole::class, 'id');
+        return $this->belongsTo(Device::class, 'id');
     }
 }

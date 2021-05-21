@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Device;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 function test()
 {
@@ -57,4 +59,16 @@ function create_user_auth_token(User $user): string
 {
     return $user->createToken('MyApp')->accessToken;
 
+}
+
+function create_new_device(User $user, string $name, string $mac_address, int $device_type_id)
+{
+    $input = array();
+    $input['name'] = $name;
+    $input['device_type_id'] = $device_type_id;
+    $input['mac_address'] = $mac_address;
+    $input['user_id'] = $user->id;
+    $input['created_by'] = Auth::user()->id;
+    $input['updated_by'] = Auth::user()->id;
+    return Device::create($input);
 }

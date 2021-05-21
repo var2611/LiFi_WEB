@@ -18,7 +18,7 @@ class CreatePoleDayDataTable extends Migration
     {
         Schema::create('pole_day_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pole_id')->constrained();
+            $table->foreignId('device_id')->constrained();
             $table->timestamp('mon_on')->nullable();
             $table->timestamp('mon_off')->nullable();
             $table->timestamp('tue_on')->nullable();

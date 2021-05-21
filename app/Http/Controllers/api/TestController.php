@@ -17,26 +17,26 @@ class TestController extends Controller
     {
 
         //2021-05-19 13:15:21
-        $todayDate = date('Y-m-d');
-        $currentDateTime = '2021-05-19 23:15:21';
+//        $todayDate = date('Y-m-d');
+//        $currentDateTime = '2021-05-19 23:15:21';
+//
+//        $attendance = Attendance::whereFlashCode('123456')
+//            ->where('date', '=', '2021-05-19')
+//            ->orderByDesc('created_at')->first();
+//
+//        $hours_worked = (strtotime($currentDateTime) - strtotime($attendance->in_time)) / 3600;
+//
+//        $attendance->out_time = $currentDateTime;
+//        $attendance->hours_worked = $hours_worked;
+//        $attendance->updated_by = 1;
+//        $attendance->save();
+//
+//        echo json_encode($attendance);
 
-        $attendance = Attendance::whereFlashCode('123456')
-            ->where('date', '=', '2021-05-19')
-            ->orderByDesc('created_at')->first();
-
-        $hours_worked = (strtotime($currentDateTime) - strtotime($attendance->in_time)) / 3600;
-
-        $attendance->out_time = $currentDateTime;
-        $attendance->hours_worked = $hours_worked;
-        $attendance->updated_by = 1;
-        $attendance->save();
-
-        echo json_encode($attendance);
-
-//        $start = strtotime('12:01:00');
-//        $end = strtotime('12:04:00');
-//        $mins = ($end - $start) / 3600;
-//        echo $mins;
+        $start = strtotime('2021-05-19 21:01:00');
+        $end = strtotime('2021-05-20 7:04:00');
+        $mins = ($end - $start) / 3600;
+        echo $mins;
 
 //        echo date('H:i:s ');
 //        echo now();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,7 +44,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property string|null $razor_customer_id
  * @property string|null $mobile
  * @property mixed|null $firebase_token
@@ -65,6 +66,7 @@ use Laravel\Passport\Token;
  * @property string|null $mac_address For Pole Only
  * @method static Builder|User whereMacAddress($value)
  * @property-read User|null $createdBy
+ * @property-read UserEmployee|null $UserEmployee
  */
 class User extends Authenticatable
 {
@@ -115,7 +117,8 @@ class User extends Authenticatable
         return $this->where($customUsername, $username)->first();
     }
 
-    public function UserEmployee(){
+    public function UserEmployee()
+    {
         return $this->hasOne(UserEmployee::class, 'user_id');
     }
 }

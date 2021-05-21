@@ -6,17 +6,14 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
  * App\Models\PoleDayData
  *
- * @method static Builder|PoleDayData newModelQuery()
- * @method static Builder|PoleDayData newQuery()
- * @method static Builder|PoleDayData query()
- * @mixin Eloquent
  * @property int $id
- * @property int $pole_id
+ * @property int $device_id
  * @property string|null $mon_on
  * @property string|null $mon_off
  * @property string|null $tue_on
@@ -39,10 +36,14 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @method static Builder|PoleDayData newModelQuery()
+ * @method static Builder|PoleDayData newQuery()
+ * @method static Builder|PoleDayData query()
  * @method static Builder|PoleDayData whereCreatedAt($value)
  * @method static Builder|PoleDayData whereCreatedBy($value)
  * @method static Builder|PoleDayData whereDeletedAt($value)
  * @method static Builder|PoleDayData whereDeletedBy($value)
+ * @method static Builder|PoleDayData whereDeviceId($value)
  * @method static Builder|PoleDayData whereFriOff($value)
  * @method static Builder|PoleDayData whereFriOn($value)
  * @method static Builder|PoleDayData whereId($value)
@@ -50,7 +51,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PoleDayData whereIsVisible($value)
  * @method static Builder|PoleDayData whereMonOff($value)
  * @method static Builder|PoleDayData whereMonOn($value)
- * @method static Builder|PoleDayData wherePoleId($value)
  * @method static Builder|PoleDayData whereSatOff($value)
  * @method static Builder|PoleDayData whereSatOn($value)
  * @method static Builder|PoleDayData whereSunOff($value)
@@ -63,13 +63,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PoleDayData whereUpdatedBy($value)
  * @method static Builder|PoleDayData whereWedOff($value)
  * @method static Builder|PoleDayData whereWedOn($value)
+ * @mixin Eloquent
+ * @property-read Device $Device
  */
 class PoleDayData extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'pole_id',
+        'device_id',
         'mon_on',
         'mon_off',
         'tue_on',
@@ -90,4 +92,12 @@ class PoleDayData extends Model
         'updated_by',
         'deleted_by',
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function Device(): BelongsTo
+    {
+        return $this->belongsTo(Device::class, 'id');
+    }
 }

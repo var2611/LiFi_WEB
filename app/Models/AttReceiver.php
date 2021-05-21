@@ -10,12 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\PoleLight
+ * App\Models\AttReceiver
  *
  * @property int $id
  * @property int $device_id
- * @property int|null $status
- * @property int|null $brightness
  * @property int $is_active
  * @property int $is_visible
  * @property string $created_by
@@ -25,24 +23,22 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * @property-read Device $Device
- * @method static Builder|PoleLight newModelQuery()
- * @method static Builder|PoleLight newQuery()
- * @method static Builder|PoleLight query()
- * @method static Builder|PoleLight whereBrightness($value)
- * @method static Builder|PoleLight whereCreatedAt($value)
- * @method static Builder|PoleLight whereCreatedBy($value)
- * @method static Builder|PoleLight whereDeletedAt($value)
- * @method static Builder|PoleLight whereDeletedBy($value)
- * @method static Builder|PoleLight whereDeviceId($value)
- * @method static Builder|PoleLight whereId($value)
- * @method static Builder|PoleLight whereIsActive($value)
- * @method static Builder|PoleLight whereIsVisible($value)
- * @method static Builder|PoleLight whereStatus($value)
- * @method static Builder|PoleLight whereUpdatedAt($value)
- * @method static Builder|PoleLight whereUpdatedBy($value)
+ * @method static Builder|AttReceiver newModelQuery()
+ * @method static Builder|AttReceiver newQuery()
+ * @method static Builder|AttReceiver query()
+ * @method static Builder|AttReceiver whereCreatedAt($value)
+ * @method static Builder|AttReceiver whereCreatedBy($value)
+ * @method static Builder|AttReceiver whereDeletedAt($value)
+ * @method static Builder|AttReceiver whereDeletedBy($value)
+ * @method static Builder|AttReceiver whereDeviceId($value)
+ * @method static Builder|AttReceiver whereId($value)
+ * @method static Builder|AttReceiver whereIsActive($value)
+ * @method static Builder|AttReceiver whereIsVisible($value)
+ * @method static Builder|AttReceiver whereUpdatedAt($value)
+ * @method static Builder|AttReceiver whereUpdatedBy($value)
  * @mixin Eloquent
  */
-class PoleLight extends Model
+class AttReceiver extends Model
 {
     use HasFactory;
 
@@ -53,8 +49,6 @@ class PoleLight extends Model
      */
     protected $fillable = [
         'device_id',
-        'status',
-        'brightness',
         'created_by',
         'updated_by',
         'deleted_by',
