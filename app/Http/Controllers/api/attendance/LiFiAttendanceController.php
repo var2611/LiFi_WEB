@@ -17,6 +17,13 @@ use PHPUnit\Exception as ExceptionAlias;
 class LiFiAttendanceController extends Controller
 {
 
+    public function __construct(Request $request)
+    {
+        if (!$request->hasHeader('device')) {
+            $this->return_response_pole($this->pole_fail_data_value, "Missing Data.");
+        }
+    }
+
     /**
      * Login for Smart Pole only with
      * new pole user creation via MAC-
