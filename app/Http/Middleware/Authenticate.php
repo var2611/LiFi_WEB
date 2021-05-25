@@ -17,7 +17,7 @@ class Authenticate extends Middleware
     {
         if ($request->expectsJson()) {
             $controller = new Controller();
-            if ($request->hasHeader('pole'))
+            if ($request->hasHeader('device'))
                 $controller->return_response_pole($controller->pole_fail_data_value, 'AUTH Fail');
         }
         return view('login');

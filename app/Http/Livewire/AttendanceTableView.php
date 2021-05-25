@@ -17,7 +17,7 @@ class AttendanceTableView extends TableView
      */
     public function repository(): Builder
     {
-        return Attendance::query()->with(['User.UserEmployee']);
+        return Attendance::query()->with(['User.UserEmployee'])->orderByDesc('created_by');
     }
 
     /**
