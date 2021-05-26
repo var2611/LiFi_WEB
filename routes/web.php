@@ -20,6 +20,8 @@ Route::redirect('/', '/login');
 Auth::routes();
 
 Route::view('/dashboard', '/dashboard')->name('dashboard');
+Route::view('/hr_dashboard', '/hr_dashboard')->name('hr_dashboard');
+Route::view('/hr_welcome', '/hr_welcome')->name('hr_welcome');
 
 
 Route::group(['middleware' => 'auth'], function () {

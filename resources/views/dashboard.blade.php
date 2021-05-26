@@ -2,7 +2,7 @@
 @extends('includes.header')
 @extends('includes.sidemenu')
 @section('container')
-    @livewire('attendance-table-view')
+    @livewire('users-table-view')
 
     {{--
     <livewire:user-employee-table-view />
