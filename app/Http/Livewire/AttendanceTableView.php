@@ -46,13 +46,21 @@ class AttendanceTableView extends TableView
      */
     public function row($model): array
     {
+        $hours_worked = 0;
+
+        if ($model->hours_worked) {
+            $hours_worked = number_format((float)$model->hours_worked, 2, '.', '');
+        } else {
+            $hours_worked = Carbon::parse($model->in_time)->shortAbsoluteDiffForHumans();
+        }
+
         return [
             $model->user->userEmployee->emp_code,
             $model->name,
             $model->date,
             $model->in_time,
             $model->out_time,
-            Carbon::parse($model->in_time)->shortAbsoluteDiffForHumans(),
+            $hours_worked . ' H',
             $model->status,
             $model->created_at->diffForHumans()
         ];

@@ -26,8 +26,8 @@
 <body>
 <div id="app">
     @yield('header')
+    @yield('sidemenu')
     <div class="main_hr_container">
-        @yield('sidemenu')
         @yield('container')
     </div>
 

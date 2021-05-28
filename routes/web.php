@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\UserEmployeeController;
 use Illuminate\Support\Facades\Route;
@@ -20,13 +21,17 @@ Route::redirect('/', '/login');
 Auth::routes();
 
 Route::view('/dashboard', '/dashboard')->name('dashboard');
-Route::view('/hr_dashboard', '/hr_dashboard')->name('hr_dashboard');
-Route::view('/hr_welcome', '/hr_welcome')->name('hr_welcome');
+
 
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('Users List');
 
+
+    Route::view('/hr_dashboard', '/hr_dashboard')->name('hr_dashboard');
+    Route::view('/hr_welcome', '/hr_welcome')->name('hr_welcome');
+    Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('UsersList');
+
+    Route::get('/user_attendance', [AttendanceController::class, 'index'])->name('UsersAtt');
 
 });

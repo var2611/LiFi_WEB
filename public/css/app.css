@@ -39,14 +39,15 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.main_hr_container{
+    margin-left: 160px;
+    padding: 20px;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-.main_hr_container{
-    margin-left: 160px;
 }
 
 html {
