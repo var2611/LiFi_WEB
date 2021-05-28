@@ -23,14 +23,13 @@
     @laravelViewsStyles
     @livewireStyles
 </head>
-<body>
+<body>.
 <div id="app">
     @yield('header')
     @yield('sidemenu')
     <div class="main_hr_container">
         @yield('container')
     </div>
-
 </div>
 @laravelViewsScripts
 </body>
