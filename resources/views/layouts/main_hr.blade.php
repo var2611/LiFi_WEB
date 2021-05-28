@@ -10,7 +10,7 @@
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-{{--    <script src="{{ asset('js/app.js') }}" defer></script>--}}
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
 <!-- Fonts -->
     <script src="https://kit.fontawesome.com/9861d16a15.js" crossorigin="anonymous"></script>
@@ -30,6 +30,7 @@
     <div class="main_hr_container">
         @yield('container')
     </div>
+    @yield('content')
 
 </div>
 @laravelViewsScripts

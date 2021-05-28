@@ -30,7 +30,7 @@ body {
     color: #f1f1f1;
 }
 
-.card {
+.card-hr {
     padding: 20px;
     margin: 50px 0 0 50px;
     width: 245px;
@@ -42,7 +42,7 @@ body {
     transition: 0.3s;
 }
 
-.card:hover {
+.card-hr:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
@@ -51,7 +51,7 @@ body {
     margin-left: 14px;
 }
 
-.card h1 {
+.card-hr h1 {
     font-size: 18px;
 }
 
