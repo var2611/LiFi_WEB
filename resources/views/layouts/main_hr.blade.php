@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/main.js') }}" defer></script>
 
 <!-- Fonts -->
     <script src="https://kit.fontawesome.com/9861d16a15.js" crossorigin="anonymous"></script>
@@ -26,12 +27,16 @@
 <body>
 <div id="app">
     @yield('header')
-    @yield('sidemenu')
-    <div class="main_hr_container">
-        @yield('container')
-    </div>
     @yield('content')
-
+    <!-- Bootstrap row -->
+        <div class="row-p">
+            <div class="row" id="body-row">
+                @yield('sidemenu')
+                <div class="main_hr_container">
+                    @yield('container')
+                </div>
+            </div>
+        </div>
 </div>
 @laravelViewsScripts
 </body>
