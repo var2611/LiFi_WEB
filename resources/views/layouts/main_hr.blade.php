@@ -7,13 +7,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+    <title>LiFi Attendance - {{ $title ?? config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
 
-<!-- Fonts -->
+    <!-- Fonts -->
     <script src="https://kit.fontawesome.com/9861d16a15.js" crossorigin="anonymous"></script>
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -26,17 +26,18 @@
 </head>
 <body>
 <div id="app">
-    @yield('header')
-    @yield('content')
-    <!-- Bootstrap row -->
-        <div class="row-p">
-            <div class="row" id="body-row">
-                @yield('sidemenu')
-                <div class="main_hr_container">
-                    @yield('container')
-                </div>
+@yield('header')
+@yield('content')
+<!-- Bootstrap row -->
+    <div class="row-p">
+        <div class="row" id="body-row">
+            @yield('sidemenu')
+            <div class="main_hr_container">
+                <h1><strong>{{ $title }}</strong></h1>
+                @yield('container')
             </div>
         </div>
+    </div>
  </div>
 @laravelViewsScripts
 </body>

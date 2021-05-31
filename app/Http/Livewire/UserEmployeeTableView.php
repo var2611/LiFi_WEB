@@ -22,9 +22,15 @@ class UserEmployeeTableView extends TableView
     {
         $user = Auth::user();
         $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
-        return UserEmployee::query()
-            ->whereCompanyId($company_id)
+
+        $data = UserEmployee::query()
             ->with(['User', 'UserRole']);
+
+        if ($company_id != 1) {
+            $data = $data->whereCompanyId($company_id);
+        }
+
+        return $data;
     }
 
     /**

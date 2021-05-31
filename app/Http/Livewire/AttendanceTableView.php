@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Attendance;
+use App\Models\AttendanceData;
 use App\Models\UserEmployee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,9 +21,11 @@ class AttendanceTableView extends TableView
     {
         $user = Auth::user();
         $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
-        return Attendance::query()
-            ->with(['User.UserEmployee'])
-            ->orderByDesc('created_by');
+        $data = AttendanceData::query();
+//        if ($company_id != 1) {
+            $data = $data->whereCompanyId($company_id);
+//        }
+        return $data->orderByDesc('attendance_id');
     }
 
     /**
@@ -34,21 +36,22 @@ class AttendanceTableView extends TableView
     public function headers(): array
     {
         return [
-            Header::title('Employee Code'),
+            Header::title('ID')->sortBy('attendance_id'),
+            Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
             Header::title('Date'),
-            Header::title('in_time'),
-            Header::title('out_time'),
-            Header::title('hours_worked'),
-            Header::title('status'),
-            Header::title('created at')->sortBy('created_at'),
+            Header::title('In Time')->sortBy('in_time'),
+            Header::title('Out Time'),
+            Header::title('Hours Worked'),
+            Header::title('Status')->sortBy('status'),
+            Header::title('Created at')->sortBy('created_at'),
         ];
     }
 
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model Attendance model for each row
+     * @param $model AttendanceData model for each row
      */
     public function row($model): array
     {
@@ -61,14 +64,15 @@ class AttendanceTableView extends TableView
         }
 
         return [
-            $model->user->userEmployee->emp_code,
-            $model->name,
+            $model->attendance_id,
+            $model->emp_code,
+            $model->user_name,
             $model->date,
             $model->in_time,
             $model->out_time,
             $hours_worked . ' H',
             $model->status,
-            $model->created_at->diffForHumans()
+            $model->created_at
         ];
     }
 }

@@ -165,7 +165,7 @@ class LiFiAttendanceController extends Controller
             $mac_address = strtoupper($request->mac ?? null);
             $password = $request->password ?? null;
 
-            $name = 'Pole';
+            $name = 'Attendance Receiver ESP';
 
             $user = User::where('mac_address', $mac_address)->first(['id']);
             if ($user) {
