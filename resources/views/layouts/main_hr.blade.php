@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-</div>
+ </div>
 @laravelViewsScripts
 </body>
 </html>
