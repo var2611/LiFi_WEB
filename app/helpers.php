@@ -2,7 +2,9 @@
 
 use App\Models\Device;
 use App\Models\User;
+use App\Models\UserEmployee;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Exception;
 
 function test()
 {
@@ -71,4 +73,53 @@ function create_new_device(User $user, string $name, string $mac_address, int $d
     $input['created_by'] = Auth::user()->id;
     $input['updated_by'] = Auth::user()->id;
     return Device::create($input);
+}
+
+/**
+ * @param int $length
+ * @return string
+ */
+function generate_random_unique_string(int $length = 6): string
+{
+    $randomString = generate_random_string($length);
+
+    $user_employee = UserEmployee::whereFlashCode($randomString)->first();
+
+    if (empty($user_employee)) {
+        return $randomString;
+    } else {
+        generate_random_unique_string($length);
+    }
+}
+
+function generate_random_string(int $length = 6): string
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+
+    return $randomString;
+}
+
+function att_register_user(string $mobile, string $name): ?User
+{
+    try {
+        $input['mobile'] = $mobile;
+        $input['name'] = $name;
+        $checkUserExist = User::whereEmail($input['mobile'])->first();
+        if (empty($checkUserExist)) {
+            $input['password'] = bcrypt('password');
+            $user = User::create($input);
+            if (!empty($user)) {
+                return $user;
+            }
+        }
+
+    } catch (Exception $exception) {
+        return null;
+    }
+    return null;
 }

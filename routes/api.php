@@ -35,7 +35,6 @@ Route::post('poleTime', [PoleController::class, 'getCurrentTime']);
  * */
 
 
-
 Route::post('demo1', [UserController::class, 'demo1']);
 Route::post('createUser', [UserController::class, 'createUser']);
 Route::post('createUser1', [UserController::class, 'createUser1']);
@@ -60,8 +59,7 @@ Route::post('att/login', [LiFiAttendanceController::class, 'login']);
  * Start Android LiFi Attendance API
  * */
 
-Route::post('attRegister', [UserController::class, 'att_register']);
-Route::post('attUserDetails', [UserController::class, 'att_user_details']);
+Route::post('att/checkUserRegistration', [UserController::class, 'att_check_user_registration']);
 
 /*
  * End Android LiFi Attendance API
@@ -81,6 +79,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //LiFi Attendance API
     Route::post('att/saveAtt', [LiFiAttendanceController::class, 'saveAttendance']);
+    Route::post('att/userDetails', [UserController::class, 'att_user_details']);
+    Route::post('att/attRegisterEmployee', [UserController::class, 'att_register_employee']);
+
 
 });
 //

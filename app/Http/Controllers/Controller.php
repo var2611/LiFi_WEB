@@ -87,12 +87,28 @@ class Controller extends BaseController
         $this->status = $this->statusArr['something_wrong'];
         $this->response['data'] = null;
         $this->response['message'] = $exception->getMessage();
+        $this->response['api_status_code'] = 403;
         $this->response['response_status'] = 1;
     }
 
     public function return_response(): JsonResponse
     {
         return response()->json($this->response, $this->status, []);
+    }
+
+    public function return_response_unauthorised(): JsonResponse
+    {
+        $this->set_return_response_unauthorised();
+        return $this->return_response();
+    }
+
+    public function set_return_response_unauthorised($message = "Unauthorized Access")
+    {
+        $this->status = $this->statusArr['unauthorised'];
+        $this->response['data'] = null;
+        $this->response['message'] = $message;
+        $this->response['api_status_code'] = 412;
+        $this->response['response_status'] = 1;
     }
 
     /**
@@ -169,16 +185,7 @@ class Controller extends BaseController
         $this->status = $this->statusArr['not_found'];
         $this->response['data'] = null;
         $this->response['message'] = "No data found.";
-        $this->response['api_status_code'] = 404;
-        $this->response['response_status'] = 1;
-    }
-
-    public function set_return_response_unauthorised($message)
-    {
-        $this->status = $this->statusArr['unauthorised'];
-        $this->response['data'] = null;
-        $this->response['message'] = $message;
-        $this->response['api_status_code'] = 412;
+        $this->response['api_status_code'] = 403;
         $this->response['response_status'] = 1;
     }
 

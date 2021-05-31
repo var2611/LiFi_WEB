@@ -20,6 +20,7 @@ class CreateUserEmployeesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('user_role_id')->constrained();
+            $table->foreignId('company_id')->constrained();
             $table->string('emp_code')->nullable(false);
             $table->string('flash_code')->nullable(false);
             $this->runColumns($table);

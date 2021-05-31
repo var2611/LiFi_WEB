@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Attendance;
+use App\Models\UserEmployee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
@@ -17,7 +19,11 @@ class AttendanceTableView extends TableView
      */
     public function repository(): Builder
     {
-        return Attendance::query()->with(['User.UserEmployee'])->orderByDesc('created_by');
+        $user = Auth::user();
+        $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
+        return Attendance::query()
+            ->with(['User.UserEmployee'])
+            ->orderByDesc('created_by');
     }
 
     /**

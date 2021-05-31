@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\UserEmployee;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
@@ -11,6 +12,7 @@ class UserEmployeeTableView extends TableView
 {
     public $searchBy = ['user.name', 'user.mobile', 'emp_code'];
     protected $paginate = 10;
+
     /**
      * Sets a initial query with the data to fill the table
      *
@@ -18,7 +20,10 @@ class UserEmployeeTableView extends TableView
      */
     public function repository(): Builder
     {
+        $user = Auth::user();
+        $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
         return UserEmployee::query()
+            ->whereCompanyId($company_id)
             ->with(['User', 'UserRole']);
     }
 

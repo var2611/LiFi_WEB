@@ -46,6 +46,8 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  * @property-read User $User
  * @property-read UserRole $UserRole
+ * @property int $company_id
+ * @method static Builder|UserEmployee whereCompanyId($value)
  */
 class UserEmployee extends Model
 {

@@ -1,7 +1,7 @@
 @if ($refresh ?? false)
     <?php
     $url1 = $_SERVER['REQUEST_URI'];
-//    header("Refresh: 5; URL=$url1");
+    header("Refresh: 10; URL=$url1");
     ?>
 @endif
 

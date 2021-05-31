@@ -4,10 +4,12 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserEmployee;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
 class UserController extends Controller
@@ -235,42 +237,112 @@ class UserController extends Controller
      * Register api
      *
      * @param Request $request
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
-    public function att_register(Request $request)
+    public function att_register_employee(Request $request): JsonResponse
     {
         $rules = [
             'name' => 'required',
             'mobile' => 'required',
-            'email' => 'required|email',
-//            'user_type_id' => 'required',
-            'firebase_token' => 'required',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
+//            'email' => 'required|email',
+//            'firebase_token' => 'required',
+            'emp_code' => 'required',
         ];
 
         if ($this->ApiValidator($request->all(), $rules)) {
 
             try {
+                Log::info(json_encode($request->all()));
+                $name = $request->name;
+                $emp_code = $request->emp_code;
+                $firebase_token = $request->firebase_token ?? '';
 
+                $user = Auth::user();
 
-                $input = $request->all();
-                $checkUserExist = User::whereEmail($input['email'])->first();
-                if (empty($checkUserExist)) {
-                    $input['password'] = bcrypt($input['password']);
-                    $user = User::create($input);
-                    $data['token'] = create_user_auth_token($user);
-                    $data['name'] = $user->name;
+                $checkUserEmployeeRegistration = UserEmployee::whereUserId($user->id)
+                    ->first();
 
-                    $this->set_return_response_success($data, "User has been registered successfully.");
+                if (empty($checkUserEmployeeRegistration)) {
+                    $user->name = $name;
+                    $user->firebase_token = $firebase_token;
+                    $user->save();
+
+                    $userEmployee = new UserEmployee();
+                    $userEmployee->user_id = $user->id;
+                    $userEmployee->user_role_id = 2;
+                    $userEmployee->company_id = 2;
+                    $userEmployee->emp_code = $emp_code;
+                    $userEmployee->flash_code = generate_random_unique_string();
+                    $userEmployee->created_by = $user->id;
+                    $userEmployee->updated_by = $user->id;
+                    $userEmployee->save();
+
+                    $data = UserEmployee::whereId($userEmployee->id)
+                        ->with(['User'])
+                        ->first();
+
+                    $this->set_return_response_success($data, "Employee has been registered successfully.");
                 } else {
-                    $this->set_return_response_unsuccessful("User with provided email already exists.");
+                    $this->set_return_response_unsuccessful("Employee with provided data already exists. Contact HR.");
                 }
-
             } catch (Exception $exception) {
                 $this->set_return_response_exception($exception);
             }
+        }
 
+        return $this->return_response();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function att_check_user_registration(Request $request): JsonResponse
+    {
+        $rules = [
+            'mobile' => 'required',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+            $mobile = $request->mobile;
+
+            $user = User::whereMobile($mobile)->first();
+            if (!empty($user)) {
+                $user_employee = UserEmployee::whereUserId($user->id)->first();
+                $data['token'] = create_user_auth_token($user);
+
+                if (!empty($user_employee)) {
+                    $application_code = $request->header('ApplicationCode') ?? '';
+
+                    if ($application_code == 'BGAUSS') {
+                        $allowed_roles = array(1, 2, 3);
+                        if (in_array($user_employee->user_role_id, $allowed_roles)) {
+
+                            $data['is_valid_user'] = true;
+                            $data['is_valid_employee'] = true;
+                            $this->set_return_response_success($data, "User Employee Validation Successful");
+                        } else {
+                            $this->set_return_response_unauthorised("User is not authorized.");
+                        }
+                    } else {
+                        $this->set_return_response_unauthorised();
+                    }
+                } else {
+                    $data['is_valid_user'] = true;
+                    $data['is_valid_employee'] = false;
+                    $this->set_return_response_success($data, "User Validation Success, need to register.");
+                }
+            } else {
+                $user = att_register_user($mobile, "New User");
+                if (!empty($user)) {
+                    $data['token'] = create_user_auth_token($user);
+                    $data['is_valid_user'] = true;
+                    $data['is_valid_employee'] = false;
+                    $this->set_return_response_success($data, "User Validation Success, need to register.");
+                } else {
+                    $this->set_return_response_unauthorised();
+                }
+            }
         }
 
         return $this->return_response();
@@ -292,8 +364,9 @@ class UserController extends Controller
             try {
                 $mobile = $request->mobile;
 
-                $data = User::whereMobile($mobile)
-                    ->first(['id', 'name', 'mobile', 'email']);
+                $data = UserEmployee::whereUserId(User::whereMobile($mobile)->first()->id)
+                    ->with(['User'])
+                    ->first();
                 if (!empty($data)) {
                     $this->set_return_response_success($data, "User Details.");
                 } else {
