@@ -25,7 +25,7 @@ class UserController extends Controller
 //        echo "Demo Working";
 //        $data['test'] = 'Demo';
 //
-        $data['test'] = $this->send("918460113626","test");
+        $data['test'] = $this->send("918460113626", "test");
         $this->set_return_response_success($data, "User Logged In Successfully.");
 //        $this->set_return_response_unauthorised("Username or Password is incorrect.");
 
@@ -33,6 +33,46 @@ class UserController extends Controller
 //        test();
         return $this->return_response();
 
+    }
+
+    function send($mobile, $message)
+    {
+        # code...
+        print_r($mobile);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{ \"sender\": \"NVTECH\", \"route\": \"4\", \"country\": \"91\", \"sms\":
+    [ { \"message\": \"$message\", \"to\": [ \"$mobile\"] }]}",
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_HTTPHEADER => array(
+                "authkey: 322008AkMnr19Q75e63638eP1",
+                "content-type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        print_r($response);
+        print_r($err);
+
+        curl_close($curl);
+
+//if ($err) {
+// print_r( $err);
+//} else {
+//showResultFailed();
+//}
     }
 
     public function demo1()
@@ -49,8 +89,11 @@ class UserController extends Controller
 
     }
 
-
-    public function createUser(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function createUser(Request $request): JsonResponse
     {
 
         $rules = [
@@ -63,12 +106,11 @@ class UserController extends Controller
 
             $email = $request->email;
 
-            $user = User::where('email',$email)->first();
+            $user = User::where('email', $email)->first();
 
             if ($user) {
                 $this->set_return_response_unsuccessful("Duplicate email, please use another email");
-            }
-            else {
+            } else {
                 $data = $this->getUserData($request);
 
                 $result = $data->save();
@@ -79,6 +121,22 @@ class UserController extends Controller
         }
         return $this->return_response();
 
+    }
+
+    /**
+     * @param Request $request
+     * @return User
+     */
+    private function getUserData(Request $request): User
+    {
+        $data = new User();
+
+        $data->name = $request->name;
+        $data->mobile = $request->mobile;
+        $data->email = $request->email;
+        $data->password = "password";
+
+        return $data;
     }
 
     /**
@@ -153,9 +211,9 @@ class UserController extends Controller
     /**
      * details api
      *
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
-    public function user_details()
+    public function user_details(): JsonResponse
     {
         try {
             $user = Auth::user();
@@ -168,6 +226,82 @@ class UserController extends Controller
             }
         } catch (Exception $exception) {
             $this->set_return_response_exception($exception);
+        }
+
+        return $this->return_response();
+    }
+
+    /**
+     * Register api
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function att_register(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'mobile' => 'required',
+            'email' => 'required|email',
+//            'user_type_id' => 'required',
+            'firebase_token' => 'required',
+            'password' => 'required',
+            'c_password' => 'required|same:password',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+
+            try {
+
+
+                $input = $request->all();
+                $checkUserExist = User::whereEmail($input['email'])->first();
+                if (empty($checkUserExist)) {
+                    $input['password'] = bcrypt($input['password']);
+                    $user = User::create($input);
+                    $data['token'] = create_user_auth_token($user);
+                    $data['name'] = $user->name;
+
+                    $this->set_return_response_success($data, "User has been registered successfully.");
+                } else {
+                    $this->set_return_response_unsuccessful("User with provided email already exists.");
+                }
+
+            } catch (Exception $exception) {
+                $this->set_return_response_exception($exception);
+            }
+
+        }
+
+        return $this->return_response();
+    }
+
+    /**
+     * details api
+     *
+     * @return JsonResponse
+     */
+    public function att_user_details(Request $request): JsonResponse
+    {
+        $rules = [
+            'mobile' => 'required',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+
+            try {
+                $mobile = $request->mobile;
+
+                $data = User::whereMobile($mobile)
+                    ->first(['id', 'name', 'mobile', 'email']);
+                if (!empty($data)) {
+                    $this->set_return_response_success($data, "User Details.");
+                } else {
+                    $this->set_return_response_no_data_found();
+                }
+            } catch (Exception $exception) {
+                $this->set_return_response_exception($exception);
+            }
         }
 
         return $this->return_response();
@@ -214,61 +348,5 @@ class UserController extends Controller
     function test()
     {
 //    print_r("test");
-    }
-
-    function send($mobile,$message)
-    {
-        # code...
-        print_r($mobile);
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "{ \"sender\": \"NVTECH\", \"route\": \"4\", \"country\": \"91\", \"sms\":
-    [ { \"message\": \"$message\", \"to\": [ \"$mobile\"] }]}",
-            CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => 0,
-            CURLOPT_HTTPHEADER => array(
-                "authkey: 322008AkMnr19Q75e63638eP1",
-                "content-type: application/json"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        print_r($response);
-        print_r($err);
-
-        curl_close($curl);
-
-//if ($err) {
-// print_r( $err);
-//} else {
-//showResultFailed();
-//}
-    }
-
-    /**
-     * @param Request $request
-     * @return User
-     */
-    private function getUserData(Request $request): User
-    {
-        $data = new User();
-
-        $data->name = $request->name;
-        $data->mobile = $request->mobile;
-        $data->email = $request->email;
-        $data->password = "password";
-
-        return $data;
     }
 }

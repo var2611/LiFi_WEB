@@ -34,6 +34,18 @@ Route::post('poleTime', [PoleController::class, 'getCurrentTime']);
  * LiFi Led Test API End
  * */
 
+
+
+Route::post('demo1', [UserController::class, 'demo1']);
+Route::post('createUser', [UserController::class, 'createUser']);
+Route::post('createUser1', [UserController::class, 'createUser1']);
+Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
+Route::get('new_mail', [TestController::class, 'new_mail']);
+Route::get('demoV', [TestController::class, 'demoV']);
+
+Route::post('login', [UserController::class, 'login']);
+Route::post('register', [UserController::class, 'register']);
+
 /*
  * Start LiFi LiFi Attendance API
  * */
@@ -44,15 +56,16 @@ Route::post('att/login', [LiFiAttendanceController::class, 'login']);
  * End LiFi LiFi Attendance API
  * */
 
-Route::post('demo1', [UserController::class, 'demo1']);
-Route::post('createUser', [UserController::class, 'createUser']);
-Route::post('createUser1', [UserController::class, 'createUser1']);
-Route::post('login', [UserController::class, 'login']);
-Route::post('register', [UserController::class, 'register']);
-Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
-Route::get('new_mail', [TestController::class, 'new_mail']);
-Route::get('demoV', [TestController::class, 'demoV']);
+/*
+ * Start Android LiFi Attendance API
+ * */
 
+Route::post('attRegister', [UserController::class, 'att_register']);
+Route::post('attUserDetails', [UserController::class, 'att_user_details']);
+
+/*
+ * End Android LiFi Attendance API
+ * */
 
 //Route::post('demo1', 'UserController@demo1');
 
