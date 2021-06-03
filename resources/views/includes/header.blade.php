@@ -52,6 +52,15 @@
                                 </form>
                             </div>
                         </li>
+                        <li class="hide-desktop nav-item list-group-item">
+                            <a href="{{route('hr_dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="hide-desktop nav-item list-group-item">
+                            <a href="{{ route('UsersAtt') }}">Attendance</a>
+                        </li>
+                        <li class="hide-desktop nav-item list-group-item">
+                            <a href="{{ route('UsersList') }}">Users</a>
+                        </li>
                     @endguest
                 </ul>
             </div>
