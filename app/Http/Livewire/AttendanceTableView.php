@@ -7,6 +7,7 @@ use App\Models\UserEmployee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
@@ -25,7 +26,7 @@ class AttendanceTableView extends TableView
 //        if ($company_id != 1) {
             $data = $data->whereCompanyId($company_id);
 //        }
-        return $data->orderByDesc('attendance_id');
+        return $data->orderByDesc('id');
     }
 
     /**
@@ -36,7 +37,7 @@ class AttendanceTableView extends TableView
     public function headers(): array
     {
         return [
-            Header::title('ID')->sortBy('attendance_id'),
+            Header::title('ID')->sortBy('id'),
             Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
             Header::title('Date'),
@@ -64,7 +65,7 @@ class AttendanceTableView extends TableView
         }
 
         return [
-            $model->attendance_id,
+            $model->id,
             $model->emp_code,
             $model->user_name,
             $model->date,
@@ -73,6 +74,15 @@ class AttendanceTableView extends TableView
             $hours_worked . ' H',
             $model->status,
             $model->created_at
+        ];
+    }
+
+    protected function actionsByRow()
+    {
+        return [
+            // Will redirect to route('user', $user->id)
+//            new AttendanceDetailView(),
+            new RedirectAction('mainDetail', 'See Attendance Detail', 'eye'),
         ];
     }
 }

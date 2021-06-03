@@ -23,7 +23,6 @@ Auth::routes();
 Route::view('/dashboard', '/dashboard')->name('dashboard');
 
 
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -31,7 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::view('/hr_dashboard', '/hr_dashboard')->name('hr_dashboard');
     Route::view('/hr_welcome', '/hr_welcome')->name('hr_welcome');
     Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('UsersList');
-
     Route::get('/user_attendance', [AttendanceController::class, 'index'])->name('UsersAtt');
+//    Route::get('/mainDetail/{$id}', [AttendanceController::class, 'att_view'])->name('mainDetail');
+    Route::view('/main-detail/{$id}', '/main_detail')->name('main-detail');
 
 });

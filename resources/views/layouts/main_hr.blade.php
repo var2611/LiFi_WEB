@@ -33,7 +33,7 @@
         <div class="row" id="body-row">
             @yield('sidemenu')
             <div class="main_hr_container">
-                <h1><strong>{{ $title }}</strong></h1>
+                <h1><strong>{{ $title ?? "" }}</strong></h1>
                 @yield('container')
             </div>
         </div>

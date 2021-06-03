@@ -61,6 +61,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|AttendanceData whereUserId($value)
  * @method static Builder|AttendanceData whereUserName($value)
  * @mixin \Eloquent
+ * @property int $id
+ * @method static Builder|AttendanceData whereId($value)
  */
 class AttendanceData extends Model
 {

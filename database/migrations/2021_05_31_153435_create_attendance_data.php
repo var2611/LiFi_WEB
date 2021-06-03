@@ -13,7 +13,7 @@ class CreateAttendanceData extends Migration
     {
         DB::statement("CREATE VIEW attendance_data
                 AS
-                SELECT at.id as attendance_id,
+                SELECT at.id as id,
                        u.id as user_id,
                        u.name as user_name,
                        u.mobile,

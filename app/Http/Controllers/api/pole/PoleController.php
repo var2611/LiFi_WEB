@@ -18,9 +18,9 @@ class PoleController extends Controller
 
     public function __construct(Request $request)
     {
-        if (!$request->hasHeader('device')) {
-            $this->return_response_pole($this->pole_fail_data_value, "Missing Data.");
-        }
+//        if (!$request->hasHeader('device')) {
+//            $this->return_response_pole($this->pole_fail_data_value, "Missing Data.");
+//        }
     }
 
     public function getCurrentTime()

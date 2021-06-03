@@ -6,6 +6,7 @@ namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\AttendanceTableView;
+use App\Models\AttendanceData;
 use LaravelViews\LaravelViews;
 
 class AttendanceController extends Controller
@@ -38,6 +39,13 @@ class AttendanceController extends Controller
 //        ]);
 
         return $laravelViews->render();
+    }
+
+    public function att_view(string $id)
+    {
+        $result = AttendanceData::whereId($id)->first();
+//        $la = new AttendanceDetailView($id);
+        return view('main-detail', ['id' => $id]);
     }
 
 }
