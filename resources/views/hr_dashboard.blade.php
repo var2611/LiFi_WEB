@@ -18,6 +18,13 @@
                 <h1>User</h1>
             </div>
         </a>
+        <a href="{{ route('UsersList') }}">
+            <div class="card-hr">
+                <i class="fas fa-envelope fa-2x"></i>
+                <h1>Leave</h1>
+            </div>
+        </a>
+
 
     </div>
 

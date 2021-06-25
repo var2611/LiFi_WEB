@@ -41,7 +41,14 @@
                             {{--                            <span class="submenu-icon ml-auto"></span>--}}
                         </div>
                     </a>
-                    <!-- Submenu content -->
+{{--                    <a href="{{ route('UsersList') }}" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">--}}
+{{--                        <div class="d-flex w-100 justify-content-start align-items-center">--}}
+{{--                            <span class="fa fa-user fa-fw mr-3"></span>--}}
+{{--                            <span class="menu-collapsed">Leave</span>--}}
+{{--                            <span class="submenu-icon ml-auto"></span>--}}
+{{--                        </div>--}}
+{{--                    </a>--}}
+{{--                    <!-- Submenu content -->--}}
 {{--                    <div id='submenu1' class="collapse sidebar-submenu">--}}
 {{--                        <a href="{{ route('UsersAtt') }}" class="list-group-item list-group-item-action bg-dark text-white">--}}
 {{--                            <span>Attendance</span>--}}
@@ -53,22 +60,22 @@
 {{--                            <span class="menu-collapsed">Tables</span>--}}
 {{--                        </a>--}}
 {{--                    </div>--}}
-{{--                    <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">--}}
-{{--                        <div class="d-flex w-100 justify-content-start align-items-center">--}}
-{{--                            <span class="fa fa-user fa-fw mr-3"></span>--}}
-{{--                            <span class="menu-collapsed">Profile</span>--}}
-{{--                            <span class="submenu-icon ml-auto"></span>--}}
-{{--                        </div>--}}
-{{--                    </a>--}}
-{{--                    <!-- Submenu content -->--}}
-{{--                    <div id='submenu2' class="collapse sidebar-submenu">--}}
-{{--                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">--}}
-{{--                            <span class="menu-collapsed">Settings</span>--}}
-{{--                        </a>--}}
-{{--                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">--}}
-{{--                            <span class="menu-collapsed">Password</span>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
+                    <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fa fa-envelope fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Leave</span>
+                            <span class="submenu-icon ml-auto"></span>
+                        </div>
+                    </a>
+                    <!-- Submenu content -->
+                    <div id='submenu2' class="collapse sidebar-submenu">
+                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                            <span class="menu-collapsed">Apply leave</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                            <span class="menu-collapsed">My leave list</span>
+                        </a>
+                    </div>
 {{--                    <a href="#" class="bg-dark list-group-item list-group-item-action">--}}
 {{--                        <div class="d-flex w-100 justify-content-start align-items-center">--}}
 {{--                            <span class="fa fa-tasks fa-fw mr-3"></span>--}}
