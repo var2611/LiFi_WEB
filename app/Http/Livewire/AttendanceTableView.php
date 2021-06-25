@@ -2,6 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Filters\ActiveFilter;
+use App\Filters\AttendanceDate;
+use App\Filters\CreatedFilter;
 use App\Models\AttendanceData;
 use App\Models\UserEmployee;
 use Carbon\Carbon;
@@ -13,6 +16,9 @@ use LaravelViews\Views\TableView;
 
 class AttendanceTableView extends TableView
 {
+    public $searchBy = ['name', 'emp_code'];
+    protected $paginate = 20;
+
     /**
      * Sets a initial query with the data to fill the table
      *
@@ -82,7 +88,14 @@ class AttendanceTableView extends TableView
         return [
             // Will redirect to route('user', $user->id)
 //            new AttendanceDetailView(),
-            new RedirectAction('mainDetail', 'See Attendance Detail', 'eye'),
+            new RedirectAction('att_view', 'See Attendance Detail', 'eye'),
+        ];
+    }
+
+    protected function filters()
+    {
+        return [
+            new AttendanceDate,
         ];
     }
 }

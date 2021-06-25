@@ -11,7 +11,7 @@ use LaravelViews\Views\TableView;
 class UsersTableView extends TableView
 {
     public $searchBy = ['name', 'email'];
-    protected $paginate = 10;
+    protected $paginate = 20;
     /**
      * Sets a initial query with the data to fill the table
      *

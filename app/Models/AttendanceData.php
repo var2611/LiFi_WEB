@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -60,9 +61,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|AttendanceData whereUserFlashCode($value)
  * @method static Builder|AttendanceData whereUserId($value)
  * @method static Builder|AttendanceData whereUserName($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property int $id
  * @method static Builder|AttendanceData whereId($value)
+ * @property Carbon|null $user_registered_at
+ * @method static Builder|AttendanceData whereUserRegisteredAt($value)
  */
 class AttendanceData extends Model
 {

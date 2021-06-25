@@ -35,7 +35,8 @@ class CreateAttendanceData extends Migration
                        uc.name as att_created_by,
                        at.updated_at,
                        at.updated_by,
-                       uu.name as att_updated_by
+                       uu.name as att_updated_by,
+                       u.created_at as user_registered_at
                 FROM attendances as at
                          LEFT JOIN users as u ON at.user_id = u.id
                          LEFT JOIN users as uc ON at.created_by = uc.id

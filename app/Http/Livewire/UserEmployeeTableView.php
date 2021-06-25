@@ -44,6 +44,7 @@ class UserEmployeeTableView extends TableView
             Header::title('Name'),
             Header::title('Mobile'),
             Header::title('Employee Code')->sortBy('emp_code'),
+            Header::title('Flash Code')->sortBy('flash_code'),
             Header::title('created at')->sortBy('created_at')
         ];
     }
@@ -59,6 +60,7 @@ class UserEmployeeTableView extends TableView
             $model->user->name,
             $model->user->mobile,
             $model->emp_code,
+            $model->flash_code,
             $model->created_at->diffForHumans()
         ];
     }

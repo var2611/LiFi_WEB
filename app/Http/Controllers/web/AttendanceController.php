@@ -26,7 +26,7 @@ class AttendanceController extends Controller
      *
      * @return string
      */
-    public function index(LaravelViews $laravelViews)
+    public function index(LaravelViews $laravelViews): string
     {
         $laravelViews->create(AttendanceTableView::class)
             ->layout('main-list', 'container', [
@@ -41,11 +41,13 @@ class AttendanceController extends Controller
         return $laravelViews->render();
     }
 
-    public function att_view(string $id)
+    public function att_view(string $id): string
     {
-        $result = AttendanceData::whereId($id)->first();
+        $result = AttendanceData::whereId($id)
+
+            ->first();
 //        $la = new AttendanceDetailView($id);
-        return view('main-detail', ['id' => $id]);
+        return view('main_detail', ['id' => $result])->render();
     }
 
 }
