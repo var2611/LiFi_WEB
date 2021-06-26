@@ -44,10 +44,9 @@ class AttendanceController extends Controller
     public function att_view(string $id): string
     {
         $result = AttendanceData::whereId($id)
-
             ->first();
 //        $la = new AttendanceDetailView($id);
-        return view('main_detail', ['id' => $result])->render();
+        return view('main_detail', ['model' => $result])->render();
     }
 
 }

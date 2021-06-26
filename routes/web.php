@@ -35,5 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
 
     Route::get('/leave', [LeaveController::class, 'doApply']);
+    Route::get('/leave-type', [LeaveController::class, 'showLeaveType'])->name('leave-type');
 
+    Route::get('/leave-apply', [LeaveController::class, 'create'])->name('leave-apply');
+    Route::post('/leave-store', [LeaveController::class, 'store'])->name('leave-store');
 });

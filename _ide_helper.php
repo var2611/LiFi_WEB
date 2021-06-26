@@ -14590,270 +14590,7 @@
      
 }
 
-        namespace LaravelViews\Facades { 
-            /**
-     * 
-     *
-     */ 
-        class LaravelViews {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function components()
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->components();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function create($view)
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->create($view);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function layout($layout, $section = null, $data = [])
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->layout($layout, $section, $data);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function section($section)
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->section($section);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function data($data)
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->data($data);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function css($options = '')
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->css($options);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function js($options = '')
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->js($options);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function render()
-        {
-                        /** @var \LaravelViews\LaravelViews $instance */
-                        return $instance->render();
-        }
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Variants {
-                    /**
-         * Uses the button component
-         *
-         * @param String $variant component variant
-         * @static 
-         */ 
-        public static function button($variant = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->button($variant);
-        }
-                    /**
-         * Uses the alert component
-         *
-         * @param String $variant component variant
-         * @static 
-         */ 
-        public static function alert($variant = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->alert($variant);
-        }
-                    /**
-         * Uses the paginator component
-         *
-         * @param String $variant component variant
-         * @static 
-         */ 
-        public static function paginator($variant = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->paginator($variant);
-        }
-                    /**
-         * Uses the badge component
-         *
-         * @param String $variant component variant
-         * @static 
-         */ 
-        public static function badge($variant = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->badge($variant);
-        }
-                    /**
-         * Uses the img component
-         *
-         * @param String $variant component variant
-         * @static 
-         */ 
-        public static function img($variant = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->img($variant);
-        }
-                    /**
-         * Uses the icon component
-         *
-         * @param String $variant component variant
-         * @static 
-         */ 
-        public static function featherIcon($variant = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->featherIcon($variant);
-        }
-                    /**
-         * Get the class string for the component and variant selected
-         *
-         * @param String $element Set the internal element of the component if there are any
-         * @static 
-         */ 
-        public static function class($element = '')
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->class($element);
-        }
-                    /**
-         * Get the title of the variant and componente selected
-         *
-         * @static 
-         */ 
-        public static function title()
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->title();
-        }
-                    /**
-         * Get the icon of the variant and componente selected
-         *
-         * @static 
-         */ 
-        public static function icon()
-        {
-                        /** @var \LaravelViews\UI\Variants $instance */
-                        return $instance->icon();
-        }
-         
-    }
-            /**
-     * 
-     *
-     * @see \LaravelViews\UI\UI
-     */ 
-        class UI {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function badge($title, $type = 'default')
-        {
-                        /** @var \LaravelViews\UI\UI $instance */
-                        return $instance->badge($title, $type);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function avatar($src)
-        {
-                        /** @var \LaravelViews\UI\UI $instance */
-                        return $instance->avatar($src);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function link($title, $to)
-        {
-                        /** @var \LaravelViews\UI\UI $instance */
-                        return $instance->link($title, $to);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function icon($icon, $type = 'default', $class = '')
-        {
-                        /** @var \LaravelViews\UI\UI $instance */
-                        return $instance->icon($icon, $type, $class);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function attributes($attributes, $options = [])
-        {
-                        /** @var \LaravelViews\UI\UI $instance */
-                        return $instance->attributes($attributes, $options);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function component($view, $data)
-        {
-                        /** @var \LaravelViews\UI\UI $instance */
-                        return $instance->component($view, $data);
-        }
-         
-    }
-     
-}
-
-    namespace Collective\Html { 
+        namespace Collective\Html { 
             /**
      * 
      *
@@ -15557,6 +15294,19 @@
                         /** @var \Collective\Html\FormBuilder $instance */
                         return $instance->componentCall($method, $parameters);
         }
+                    /**
+         * 
+         *
+         * @see \Kris\LaravelFormBuilder\FormBuilderServiceProvider::boot()
+         * @param mixed $name
+         * @param mixed $value
+         * @param mixed $options
+         * @static 
+         */ 
+        public static function customLabel($name, $value, $options = [])
+        {
+                        return \Collective\Html\FormBuilder::customLabel($name, $value, $options);
+        }
          
     }
             /**
@@ -15959,6 +15709,402 @@
         {
                         /** @var \Collective\Html\HtmlBuilder $instance */
                         return $instance->componentCall($method, $parameters);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class FormBuilder {
+                    /**
+         * 
+         *
+         * @see \Kris\LaravelFormBuilder\FormBuilderServiceProvider::boot()
+         * @param mixed $name
+         * @param mixed $value
+         * @param mixed $options
+         * @static 
+         */ 
+        public static function customLabel($name, $value, $options = [])
+        {
+                        return \Collective\Html\FormBuilder::customLabel($name, $value, $options);
+        }
+         
+    }
+     
+}
+
+    namespace Kris\LaravelFormBuilder\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class FormBuilder {
+                    /**
+         * Fire an event.
+         *
+         * @param object $event
+         * @return array|null 
+         * @static 
+         */ 
+        public static function fireEvent($event)
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->fireEvent($event);
+        }
+                    /**
+         * Create a Form instance.
+         *
+         * @param string $formClass The name of the class that inherits \Kris\LaravelFormBuilder\Form.
+         * @param array $options|null
+         * @param array $data|null
+         * @return \Form 
+         * @static 
+         */ 
+        public static function create($formClass, $options = [], $data = [])
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->create($formClass, $options, $data);
+        }
+                    /**
+         * 
+         *
+         * @param $items
+         * @param array $options
+         * @param array $data
+         * @return mixed 
+         * @static 
+         */ 
+        public static function createByArray($items, $options = [], $data = [])
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->createByArray($items, $options, $data);
+        }
+                    /**
+         * 
+         *
+         * @param $form
+         * @param $items
+         * @static 
+         */ 
+        public static function buildFormByArray($form, $items)
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->buildFormByArray($form, $items);
+        }
+                    /**
+         * Get instance of the empty form which can be modified
+         * Get the plain form class.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getFormClass()
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->getFormClass();
+        }
+                    /**
+         * Set the plain form class.
+         *
+         * @param string $class
+         * @static 
+         */ 
+        public static function setFormClass($class)
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->setFormClass($class);
+        }
+                    /**
+         * Get instance of the empty form which can be modified.
+         *
+         * @param array $options
+         * @param array $data
+         * @return \Kris\LaravelFormBuilder\Form 
+         * @static 
+         */ 
+        public static function plain($options = [], $data = [])
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->plain($options, $data);
+        }
+                    /**
+         * Set depedencies and options on existing form instance
+         *
+         * @param \Kris\LaravelFormBuilder\Form $instance
+         * @param array $options
+         * @param array $data
+         * @return \Kris\LaravelFormBuilder\Form 
+         * @static 
+         */ 
+        public static function setDependenciesAndOptions($instance, $options = [], $data = [])
+        {
+                        /** @var \Kris\LaravelFormBuilder\FormBuilder $instance */
+                        return $instance->setDependenciesAndOptions($instance, $options, $data);
+        }
+         
+    }
+     
+}
+
+    namespace LaravelViews\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class LaravelViews {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function components()
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->components();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function create($view)
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->create($view);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function layout($layout, $section = null, $data = [])
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->layout($layout, $section, $data);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function section($section)
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->section($section);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function data($data)
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->data($data);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function css($options = '')
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->css($options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function js($options = '')
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->js($options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function render()
+        {
+                        /** @var \LaravelViews\LaravelViews $instance */
+                        return $instance->render();
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class Variants {
+                    /**
+         * Uses the button component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function button($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->button($variant);
+        }
+                    /**
+         * Uses the alert component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function alert($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->alert($variant);
+        }
+                    /**
+         * Uses the paginator component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function paginator($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->paginator($variant);
+        }
+                    /**
+         * Uses the badge component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function badge($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->badge($variant);
+        }
+                    /**
+         * Uses the img component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function img($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->img($variant);
+        }
+                    /**
+         * Uses the icon component
+         *
+         * @param String $variant component variant
+         * @static 
+         */ 
+        public static function featherIcon($variant = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->featherIcon($variant);
+        }
+                    /**
+         * Get the class string for the component and variant selected
+         *
+         * @param String $element Set the internal element of the component if there are any
+         * @static 
+         */ 
+        public static function class($element = '')
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->class($element);
+        }
+                    /**
+         * Get the title of the variant and componente selected
+         *
+         * @static 
+         */ 
+        public static function title()
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->title();
+        }
+                    /**
+         * Get the icon of the variant and componente selected
+         *
+         * @static 
+         */ 
+        public static function icon()
+        {
+                        /** @var \LaravelViews\UI\Variants $instance */
+                        return $instance->icon();
+        }
+         
+    }
+            /**
+     * 
+     *
+     * @see \LaravelViews\UI\UI
+     */ 
+        class UI {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function badge($title, $type = 'default')
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->badge($title, $type);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function avatar($src)
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->avatar($src);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function link($title, $to)
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->link($title, $to);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function icon($icon, $type = 'default', $class = '')
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->icon($icon, $type, $class);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function attributes($attributes, $options = [])
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->attributes($attributes, $options);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function component($view, $data)
+        {
+                        /** @var \LaravelViews\UI\UI $instance */
+                        return $instance->component($view, $data);
         }
          
     }
@@ -19608,11 +19754,12 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
+            class Form extends \Collective\Html\FormFacade {}
+            class Html extends \Collective\Html\HtmlFacade {}
+            class FormBuilder extends \Kris\LaravelFormBuilder\Facades\FormBuilder {}
             class LaravelViews extends \LaravelViews\Facades\LaravelViews {}
             class Variants extends \LaravelViews\Facades\Variants {}
             class UI extends \LaravelViews\Facades\UI {}
-            class Form extends \Collective\Html\FormFacade {}
-            class Html extends \Collective\Html\HtmlFacade {}
             class Livewire extends \Livewire\Livewire {}
      
 }

@@ -3,8 +3,8 @@
 @extends('includes.sidemenu')
 
 @section('container')
-    {!! $view->render() !!}
-
+{{--    {!! $view->render() !!}--}}
+    {!! form($form) !!}
     {{--
     <livewire:user-employee-table-view />
      @livewire('user-employee-table-view')

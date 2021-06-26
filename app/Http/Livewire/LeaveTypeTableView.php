@@ -2,17 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Filters\UsersActiveFilter;
-use App\Models\User;
+use App\Models\LeaveType;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class UsersTableView extends TableView
+class LeaveTypeTableView extends TableView
 {
-    public $searchBy = ['name', 'email'];
-    protected $paginate = 20;
-
     /**
      * Sets a initial query with the data to fill the table
      *
@@ -20,7 +16,7 @@ class UsersTableView extends TableView
      */
     public function repository(): Builder
     {
-        return User::query();
+        return LeaveType::query();
     }
 
     /**
@@ -31,9 +27,9 @@ class UsersTableView extends TableView
     public function headers(): array
     {
         return [
+            Header::title('No')->sortBy('id'),
             Header::title('Name')->sortBy('name'),
-            Header::title('Email'),
-            Header::title('Mobile')->sortBy('mobile'),
+            Header::title('description'),
             Header::title('created at')->sortBy('created_at')
         ];
     }
@@ -41,17 +37,15 @@ class UsersTableView extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model User model for each row
+     * @param $model LeaveType model for each row
      */
     public function row($model): array
     {
-        return [$model->name, $model->email, $model->mobile, $model->created_at->diffForHumans()];
-    }
-
-    protected function filters()
-    {
         return [
-            new UsersActiveFilter,
+            $model->id,
+            $model->name,
+            $model->description,
+            $model->created_at,
         ];
     }
 }

@@ -38,6 +38,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|LeaveType whereUpdatedAt($value)
  * @method static Builder|LeaveType whereUpdatedBy($value)
  * @mixin Eloquent
+ * @property string $name
+ * @method static Builder|LeaveType whereName($value)
  */
 class LeaveType extends Model
 {
