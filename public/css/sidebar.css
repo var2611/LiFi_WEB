@@ -11,7 +11,7 @@ body {
 
 .main_hr_container{
     width: 100%;
-    padding: 20px;
+    /*padding: 20px;*/
 }
 
 .sidenav {
@@ -38,6 +38,11 @@ body {
 
 .list-group {
     border-radius: 0;
+}
+
+.w-full-screen {
+    height: 89.6vh;
+    display: flex;
 }
 
 /* Menu item*/
@@ -139,11 +144,22 @@ body {
     text-decoration: none;
 }
 
+.justify-center img {
+    width: auto;
+    align-content: center;
+}
+
 .w-screen-text {
     width: 100%;
+    text-decoration: none;
     height: 100%;
+    color: white;
     text-align: center;
-    padding-top: 18%;
+    padding-top: 30%;
+}
+
+.text-decoration-none li a {
+    text-decoration: none;
 }
 
 .w-screen-text h1 {
@@ -169,6 +185,9 @@ body {
     display: none;
 }
 
+.pd-0 {
+    padding: 0;
+}
 
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}

@@ -31,11 +31,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::view('/dashboard', '/hrms.dashboard')->name('hr_dashboard');
     Route::view('/welcome', '/hrms.welcome')->name('hr_welcome');
+//    Route::view('/leave', '/hrms.leave.apply_leave')->name('leave');
+//    Route::view('/leave', '/hrms.leave.show_my_leave')->name('leave');
+
+
     Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('UsersList');
     Route::get('/user_attendance', [AttendanceController::class, 'index'])->name('UsersAtt');
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
 
-    Route::get('/leave', [LeaveController::class, 'doApply']);
+    Route::get('/leave', [LeaveController::class, 'doApply'])->name('leave');
     Route::get('/leave-list-type', [LeaveController::class, 'typeLeaveListView'])->name('leave-list-type');
     Route::get('/leave-list-my', [LeaveController::class, 'myLeaveListView'])->name('leave-list-my');
     Route::get('/leave-list-emp', [LeaveController::class, 'empLeaveListView'])->name('leave-list-emp');
