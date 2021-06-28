@@ -72,13 +72,13 @@
                         <a href="{{ route('leave-apply') }}" class="list-group-item list-group-item-action bg-dark text-white">
                             <span class="menu-collapsed">Apply leave</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                        <a href="{{ route('leave-list-my') }}" class="list-group-item list-group-item-action bg-dark text-white">
                             <span class="menu-collapsed">My leave list</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                        <a href="{{ route('leave-list-emp') }}" class="list-group-item list-group-item-action bg-dark text-white">
                             <span class="menu-collapsed">Employee Leave List</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                        <a href="{{ route('leave-list-type') }}" class="list-group-item list-group-item-action bg-dark text-white">
                             <span class="menu-collapsed">Leave Type List</span>
                         </a>
                     </div>

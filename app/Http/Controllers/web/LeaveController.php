@@ -7,6 +7,7 @@ namespace App\Http\Controllers\web;
 use App\Forms\ApplyLeaveForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\LeaveTypeTableView;
+use App\Http\Livewire\MyLeaveListView;
 use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -51,10 +52,42 @@ class LeaveController extends Controller
     {
         $form = $formBuilder->create(ApplyLeaveForm::class);
 
-        if (!$form->isValid()) {
-            return redirect()->back()->withErrors($form->getErrors())->withInput();
-        }
+        $form->redirectIfNotValid();
+
 
         // Do saving and other things...
+    }
+
+    public function myLeaveListView(LaravelViews $laravelViews): string
+    {
+        $laravelViews->create(MyLeaveListView::class)
+            ->layout('main-list', 'container', [
+                'title' => 'My Leave List',
+                'leave' => true,
+            ]);
+
+        return $laravelViews->render();
+    }
+
+    public function empLeaveListView(LaravelViews $laravelViews): string
+    {
+        $laravelViews->create(MyLeaveListView::class)
+            ->layout('main-list', 'container', [
+                'title' => 'Employee Leave List',
+                'leave' => true,
+            ]);
+
+        return $laravelViews->render();
+    }
+
+    public function typeLeaveListView(LaravelViews $laravelViews): string
+    {
+        $laravelViews->create(LeaveTypeTableView::class)
+            ->layout('main-list', 'container', [
+                'title' => 'Leave Type List',
+                'leave' => true,
+            ]);
+
+        return $laravelViews->render();
     }
 }

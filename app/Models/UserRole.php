@@ -51,4 +51,6 @@ class UserRole extends Model
         'is_active',
         'is_visible',
     ];
+
+
 }

@@ -19,7 +19,9 @@ class MyLeaveListView extends TableView
      */
     public function repository(): Builder
     {
-        $data = EmployeeLeaves::whereUserId(Auth::user()->id)->query()->with(['user', 'leaveType']);
+        $data = EmployeeLeaves::query();
+
+        $data = $data->whereUserId(Auth::user()->id)->with(['user', 'leaveType']);
 
         return $data;
     }

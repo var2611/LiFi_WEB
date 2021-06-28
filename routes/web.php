@@ -4,6 +4,7 @@ use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\LeaveController;
 use App\Http\Controllers\web\UserEmployeeController;
+use App\Http\Controllers\web\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,8 +36,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
 
     Route::get('/leave', [LeaveController::class, 'doApply']);
+    Route::get('/leave-list-type', [LeaveController::class, 'typeLeaveListView'])->name('leave-list-type');
+    Route::get('/leave-list-my', [LeaveController::class, 'myLeaveListView'])->name('leave-list-my');
+    Route::get('/leave-list-emp', [LeaveController::class, 'empLeaveListView'])->name('leave-list-emp');
     Route::get('/leave-type', [LeaveController::class, 'showLeaveType'])->name('leave-type');
 
+    /*
+     * HRMS Forms --Start
+    */
+    /*Leave Form*/
     Route::get('/leave-apply', [LeaveController::class, 'create'])->name('leave-apply');
     Route::post('/leave-store', [LeaveController::class, 'store'])->name('leave-store');
+    /*User Role Form*/
+    Route::get('/user-role-edit', [UserRoleController::class, 'create'])->name('user-role-edit');
+    Route::post('/user-role-store', [UserRoleController::class, 'store'])->name('user-role-store');
+
+    //HRMS Forms --End
 });
