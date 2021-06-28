@@ -4,7 +4,10 @@
     <div class="w-full-screen bg-black pd-0">
         <img src="{{ URL::asset("images/welcome.jpg") }}" alt="bg">
         <div class="col">
-            <div class="w-screen-text">
+            <div class="logo-w w-screen-text">
+                <div class="logo-row">
+                    <img class="logo-white" src="{{ URL::asset("images/logo.png") }}" alt="logo">
+                </div>
                 <h1>Welcome</h1>
                 <div class="mt-5">
                     <ul class="li-margin text-decoration-none flex justify-content-center">

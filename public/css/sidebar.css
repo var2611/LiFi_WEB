@@ -40,8 +40,16 @@ body {
     border-radius: 0;
 }
 
+.logo-w {
+   text-align: center;
+}
+
+.logo-w img {
+    width: 190px;
+}
+
 .w-full-screen {
-    height: 89.6vh;
+    height: 90vh;
     display: flex;
 }
 
