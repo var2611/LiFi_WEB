@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Device;
+use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
 use Illuminate\Support\Facades\Auth;
@@ -122,4 +123,9 @@ function att_register_user(string $mobile, string $name): ?User
         return null;
     }
     return null;
+}
+
+function getLeaveTypeIDByName(string $leave_type)
+{
+    return LeaveType::whereName($leave_type)->first()->id;
 }

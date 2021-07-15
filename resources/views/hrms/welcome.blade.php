@@ -1,6 +1,6 @@
 @extends('layouts.main_hr')
 @extends('includes.header')
-@section('container')
+@section('container_no_margin')
     <div class="w-full-screen bg-black pd-0">
         <img src="{{ URL::asset("images/welcome.jpg") }}" alt="bg">
         <div class="col">

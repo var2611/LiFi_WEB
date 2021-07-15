@@ -41,9 +41,9 @@ class UserEmployeeTableView extends TableView
     public function headers(): array
     {
         return [
+            Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
             Header::title('Mobile'),
-            Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Flash Code')->sortBy('flash_code'),
             Header::title('created at')->sortBy('created_at')
         ];
@@ -57,9 +57,9 @@ class UserEmployeeTableView extends TableView
     public function row($model): array
     {
         return [
-            $model->user->name,
-            $model->user->mobile,
             $model->emp_code,
+            $model->User->name,
+            $model->User->mobile,
             $model->flash_code,
             $model->created_at->diffForHumans()
         ];

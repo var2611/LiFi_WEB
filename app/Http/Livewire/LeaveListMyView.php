@@ -3,11 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Models\EmployeeLeave;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
+use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 
-class EmployeeLeaveTableView extends TableView
+class LeaveListMyView extends TableView
 {
     public $searchBy = ['user.name', 'user.mobile', 'emp_code'];
 
@@ -18,7 +20,9 @@ class EmployeeLeaveTableView extends TableView
      */
     public function repository(): Builder
     {
-        $data = EmployeeLeave::query()->with(['user', 'leaveType']);
+        $data = EmployeeLeave::query();
+
+        $data = $data->whereUserId(Auth::user()->id)->with(['user', 'leaveType']);
 
         return $data;
     }
@@ -36,7 +40,7 @@ class EmployeeLeaveTableView extends TableView
             Header::title('To'),
             Header::title('Days'),
             Header::title('Status'),
-            Header::title('Remarks'),
+//            Header::title('Remarks'),
             Header::title('Reason'),
             Header::title('Created At'),
         ];
@@ -54,8 +58,8 @@ class EmployeeLeaveTableView extends TableView
             $model->date_from . ' ' . $model->from_time,
             $model->date_to . ' ' . $model->to_time,
             $model->days,
-            $model->status,
-            $model->remarks,
+            $model->status == 2 ? UI::badge('Rejected', 'warning') : ($model->status ? UI::badge('Approved', 'success') : UI::badge('Pending', 'danger')),
+//            $model->remarks,
             $model->reason,
             $model->created_at,
         ];

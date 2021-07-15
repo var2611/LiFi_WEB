@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttendancesTable extends Migration
+class CreateAttBreakTable extends Migration
 {
     use MigrationTrait;
 
@@ -16,18 +16,14 @@ class CreateAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('att_breaks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('name');
+            $table->foreignId('attendance_id')->constrained();
             $table->string('flash_code');
             $table->date('date');
-            $table->timestamp('in_time')->nullable();
-            $table->timestamp('out_time')->nullable();
-            $table->string('hours_worked')->nullable();
+            $table->timestamp('break_in_time')->nullable();
+            $table->timestamp('break_out_time')->nullable();
             $table->string('break_time')->nullable();
-            $table->string('difference')->nullable();
-            $table->tinyInteger('status');
             $this->runColumns($table);
         });
     }
@@ -39,6 +35,6 @@ class CreateAttendancesTable extends Migration
      */
     public function down()
     {
-//        Schema::dropIfExists('attendance_manager');
+        Schema::dropIfExists('att_break');
     }
 }

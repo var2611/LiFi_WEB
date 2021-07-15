@@ -3,8 +3,10 @@
 namespace App\Forms;
 
 use App\Models\LeaveType;
+use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
+use function Illuminate\Support\Arr;
 
 class ApplyLeaveForm extends Form
 {
@@ -14,8 +16,12 @@ class ApplyLeaveForm extends Form
 
         $this
             ->add('leave_type', Field::SELECT, [
-                'choices' => $data,
+                'choices' => Arr::pluck($data, 'name', 'id'),
 //                'choices' => ['en' => 'English', 'fr' => 'French'],
+//                'selected' => function ($data) {
+//                    // Returns the array of short names from model relationship data
+//                    return Arr::pluck($data, 'name');
+//                },
                 'empty_value' => '=== Select Type ==='
             ])
             ->add('date_from', Field::DATE, [

@@ -36,6 +36,7 @@
 @yield('content')
 <!-- Bootstrap row -->
     <div class="row-p">
+        @yield('container_no_margin')
         <div class="row" id="body-row">
             @yield('sidemenu')
             <div class="main_hr_container">
