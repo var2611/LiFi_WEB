@@ -136,38 +136,47 @@ class LiFiAttendanceController extends Controller
         if ($this->ApiValidator($request->all(), $rules)) {
             $flash_code = $request->flash_code;
 
-            $userEmployee = UserEmployee::whereFlashCode($flash_code)
-                ->with(['User'])
-                ->first();
+            $attendance = $this->saveAtt($flash_code);
 
-            if ($userEmployee) {
-                $is_break_entry = $this->checkForBreakInEntry($flash_code);
-
-                if ($is_break_entry) {
-                    $attendance = $this->addOutBreakAttendance($is_break_entry);
-                } else {
-                    $attendance = $this->checkForAlreadyInAttendance($flash_code);
-                    if ($attendance) {
-                        $attendance = $this->addOutAttendance($attendance);
-                    } else {
-                        $attendance = $this->addNewAttendance($flash_code, $userEmployee);
-                    }
-                }
-                $this->logAttendance($flash_code, $userEmployee);
+            if ($attendance == null) {
+                $this->return_response_att_error("No User Found");
+            } else {
                 if ($attendance) {
                     $this->return_response_att("1");
                 } else {
                     $this->return_response_att_error("Something Went Wrong Please Try Again");
                 }
-            } else {
-                //No User Found
-                $this->return_response_att_error("No User Found");
             }
-
-
         }
 
         return $this->return_response();
+    }
+
+    private function saveAtt($flash_code)
+    {
+        $userEmployee = UserEmployee::whereFlashCode($flash_code)
+            ->with(['User'])
+            ->first();
+
+        if ($userEmployee) {
+            $is_break_entry = $this->checkForBreakInEntry($flash_code);
+
+            if ($is_break_entry) {
+                $attendance = $this->addOutBreakAttendance($is_break_entry);
+            } else {
+                $attendance = $this->checkForAlreadyInAttendance($flash_code);
+                if ($attendance) {
+                    $attendance = $this->addOutAttendance($attendance);
+                } else {
+                    $attendance = $this->addNewAttendance($flash_code, $userEmployee);
+                }
+            }
+            $this->logAttendance($flash_code, $userEmployee);
+            return $attendance;
+        } else {
+            //No User Found
+            return null;
+        }
     }
 
     /**
@@ -261,7 +270,7 @@ class LiFiAttendanceController extends Controller
 
         $attendance_log = new LogAttendance();
         $attendance_log->user_id = $userEmployee->user_id;
-        $attendance_log->name = $userEmployee->User->name;
+        $attendance_log->name = $userEmployee->User->name . ' ' . $userEmployee->User->surname;
         $attendance_log->flash_code = $flash_code;
         $attendance_log->date = $todayDate;
         $attendance_log->punch_time = $currentDateTime;
@@ -269,5 +278,31 @@ class LiFiAttendanceController extends Controller
         $attendance_log->created_by = Auth::user()->id;
         $attendance_log->updated_by = Auth::user()->id;
         $attendance_log->save();
+    }
+
+    public function saveAttendanceWithDetails(Request $request): JsonResponse
+    {
+        $rules = [
+            'flash_code' => 'required',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+            $flash_code = $request->flash_code;
+
+            $attendance = $this->saveAtt($flash_code);
+
+            if ($attendance == null) {
+                $this->return_response_att_error("No User Found");
+            } else {
+                if ($attendance) {
+                    $user_name = getUserNameFromFlashCode($flash_code);
+                    $this->return_response_att("1," . $user_name . ",");
+                } else {
+                    $this->return_response_att_error("Something Went Wrong Please Try Again");
+                }
+            }
+        }
+
+        return $this->return_response();
     }
 }

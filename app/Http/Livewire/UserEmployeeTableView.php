@@ -43,6 +43,7 @@ class UserEmployeeTableView extends TableView
         return [
             Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
+            Header::title('Surname'),
             Header::title('Mobile'),
             Header::title('Flash Code')->sortBy('flash_code'),
             Header::title('created at')->sortBy('created_at')
@@ -59,6 +60,7 @@ class UserEmployeeTableView extends TableView
         return [
             $model->emp_code,
             $model->User->name,
+            $model->User->surname,
             $model->User->mobile,
             $model->flash_code,
             $model->created_at->diffForHumans()

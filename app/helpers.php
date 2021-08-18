@@ -129,3 +129,12 @@ function getLeaveTypeIDByName(string $leave_type)
 {
     return LeaveType::whereName($leave_type)->first()->id;
 }
+
+function getUserNameFromFlashCode($flash_code)
+{
+    $userEmployee = UserEmployee::whereFlashCode($flash_code)
+        ->with(['User'])
+        ->first();
+
+    return $userEmployee->User->name;
+}

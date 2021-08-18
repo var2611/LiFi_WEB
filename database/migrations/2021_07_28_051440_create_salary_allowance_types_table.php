@@ -3,10 +3,10 @@
 use App\Traits\MigrationTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateLeaveTypesTable extends Migration
+class CreateSalaryAllowanceTypesTable extends Migration
 {
-
     use MigrationTrait;
 
     /**
@@ -16,22 +16,20 @@ class CreateLeaveTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('leave_types', function (Blueprint $table) {
+        Schema::create('salary_allowance_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
+            $table->string('name')->nullable();
             $this->runColumns($table);
-
         });
     }
 
-    /*
+    /**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down()
     {
-        Schema::drop('leave_types');
+        Schema::dropIfExists('salary_allowance_types');
     }
 }
