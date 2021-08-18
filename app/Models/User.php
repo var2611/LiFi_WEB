@@ -67,6 +67,10 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereMacAddress($value)
  * @property-read User|null $createdBy
  * @property-read UserEmployee|null $UserEmployee
+ * @property string|null $surname
+ * @property string|null $last_name
+ * @method static Builder|User whereLastName($value)
+ * @method static Builder|User whereSurname($value)
  */
 class User extends Authenticatable
 {
@@ -79,6 +83,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
+        'last_name',
         'mobile',
         'email',
         'password',

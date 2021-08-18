@@ -32,6 +32,7 @@ class UsersTableView extends TableView
     {
         return [
             Header::title('Name')->sortBy('name'),
+            Header::title('Last Name'),
             Header::title('Email'),
             Header::title('Mobile')->sortBy('mobile'),
             Header::title('created at')->sortBy('created_at')
@@ -45,7 +46,7 @@ class UsersTableView extends TableView
      */
     public function row($model): array
     {
-        return [$model->name, $model->email, $model->mobile, $model->created_at->diffForHumans()];
+        return [$model->name, $model->last_name, $model->email, $model->mobile, $model->created_at->diffForHumans()];
     }
 
     protected function filters()

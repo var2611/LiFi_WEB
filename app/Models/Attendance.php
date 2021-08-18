@@ -54,6 +54,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Attendance whereUserId($value)
  * @mixin Eloquent
  * @property-read User $User
+ * @property string|null $break_in_time
+ * @property int|null $break_out_time
+ * @property string|null $break_time
+ * @method static Builder|Attendance whereBreakInTime($value)
+ * @method static Builder|Attendance whereBreakOutTime($value)
+ * @method static Builder|Attendance whereBreakTime($value)
  */
 class Attendance extends Model
 {
@@ -67,6 +73,7 @@ class Attendance extends Model
         'in_time',
         'out_time',
         'hours_worked',
+        'break_time',
         'difference',
         'status',
         'created_by',

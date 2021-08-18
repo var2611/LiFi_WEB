@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\EmployeeLeaves;
-use Auth;
+use App\Actions\LeaveApproveAction;
+use App\Actions\LeaveRejectAction;
+use App\Models\EmployeeLeave;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
+use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 
-class MyLeaveListView extends TableView
+class LeaveListEmployeesView extends TableView
 {
-    public $searchBy = ['user.name', 'user.mobile', 'emp_code'];
+    public $searchBy = ['user.name', 'user.surname', 'user.mobile', 'emp_code', 'leaveType.name'];
 
     /**
      * Sets a initial query with the data to fill the table
@@ -19,9 +21,9 @@ class MyLeaveListView extends TableView
      */
     public function repository(): Builder
     {
-        $data = EmployeeLeaves::query();
+        $data = EmployeeLeave::query();
 
-        $data = $data->whereUserId(Auth::user()->id)->with(['user', 'leaveType']);
+        $data = $data->with(['user', 'leaveType']);
 
         return $data;
     }
@@ -35,11 +37,13 @@ class MyLeaveListView extends TableView
     {
         return [
             Header::title('Leave Type'),
+            Header::title('Emp Code'),
+            Header::title('Name'),
             Header::title('From'),
             Header::title('To'),
             Header::title('Days'),
             Header::title('Status'),
-            Header::title('Remarks'),
+//            Header::title('Remarks'),
             Header::title('Reason'),
             Header::title('Created At'),
         ];
@@ -48,19 +52,29 @@ class MyLeaveListView extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model EmployeeLeaves model for each row
+     * @param $model EmployeeLeave model for each row
      */
     public function row($model): array
     {
         return [
             $model->leaveType->name,
+            $model->userEmployee->emp_code,
+            $model->user->name . ' ' . $model->user->surname,
             $model->date_from . ' ' . $model->from_time,
             $model->date_to . ' ' . $model->to_time,
             $model->days,
-            $model->status,
-            $model->remarks,
+            $model->status == 2 ? UI::badge('Rejected', 'warning') : ($model->status ? UI::badge('Approved', 'success') : UI::badge('Pending', 'danger')),
+//            $model->remarks,
             $model->reason,
             $model->created_at,
+        ];
+    }
+
+    protected function actionsByRow()
+    {
+        return [
+            new LeaveRejectAction(),
+            new LeaveApproveAction,
         ];
     }
 }

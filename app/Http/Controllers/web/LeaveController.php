@@ -6,12 +6,15 @@ namespace App\Http\Controllers\web;
 
 use App\Forms\ApplyLeaveForm;
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\LeaveListEmployeesView;
+use App\Http\Livewire\LeaveListMyView;
 use App\Http\Livewire\LeaveTypeTableView;
-use App\Http\Livewire\MyLeaveListView;
+use App\Models\EmployeeLeave;
 use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilder;
 use LaravelViews\LaravelViews;
 
@@ -54,13 +57,29 @@ class LeaveController extends Controller
 
         $form->redirectIfNotValid();
 
-
         // Do saving and other things...
+        $emp_leave_data = $form->getFieldValues();
+//        print_r($emp_leave_data);
+
+        $employee_leave = new EmployeeLeave();
+        $employee_leave->user_id = Auth::id();
+        $employee_leave->leave_type_id = $emp_leave_data['leave_type'];
+        $employee_leave->date_from = $emp_leave_data['date_from'];
+        $employee_leave->date_to = $emp_leave_data['date_to'];
+        $employee_leave->from_time = $emp_leave_data['from_time'];
+        $employee_leave->to_time = $emp_leave_data['to_time'];
+        $employee_leave->days = $emp_leave_data['days'];
+        $employee_leave->reason = $emp_leave_data['reason'];
+        $employee_leave->created_by = Auth::id();
+        $employee_leave->updated_by = Auth::id();
+        $employee_leave->save();
+
+        print_r($employee_leave);
     }
 
     public function myLeaveListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(MyLeaveListView::class)
+        $laravelViews->create(LeaveListMyView::class)
             ->layout('main-list', 'container', [
                 'title' => 'My Leave List',
                 'leave' => true,
@@ -71,7 +90,7 @@ class LeaveController extends Controller
 
     public function empLeaveListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(MyLeaveListView::class)
+        $laravelViews->create(LeaveListEmployeesView::class)
             ->layout('main-list', 'container', [
                 'title' => 'Employee Leave List',
                 'leave' => true,

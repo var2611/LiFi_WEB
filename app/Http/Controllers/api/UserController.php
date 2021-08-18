@@ -134,6 +134,8 @@ class UserController extends Controller
         $data = new User();
 
         $data->name = $request->name;
+        $data->last_name = $request->last_name ?? '';
+        $data->surname = $request->surname ?? '';
         $data->mobile = $request->mobile;
         $data->email = $request->email;
         $data->password = "password";
@@ -175,6 +177,8 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required',
+//            'surname' => 'required',
+//            'last_name' => 'required',
             'mobile' => 'required',
             'email' => 'required|email',
 //            'user_type_id' => 'required',
@@ -254,6 +258,8 @@ class UserController extends Controller
             try {
                 Log::info(json_encode($request->all()));
                 $name = $request->name;
+                $last_name = $request->last_name ?? '';
+                $surname = $request->surname ?? '';
                 $emp_code = $request->emp_code;
                 $firebase_token = $request->firebase_token ?? '';
 
@@ -264,6 +270,8 @@ class UserController extends Controller
 
                 if (empty($checkUserEmployeeRegistration)) {
                     $user->name = $name;
+                    $user->surname = $surname;
+                    $user->last_name = $last_name;
                     $user->firebase_token = $firebase_token;
                     $user->save();
 
