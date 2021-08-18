@@ -24,8 +24,7 @@
                 <h1>Leave</h1>
             </div>
         </a>
-
-
     </div>
 
 @endsection
+
