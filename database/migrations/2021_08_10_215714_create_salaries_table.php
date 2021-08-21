@@ -19,12 +19,18 @@ class CreateSalariesTable extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_employee_id')->constrained();
-            $table->foreignId('contract_id')->constrained();
+            $table->foreignId('emp_contract_id')->constrained();
             $table->string('name')->nullable();
             $table->date('date')->nullable();
             $table->string('contract_amount')->nullable();
+            $table->string('total_days')->nullable();
+            $table->string('present_days')->nullable();
+            $table->string('absent_days')->nullable();
+            $table->string('basic')->nullable();
+            $table->string('hra')->nullable();
             $table->string('salary_amount')->nullable();
             $table->foreignId('overtime_type_id')->constrained();
+            $table->string('overtime_description')->nullable();
             $table->string('overtime_amount')->nullable();
             $table->string('salary_total')->nullable();
             $table->string('gross_earning')->nullable();

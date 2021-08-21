@@ -2,11 +2,11 @@
 
 namespace App\Forms;
 
+use App\Models\FormModels\ApplyLeave;
 use App\Models\LeaveType;
 use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
-use function Illuminate\Support\Arr;
 
 class ApplyLeaveForm extends Form
 {
@@ -37,10 +37,11 @@ class ApplyLeaveForm extends Form
                 'rules' => 'required'
             ])
             ->add('days', Field::TEXT, [
-                'rules' => 'required'
+                'rules' => 'required|min:2',
             ])
             ->add('reason', Field::TEXTAREA, [
                 'rules' => 'required | max:400'
+            ])->add('user_id', Field::HIDDEN, [
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);

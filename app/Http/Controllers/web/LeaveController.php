@@ -10,16 +10,20 @@ use App\Http\Livewire\LeaveListEmployeesView;
 use App\Http\Livewire\LeaveListMyView;
 use App\Http\Livewire\LeaveTypeTableView;
 use App\Models\EmployeeLeave;
+use App\Models\FormModels\ApplyLeave;
 use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilder;
+use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
 
 class LeaveController extends Controller
 {
+    use FormBuilderTrait;
+
     public function doApply()
     {
         $leaves = LeaveType::get();
@@ -41,40 +45,40 @@ class LeaveController extends Controller
      * @param FormBuilder $formBuilder
      * @return Application|Factory|View
      */
-    public function create(FormBuilder $formBuilder)
+    public function create()
     {
-        $form = $formBuilder->create(ApplyLeaveForm::class, [
+        $model = new ApplyLeave(null);
+        $model->user_id = Auth::id();
+        $form = $this->form(ApplyLeaveForm::class, [
             'method' => 'POST',
+            'model' => $model,
             'url' => route('leave-store')
         ]);
 
         return view('layouts.hrms_forms', compact('form'));
     }
 
-    public function store(FormBuilder $formBuilder)
+    public function store()
     {
-        $form = $formBuilder->create(ApplyLeaveForm::class);
+        $form = $this->form(ApplyLeaveForm::class);
 
         $form->redirectIfNotValid();
 
         // Do saving and other things...
-        $emp_leave_data = $form->getFieldValues();
-//        print_r($emp_leave_data);
+        $formData = $form->getFieldValues();
 
         $employee_leave = new EmployeeLeave();
-        $employee_leave->user_id = Auth::id();
-        $employee_leave->leave_type_id = $emp_leave_data['leave_type'];
-        $employee_leave->date_from = $emp_leave_data['date_from'];
-        $employee_leave->date_to = $emp_leave_data['date_to'];
-        $employee_leave->from_time = $emp_leave_data['from_time'];
-        $employee_leave->to_time = $emp_leave_data['to_time'];
-        $employee_leave->days = $emp_leave_data['days'];
-        $employee_leave->reason = $emp_leave_data['reason'];
-        $employee_leave->created_by = Auth::id();
+        $applyLeaveForm = new ApplyLeave($formData);
+
+        $employee_leave = $applyLeaveForm->createEmployeeLeaveModel($applyLeaveForm);
+        if ($applyLeaveForm->created_by == null) {
+            $employee_leave->created_by = Auth::id();
+        }
         $employee_leave->updated_by = Auth::id();
         $employee_leave->save();
 
-        print_r($employee_leave);
+        return route('leave-list-my');
+
     }
 
     public function myLeaveListView(LaravelViews $laravelViews): string

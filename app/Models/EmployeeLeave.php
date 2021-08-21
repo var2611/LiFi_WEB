@@ -60,7 +60,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmployeeLeave whereUpdatedBy($value)
  * @method static Builder|EmployeeLeave whereUserId($value)
  * @mixin Eloquent
- * @property-read \App\Models\UserEmployee $userEmployee
+ * @property-read UserEmployee $userEmployee
  */
 class EmployeeLeave extends Model
 {
