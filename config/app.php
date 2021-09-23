@@ -171,6 +171,8 @@ return [
         LaravelViews\LaravelViewsServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -234,6 +236,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
+
+        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
     ],
 
 ];

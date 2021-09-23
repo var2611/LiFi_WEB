@@ -78,7 +78,10 @@
                         <a href="{{ route('leave-list-emp') }}" class="list-group-item list-group-item-action bg-dark text-white">
                             <span class="menu-collapsed">Employee Leave List</span>
                         </a>
-                        <a href="{{ route('leave-list-type') }}" class="list-group-item list-group-item-action bg-dark text-white">
+                        <a href="{{ route('leave-type-edit') }}" class="list-group-item list-group-item-action bg-dark text-white">
+                            <span class="menu-collapsed">Edit Leave Type</span>
+                        </a>
+                        <a href="{{ route('leave-type-list') }}" class="list-group-item list-group-item-action bg-dark text-white">
                             <span class="menu-collapsed">Leave Type List</span>
                         </a>
                     </div>

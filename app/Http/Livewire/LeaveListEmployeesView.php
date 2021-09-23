@@ -70,7 +70,7 @@ class LeaveListEmployeesView extends TableView
         ];
     }
 
-    protected function actionsByRow()
+    protected function actionsByRow(): array
     {
         return [
             new LeaveRejectAction(),

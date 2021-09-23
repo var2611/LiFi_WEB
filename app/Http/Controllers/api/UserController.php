@@ -251,6 +251,7 @@ class UserController extends Controller
 //            'email' => 'required|email',
 //            'firebase_token' => 'required',
             'emp_code' => 'required',
+//            'company_id' => 'required',
         ];
 
         if ($this->ApiValidator($request->all(), $rules)) {
@@ -262,6 +263,7 @@ class UserController extends Controller
                 $surname = $request->surname ?? '';
                 $emp_code = $request->emp_code;
                 $firebase_token = $request->firebase_token ?? '';
+                $company_id = $request->company_id ?? 1;
 
                 $user = Auth::user();
 
@@ -278,7 +280,7 @@ class UserController extends Controller
                     $userEmployee = new UserEmployee();
                     $userEmployee->user_id = $user->id;
                     $userEmployee->user_role_id = 2;
-                    $userEmployee->company_id = 2;
+                    $userEmployee->company_id = $company_id ?? 1;
                     $userEmployee->emp_code = $emp_code;
                     $userEmployee->flash_code = generate_random_unique_string();
                     $userEmployee->created_by = $user->id;

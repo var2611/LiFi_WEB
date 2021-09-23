@@ -112,7 +112,7 @@ function att_register_user(string $mobile, string $name): ?User
         $input['name'] = $name;
         $checkUserExist = User::whereEmail($input['mobile'])->first();
         if (empty($checkUserExist)) {
-            $input['password'] = bcrypt('password');
+            $input['password'] = bcrypt('1234');
             $user = User::create($input);
             if (!empty($user)) {
                 return $user;

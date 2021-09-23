@@ -13,6 +13,8 @@ class UserRoleForm extends Form
             ->add('name', Field::TEXT, [
                 'rules' => 'required'
             ])
+            ->add('submit', Field::BUTTON_SUBMIT, [
+            ]);
         ;
     }
 }

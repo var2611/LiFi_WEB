@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Forms;
+namespace App\Forms\Leave;
 
-use App\Models\FormModels\ApplyLeave;
 use App\Models\LeaveType;
 use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;

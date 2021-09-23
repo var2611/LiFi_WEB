@@ -39,21 +39,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/user_attendance', [AttendanceController::class, 'index'])->name('UsersAtt');
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
 
-    Route::get('/leave', [LeaveController::class, 'doApply'])->name('leave');
-    Route::get('/leave-list-type', [LeaveController::class, 'typeLeaveListView'])->name('leave-list-type');
+    Route::get('/leave-type-list', [LeaveController::class, 'typeLeaveListView'])->name('leave-type-list');
     Route::get('/leave-list-my', [LeaveController::class, 'myLeaveListView'])->name('leave-list-my');
     Route::get('/leave-list-emp', [LeaveController::class, 'empLeaveListView'])->name('leave-list-emp');
-    Route::get('/leave-type', [LeaveController::class, 'showLeaveType'])->name('leave-type');
 
     /*
      * HRMS Forms --Start
     */
+    Route::get('/leave-type-edit', [LeaveController::class, 'editLeaveTypeView'])->name('leave-type-edit');
+    Route::get('/leave-type-store', [LeaveController::class, 'storeLeaveTypeView'])->name('leave-type-store');
+
     /*Leave Form*/
-    Route::get('/leave-apply', [LeaveController::class, 'create'])->name('leave-apply');
-    Route::post('/leave-store', [LeaveController::class, 'store'])->name('leave-store');
+    Route::get('/leave-apply', [LeaveController::class, 'applyLeaveFormCreate'])->name('leave-apply');
+    Route::post('/leave-store', [LeaveController::class, 'applyLeaveFormStore'])->name('leave-store');
     /*User Role Form*/
     Route::get('/user-role-edit', [UserRoleController::class, 'create'])->name('user-role-edit');
     Route::post('/user-role-store', [UserRoleController::class, 'store'])->name('user-role-store');
+
+
+    Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
 
     //HRMS Forms --End
 });
