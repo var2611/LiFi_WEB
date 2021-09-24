@@ -57,7 +57,7 @@ class UserEmployeeController extends Controller
             $data['message'] = "Employee Registration Has some errors please try again or contact Admin.";
         }
 
-        return route('UsersList', $data);
+        return redirect('UsersList', $data);
     }
 
     /**

@@ -62,7 +62,7 @@ class LeaveController extends Controller
         $employee_leave->updated_by = Auth::id();
         $employee_leave->save();
 
-        return route('leave-list-my');
+        return redirect()->route('leave-list-my');
 
     }
 
