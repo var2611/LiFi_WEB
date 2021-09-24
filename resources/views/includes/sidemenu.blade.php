@@ -83,7 +83,7 @@
                    class="list-group-item list-group-item-action bg-dark text-white">
                     <span class="menu-collapsed">My leave list</span>
                 </a>
-                @if(Auth::user()->isHR() && Auth::user()->isAdmin())
+                @if(Auth::user()->isHR() || Auth::user()->isAdmin())
                     <a href="{{ route('leave-list-emp') }}"
                        class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Employee Leave List</span>
