@@ -110,7 +110,7 @@ function att_register_user(string $mobile, string $name): ?User
     try {
         $input['mobile'] = $mobile;
         $input['name'] = $name;
-        $checkUserExist = User::whereEmail($input['mobile'])->first();
+        $checkUserExist = User::whereMobile($input['mobile'])->first();
         if (empty($checkUserExist)) {
             $input['password'] = bcrypt('1234');
             $user = User::create($input);
@@ -123,6 +123,35 @@ function att_register_user(string $mobile, string $name): ?User
         return null;
     }
     return null;
+}
+
+function att_register_new_employee($data, User $user): UserEmployee
+{
+    $name = $data->name;
+    $last_name = $data->last_name ?? '';
+    $surname = $data->surname ?? '';
+    $emp_code = $data->emp_code;
+    $firebase_token = $data->firebase_token ?? '';
+    $company_id = $data->company_id ?? 1;
+
+    $user->name = $name;
+    $user->surname = $surname;
+    $user->last_name = $last_name;
+    $user->firebase_token = $firebase_token;
+    $user->updated_by = Auth::user()->id;
+    $user->save();
+
+    $userEmployee = new UserEmployee();
+    $userEmployee->user_id = $user->id;
+    $userEmployee->user_role_id = 2;
+    $userEmployee->company_id = $company_id ?? 1;
+    $userEmployee->emp_code = $emp_code;
+    $userEmployee->flash_code = generate_random_unique_string();
+    $userEmployee->created_by = Auth::user()->id;
+    $userEmployee->updated_by = Auth::user()->id;
+    $userEmployee->save();
+
+    return $userEmployee;
 }
 
 function getLeaveTypeIDByName(string $leave_type)

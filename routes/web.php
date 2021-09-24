@@ -52,10 +52,14 @@ Route::group(['middleware' => 'auth'], function () {
     /*Leave Form*/
     Route::get('/leave-apply', [LeaveController::class, 'applyLeaveFormCreate'])->name('leave-apply');
     Route::post('/leave-store', [LeaveController::class, 'applyLeaveFormStore'])->name('leave-store');
+
     /*User Role Form*/
     Route::get('/user-role-edit', [UserRoleController::class, 'create'])->name('user-role-edit');
     Route::post('/user-role-store', [UserRoleController::class, 'store'])->name('user-role-store');
 
+    /*Employee Forms*/
+    Route::get('/emp-registration-att-edit', [UserEmployeeController::class, 'empRegistrationForAttFormCreate'])->name('emp-registration-att-edit');
+    Route::post('/emp-registration-att-store', [UserEmployeeController::class, 'empRegistrationForAttFormStore'])->name('emp-registration-att-store');
 
     Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
 

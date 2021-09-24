@@ -258,12 +258,12 @@ class UserController extends Controller
 
             try {
                 Log::info(json_encode($request->all()));
-                $name = $request->name;
-                $last_name = $request->last_name ?? '';
-                $surname = $request->surname ?? '';
-                $emp_code = $request->emp_code;
-                $firebase_token = $request->firebase_token ?? '';
-                $company_id = $request->company_id ?? 1;
+//                $name = $request->name;
+//                $last_name = $request->last_name ?? '';
+//                $surname = $request->surname ?? '';
+//                $emp_code = $request->emp_code;
+//                $firebase_token = $request->firebase_token ?? '';
+//                $company_id = $request->company_id ?? 1;
 
                 $user = Auth::user();
 
@@ -271,21 +271,24 @@ class UserController extends Controller
                     ->first();
 
                 if (empty($checkUserEmployeeRegistration)) {
-                    $user->name = $name;
-                    $user->surname = $surname;
-                    $user->last_name = $last_name;
-                    $user->firebase_token = $firebase_token;
-                    $user->save();
 
-                    $userEmployee = new UserEmployee();
-                    $userEmployee->user_id = $user->id;
-                    $userEmployee->user_role_id = 2;
-                    $userEmployee->company_id = $company_id ?? 1;
-                    $userEmployee->emp_code = $emp_code;
-                    $userEmployee->flash_code = generate_random_unique_string();
-                    $userEmployee->created_by = $user->id;
-                    $userEmployee->updated_by = $user->id;
-                    $userEmployee->save();
+                    $userEmployee = att_register_new_employee($request, $user);
+
+//                    $user->name = $name;
+//                    $user->surname = $surname;
+//                    $user->last_name = $last_name;
+//                    $user->firebase_token = $firebase_token;
+//                    $user->save();
+//
+//                    $userEmployee = new UserEmployee();
+//                    $userEmployee->user_id = $user->id;
+//                    $userEmployee->user_role_id = 2;
+//                    $userEmployee->company_id = $company_id ?? 1;
+//                    $userEmployee->emp_code = $emp_code;
+//                    $userEmployee->flash_code = generate_random_unique_string();
+//                    $userEmployee->created_by = $user->id;
+//                    $userEmployee->updated_by = $user->id;
+//                    $userEmployee->save();
 
                     $data = UserEmployee::whereId($userEmployee->id)
                         ->with(['User'])

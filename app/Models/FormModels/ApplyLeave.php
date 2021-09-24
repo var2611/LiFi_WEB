@@ -5,7 +5,7 @@ namespace App\Models\FormModels;
 use App\Models\EmployeeLeave;
 
 /**
- * App\Models\LeaveApply
+ * App\FormModels\ApplyLeave
  * @property string|null $user_id
  * @property string|null $leave_type_id
  * @property string|null $date_from

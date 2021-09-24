@@ -12,7 +12,9 @@ use LaravelViews\Views\TableView;
 
 class LeaveListEmployeesView extends TableView
 {
-    public $searchBy = ['user.name', 'user.surname', 'user.mobile', 'emp_code', 'leaveType.name'];
+    public $searchBy = ['user.name', 'user.surname', 'user.mobile', 'userEmployee.emp_code', 'leaveType.name'];
+
+    protected $model = EmployeeLeave::class;
 
     /**
      * Sets a initial query with the data to fill the table
@@ -36,6 +38,7 @@ class LeaveListEmployeesView extends TableView
     public function headers(): array
     {
         return [
+            Header::title('id'),
             Header::title('Leave Type'),
             Header::title('Emp Code'),
             Header::title('Name'),
@@ -57,6 +60,7 @@ class LeaveListEmployeesView extends TableView
     public function row($model): array
     {
         return [
+            $model->id,
             $model->leaveType->name,
             $model->userEmployee->emp_code,
             $model->user->name . ' ' . $model->user->surname,

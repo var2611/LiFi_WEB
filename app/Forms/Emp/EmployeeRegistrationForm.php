@@ -41,6 +41,6 @@ class EmployeeRegistrationForm extends Form
                 'second_name' => 'password_confirmation',
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
-            ]);;
+            ]);
     }
 }

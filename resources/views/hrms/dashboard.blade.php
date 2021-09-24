@@ -19,7 +19,7 @@
                 <h1>User</h1>
             </div>
         </a>
-        <a href="{{ route('leave-list-emp') }}">
+        <a href="{{ route('leave-list-my') }}">
             <div class="card-hr">
                 <i class="fas fa-envelope fa-2x"></i>
                 <h1>Leave</h1>

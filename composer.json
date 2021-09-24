@@ -16,7 +16,7 @@
         "fruitcake/laravel-cors": "^2.0.3",
         "guzzlehttp/guzzle": "^7.0.1",
         "kris/laravel-form-builder": "^1.40",
-        "laravel-views/laravel-views": "^2.2",
+        "laravel-views/laravel-views": "^v2.3.0",
         "laravel/framework": "^8.12",
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5|dev-develop",
