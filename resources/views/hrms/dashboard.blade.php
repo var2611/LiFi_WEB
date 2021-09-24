@@ -1,5 +1,6 @@
 @extends('layouts.main_hr')
 @extends('includes.header')
+{{--@extends('includes.footer')--}}
 {{--@extends('includes.sidemenu')--}}
 @section('container')
     <div class="ml-3 pt-2">
