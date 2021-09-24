@@ -53,6 +53,24 @@ body {
     display: flex;
 }
 
+.bg img {
+    position: fixed;
+}
+
+.bg-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #1a202c;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /* Menu item*/
 #sidebar-container .list-group a {
     height: 50px;
