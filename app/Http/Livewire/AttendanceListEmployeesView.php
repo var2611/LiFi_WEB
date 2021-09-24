@@ -11,7 +11,7 @@ use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class AttendanceTableView extends TableView
+class AttendanceListEmployeesView extends TableView
 {
     public $searchBy = ['name', 'emp_code'];
     protected $paginate = 20;

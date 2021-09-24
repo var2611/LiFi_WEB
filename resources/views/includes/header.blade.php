@@ -56,7 +56,7 @@
                             <a href="{{route('hr_dashboard')}}">Dashboard</a>
                         </li>
                         <li class="hide-desktop nav-item list-group-item">
-                            <a href="{{ route('UsersAtt') }}">Attendance</a>
+                            <a href="{{ route('attendance-list-emp') }}">Attendance</a>
                         </li>
                         <li class="hide-desktop nav-item list-group-item">
                             <a href="{{ route('UsersList') }}">Users</a>

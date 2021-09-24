@@ -11,7 +11,7 @@ use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class AttendanceTableView extends TableView
+class AttendanceListMyView extends TableView
 {
     public $searchBy = ['name', 'emp_code'];
     protected $paginate = 20;
@@ -26,7 +26,7 @@ class AttendanceTableView extends TableView
         $company_id = Auth::user()->getCompanyId();
         $data = AttendanceData::query();
 //        if ($company_id != 1) {
-        $data = $data->whereCompanyId($company_id);
+        $data = $data->where('user_id', Auth::user()->id);
 //        }
         return $data->orderByDesc('id');
     }

@@ -40,8 +40,6 @@ Route::post('createUser', [UserController::class, 'createUser']);
 Route::post('createUser1', [UserController::class, 'createUser1']);
 Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
 Route::get('new_mail', [TestController::class, 'new_mail']);
-Route::get('demoV', [TestController::class, 'demoV']);
-
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 
@@ -69,6 +67,8 @@ Route::post('att/checkUserRegistration', [UserController::class, 'att_check_user
 
 
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('demoV', [TestController::class, 'demoV']);
+
     Route::post('userDetails', [UserController::class, 'user_details']);
 
     Route::post('poleMain', [PoleController::class, 'poleMain']);

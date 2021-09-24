@@ -29,5 +29,6 @@ class Authenticate extends Middleware
         } else {
             return '/login';
         }
+        return $controller->return_response_unauthorised();
     }
 }

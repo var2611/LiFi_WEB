@@ -1,7 +1,7 @@
 @section('sidemenu')
     {{--    <div class="sidebar-expanded">--}}
     {{--        <a class="no-padding" href="{{route('hr_dashboard')}}"><i class="fas fa-home"></i>Dashboard</a>--}}
-    {{--        <a href="{{ route('UsersAtt') }}">Attendance</a>--}}
+    {{--        <a href="{{ route('attendance-list-emp') }}">Attendance</a>--}}
     {{--        <a href="{{ route('UsersList') }}">Users</a>--}}
     <!-- Bootstrap row -->
     {{--        <div class="row" id="body-row">--}}
@@ -30,22 +30,30 @@
                     {{--                            <span class="submenu-icon ml-auto"></span>--}}
                 </div>
             </a>
-            <a href="{{ route('UsersAtt') }}"
-               class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+
+            {{--Menu Attendance--}}
+            <a href="#submenu3" data-toggle="collapse" aria-expanded="{{ $att ?? false }}"
+               class="bg-dark list-group-item list-group-item-action flex-column align-items-start {{ isset($att) ? '' : 'collapsed' }}">
                 <div class="d-flex w-100 justify-content-start align-items-center">
-                    <span class="fa fa-database fa-fw mr-3"></span>
+                    <span class="fa fa-user fa-fw mr-3"></span>
                     <span class="menu-collapsed">Attendance</span>
-                    {{--                            <span class="submenu-icon ml-auto"></span>--}}
+                    <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            {{--            <a href="{{ route('UsersList') }}"--}}
-            {{--               class="bg-dark list-group-item list-group-item-action flex-column align-items-start">--}}
-            {{--                <div class="d-flex w-100 justify-content-start align-items-center">--}}
-            {{--                    <span class="fa fa-user fa-fw mr-3"></span>--}}
-            {{--                    <span class="menu-collapsed">Users</span>--}}
-            {{--                                                <span class="submenu-icon ml-auto"></span>--}}
-            {{--                </div>--}}
-            {{--            </a>--}}
+            <!-- Submenu content -->
+            <div id='submenu3' class="collapse sidebar-submenu {{ isset($att) ? 'show' : '' }}">
+                @if(Auth::user()->isHR() || Auth::user()->isAdmin())
+                    <a href="{{ route('attendance-list-emp') }}"
+                       class="list-group-item list-group-item-action bg-dark text-white">
+                        <span>Employee Attendance</span>
+                    </a>
+                @endif
+                <a href="{{ route('attendance-list-my') }}"
+                   class="list-group-item list-group-item-action bg-dark text-white">
+                    <span>My Attendance</span>
+                </a>
+            </div>
+
             @if(Auth::user()->isHR() || Auth::user()->isAdmin())
                 <a href="#submenu0" data-toggle="collapse" aria-expanded="{{ $users ?? false }}"
                    class="bg-dark list-group-item list-group-item-action flex-column align-items-start {{ isset($users) ? '' : 'collapsed' }}">
@@ -64,9 +72,6 @@
                     <a href="{{ route('UsersList') }}"
                        class="list-group-item list-group-item-action bg-dark text-white">
                         <span>Users</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Tables</span>
                     </a>
                 </div>
             @endif
@@ -125,14 +130,12 @@
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tree fa-fw mr-3"></span>
                     <span class="menu-collapsed">Holiday</span>
-                    {{--                            <span class="submenu-icon ml-auto"></span>--}}
                 </div>
             </a>
             <a href="#" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-birthday-cake fa-fw mr-3"></span>
                     <span class="menu-collapsed">Celebrations</span>
-                    {{--                            <span class="submenu-icon ml-auto"></span>--}}
                 </div>
             </a>
 
@@ -140,7 +143,6 @@
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-gavel fa-fw mr-3"></span>
                     <span class="menu-collapsed">Company Policy</span>
-                    {{--                            <span class="submenu-icon ml-auto"></span>--}}
                 </div>
             </a>
             {{--                    <a href="#" class="bg-dark list-group-item list-group-item-action">--}}

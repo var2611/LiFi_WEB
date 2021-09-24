@@ -33,10 +33,10 @@ class TestController extends Controller
 //
 //        echo json_encode($attendance);
 
-        $start = strtotime('2021-05-19 21:01:00');
-        $end = strtotime('2021-05-20 7:04:00');
-        $mins = ($end - $start) / 3600;
-        echo $mins;
+//        $start = strtotime('2021-05-19 21:01:00');
+//        $end = strtotime('2021-05-20 7:04:00');
+//        $mins = ($end - $start) / 3600;
+//        echo $mins;
 
 //        echo date('H:i:s ');
 //        echo now();
@@ -45,6 +45,10 @@ class TestController extends Controller
 
 //        $mac_address = strtoupper($request->mac ?? null);
 //        $user = User::where('mac_address', $mac_address)->first(['id']);
+
+//        echo 1;
+
+        echo json_encode(Auth::user()->UserEmployee->company_id);
 
     }
 

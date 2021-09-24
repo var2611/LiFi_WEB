@@ -72,6 +72,7 @@ use Laravel\Passport\Token;
  * @property string|null $last_name
  * @method static Builder|User whereLastName($value)
  * @method static Builder|User whereSurname($value)
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
  */
 class User extends Authenticatable
 {
@@ -137,5 +138,10 @@ class User extends Authenticatable
     public function isAdmin(){
         $userRole = Auth::user()->UserEmployee->user_role_id;
         return $userRole == 1;
+    }
+
+    public function getCompanyId(): int
+    {
+        return Auth::user()->UserEmployee->company_id;
     }
 }

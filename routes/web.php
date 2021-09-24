@@ -36,7 +36,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('UsersList');
-    Route::get('/user_attendance', [AttendanceController::class, 'index'])->name('UsersAtt');
+    Route::get('/attendance-list-emp', [AttendanceController::class, 'empAttendanceListView'])->name('attendance-list-emp');
+    Route::get('/attendance-list-my', [AttendanceController::class, 'myAttendanceListView'])->name('attendance-list-my');
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
 
     Route::get('/leave-type-list', [LeaveController::class, 'typeLeaveListView'])->name('leave-type-list');

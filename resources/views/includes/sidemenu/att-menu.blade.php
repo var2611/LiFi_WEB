@@ -1,5 +1,5 @@
 @section('att-menu')
-    <a href="{{ route('UsersAtt') }}"
+    <a href="{{ route('attendance-list-emp') }}"
        class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
             <span class="fa fa-database fa-fw mr-3"></span>

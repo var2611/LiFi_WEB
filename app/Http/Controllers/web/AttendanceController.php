@@ -5,6 +5,8 @@ namespace App\Http\Controllers\web;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\AttendanceListEmployeesView;
+use App\Http\Livewire\AttendanceListMyView;
 use App\Http\Livewire\AttendanceTableView;
 use App\Models\AttendanceData;
 use LaravelViews\LaravelViews;
@@ -32,6 +34,36 @@ class AttendanceController extends Controller
             ->layout('main-list', 'container', [
                 'title' => 'Users Attendance',
                 'refresh' => 'true',
+            ]);
+
+//        return view('user_employee_table', [
+//            'view' => $laravelViews
+//        ]);
+
+        return $laravelViews->render();
+    }
+
+    public function empAttendanceListView(LaravelViews $laravelViews)
+    {
+        $laravelViews->create(AttendanceListEmployeesView::class)
+            ->layout('main-list', 'container', [
+                'title' => 'Users Attendance',
+                'refresh' => 'true',
+            ]);
+
+//        return view('user_employee_table', [
+//            'view' => $laravelViews
+//        ]);
+
+        return $laravelViews->render();
+    }
+
+    public function myAttendanceListView(LaravelViews $laravelViews)
+    {
+        $laravelViews->create(AttendanceListMyView::class)
+            ->layout('main-list', 'container', [
+                'title' => 'My Attendance',
+                'refresh' => 'false',
             ]);
 
 //        return view('user_employee_table', [
