@@ -8,6 +8,7 @@ use App\Forms\Emp\EmployeeRegistrationForAttForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\UserEmployeeTableView;
 use App\Models\FormModels\EmpRegForAtt;
+use Illuminate\Http\RedirectResponse;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
 
@@ -30,13 +31,14 @@ class UserEmployeeController extends Controller
     {
         $form = $this->form(EmployeeRegistrationForAttForm::class, [
             'method' => 'POST',
-            'url' => route('emp-registration-att-store')
+            'url' => route('emp-registration-att-store'),
+            'employee' => true,
         ]);
 
         return view('layouts.hrms_forms', compact('form'));
     }
 
-    public function empRegistrationForAttFormStore()
+    public function empRegistrationForAttFormStore(): RedirectResponse
     {
         $form = $this->form(EmployeeRegistrationForAttForm::class);
 
@@ -56,8 +58,9 @@ class UserEmployeeController extends Controller
             $data['status'] = false;
             $data['message'] = "Employee Registration Has some errors please try again or contact Admin.";
         }
+        $data['user'] = true;
 
-        return redirect()->route('UsersList');
+        return redirect()->route('UsersList', $data);
     }
 
     /**
@@ -65,11 +68,12 @@ class UserEmployeeController extends Controller
      *
      * @return string
      */
-    public function index(LaravelViews $laravelViews)
+    public function index(LaravelViews $laravelViews): string
     {
         $laravelViews->create(UserEmployeeTableView::class)
             ->layout('main-list', 'container', [
-                'title' => 'Users List'
+                'title' => 'Users List',
+                'employee' => true,
             ]);
 
 //        return view('user_employee_table', [

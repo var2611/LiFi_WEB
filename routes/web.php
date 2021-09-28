@@ -23,16 +23,16 @@ Route::redirect('/', '/login');
 Auth::routes();
 
 Route::view('/dashboard', '/dashboard')->name('dashboard');
+Route::view('/demo_table', '/demo_table')->name('demo_table');
 
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/demo', [HomeController::class, 'demo'])->name('demo');
 
 
     Route::view('/dashboard', '/hrms.dashboard')->name('hr_dashboard');
     Route::view('/welcome', '/hrms.welcome')->name('hr_welcome');
-//    Route::view('/leave', '/hrms.leave.apply_leave')->name('leave');
-//    Route::view('/leave', '/hrms.leave.show_my_leave')->name('leave');
 
 
     Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('UsersList');
@@ -47,8 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
     /*
      * HRMS Forms --Start
     */
-    Route::get('/leave-type-edit', [LeaveController::class, 'editLeaveTypeView'])->name('leave-type-edit');
-    Route::get('/leave-type-store', [LeaveController::class, 'storeLeaveTypeView'])->name('leave-type-store');
+    Route::get('/leave-type-edit', [LeaveController::class, 'editLeaveTypeCreate'])->name('leave-type-edit');
+    Route::post('/leave-type-store', [LeaveController::class, 'storeLeaveTypeStore'])->name('leave-type-store');
 
     /*Leave Form*/
     Route::get('/leave-apply', [LeaveController::class, 'applyLeaveFormCreate'])->name('leave-apply');

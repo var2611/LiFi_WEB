@@ -25,6 +25,8 @@ class CreateCompaniesTable extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('logo')->nullable();
+            $table->string('background')->nullable();
+            $table->string('logo_dashboard')->nullable();
             $this->runColumns($table);
         });
     }

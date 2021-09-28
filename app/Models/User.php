@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -72,7 +74,7 @@ use Laravel\Passport\Token;
  * @property string|null $last_name
  * @method static Builder|User whereLastName($value)
  * @method static Builder|User whereSurname($value)
- * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static UserFactory factory(...$parameters)
  */
 class User extends Authenticatable
 {
@@ -125,19 +127,35 @@ class User extends Authenticatable
         return $this->where($customUsername, $username)->first();
     }
 
-    public function UserEmployee()
+    public function UserEmployee(): HasOne
     {
         return $this->hasOne(UserEmployee::class, 'user_id');
     }
 
-    public function isHR(){
+    /**
+     * @return bool
+     */
+    public function isHR(): bool
+    {
         $userRole = Auth::user()->UserEmployee->user_role_id;
         return $userRole == 3;
     }
 
-    public function isAdmin(){
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
         $userRole = Auth::user()->UserEmployee->user_role_id;
         return $userRole == 1;
+    }
+
+    /**
+     * @return Company|Builder
+     */
+    public function getCompanyData(): Company
+    {
+        return Company::whereId($this->getCompanyId())->first();
     }
 
     public function getCompanyId(): int

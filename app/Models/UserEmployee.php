@@ -75,4 +75,9 @@ class UserEmployee extends Model
     {
         return $this->belongsTo(UserRole::class, 'user_role_id');
     }
+
+    public function Company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
 }

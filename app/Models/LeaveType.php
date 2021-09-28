@@ -43,12 +43,22 @@ use Illuminate\Support\Carbon;
  */
 class LeaveType extends Model
 {
-    protected $fillable = array('leave_type', 'description');
+    protected $fillable = array('name', 'description', 'is_active', 'is_visible');
 
     public function leaveDraft(): HasOne
     {
         return $this->hasOne('App\Models\LeaveDraft', 'id', 'leave_type_id');
     }
 
+    public function createLeaveTypeModel($data): LeaveType
+    {
+        $leaveType = new LeaveType();
+        $leaveType->id = $data['id'] ?? null;
+        $leaveType->name = $data['name'];
+        $leaveType->description = $data['description'];
+        $leaveType->is_active = $data['is_active'] ?? null;
+        $leaveType->is_visible = $data['is_visible'] ?? null;
+        return $leaveType;
+    }
 
 }

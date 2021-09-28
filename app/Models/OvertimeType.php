@@ -37,5 +37,5 @@ use Illuminate\Support\Carbon;
  */
 class OvertimeType extends Model
 {
-
+    protected $fillable = array('name', 'is_active', 'is_visible');
 }

@@ -34,6 +34,7 @@ class AttendanceController extends Controller
             ->layout('main-list', 'container', [
                 'title' => 'Users Attendance',
                 'refresh' => 'true',
+                'att' => true,
             ]);
 
 //        return view('user_employee_table', [
@@ -43,12 +44,13 @@ class AttendanceController extends Controller
         return $laravelViews->render();
     }
 
-    public function empAttendanceListView(LaravelViews $laravelViews)
+    public function empAttendanceListView(LaravelViews $laravelViews): string
     {
         $laravelViews->create(AttendanceListEmployeesView::class)
             ->layout('main-list', 'container', [
                 'title' => 'Users Attendance',
                 'refresh' => 'true',
+                'att' => true,
             ]);
 
 //        return view('user_employee_table', [
@@ -58,12 +60,13 @@ class AttendanceController extends Controller
         return $laravelViews->render();
     }
 
-    public function myAttendanceListView(LaravelViews $laravelViews)
+    public function myAttendanceListView(LaravelViews $laravelViews): string
     {
         $laravelViews->create(AttendanceListMyView::class)
             ->layout('main-list', 'container', [
                 'title' => 'My Attendance',
                 'refresh' => 'false',
+                'att' => true,
             ]);
 
 //        return view('user_employee_table', [
@@ -78,7 +81,7 @@ class AttendanceController extends Controller
         $result = AttendanceData::whereId($id)
             ->first();
 //        $la = new AttendanceDetailView($id);
-        return view('main_detail', ['model' => $result])->render();
+        return view('main_detail', ['model' => $result, 'att' => true])->render();
     }
 
 }

@@ -5,16 +5,18 @@ namespace App\Http\Controllers\web;
 
 
 use App\Forms\Leave\ApplyLeaveForm;
+use App\Forms\Leave\EditLeaveTypeForm;
 use App\Forms\UserRoleForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\LeaveListEmployeesView;
 use App\Http\Livewire\LeaveListMyView;
 use App\Http\Livewire\LeaveTypeTableView;
-use App\Models\EmployeeLeave;
 use App\Models\FormModels\ApplyLeave;
+use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
@@ -52,7 +54,6 @@ class LeaveController extends Controller
         // Do saving and other things...
         $formData = $form->getFieldValues();
 
-        $employee_leave = new EmployeeLeave();
         $applyLeaveForm = new ApplyLeave($formData);
 
         $employee_leave = $applyLeaveForm->createEmployeeLeaveModel($applyLeaveForm);
@@ -66,19 +67,36 @@ class LeaveController extends Controller
 
     }
 
-    public function editLeaveTypeView()
+    public function editLeaveTypeCreate()
     {
         $title = "Apply Leave";
 
-        $model = new ApplyLeave(null);
-        $model->user_id = Auth::id();
-        $form = $this->form(UserRoleForm::class, [
+        $model = new LeaveType();
+        $form = $this->form(EditLeaveTypeForm::class, [
             'method' => 'POST',
             'model' => $model,
+            'leave' => true,
             'url' => route('leave-type-store')
         ]);
 
-        return view('layouts.hrms_forms', compact('form'));
+        return view('layouts.hrms_forms', compact('form'), ['leave' => true]);
+    }
+
+    public function storeLeaveTypeStore(): RedirectResponse
+    {
+        $form = $this->form(EditLeaveTypeForm::class);
+        $form->redirectIfNotValid();
+
+        $data = $form->getFieldValues();
+
+        $leaveType = (new LeaveType)->createLeaveTypeModel($data);
+        if ($leaveType->created_by == null) {
+            $leaveType->created_by = Auth::id();
+        }
+        $leaveType->updated_by = Auth::id();
+        $leaveType->save();
+
+        return redirect()->route('leave-type-list');
     }
 
     public function myLeaveListView(LaravelViews $laravelViews): string

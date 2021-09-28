@@ -49,6 +49,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Company whereUpdatedAt($value)
  * @method static Builder|Company whereUpdatedBy($value)
  * @mixin Eloquent
+ * @property string|null $background
+ * @property string|null $logo_dashboard
+ * @method static Builder|Company whereBackground($value)
+ * @method static Builder|Company whereLogoDashboard($value)
  */
 class Company extends Model
 {
@@ -62,6 +66,8 @@ class Company extends Model
         'latitude',
         'longitude',
         'logo',
+        'background',
+        'logo_dashboard',
         'created_by',
         'updated_by',
         'deleted_by',

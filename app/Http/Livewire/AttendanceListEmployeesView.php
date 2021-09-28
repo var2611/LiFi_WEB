@@ -26,7 +26,11 @@ class AttendanceListEmployeesView extends TableView
         $company_id = Auth::user()->getCompanyId();
         $data = AttendanceData::query();
 //        if ($company_id != 1) {
-        $data = $data->whereCompanyId($company_id);
+        if (Auth::user()->isAdmin()) {
+//            $data = $data->whereCompanyId($company_id);
+        } else {
+            $data = $data->whereCompanyId($company_id);
+        }
 //        }
         return $data->orderByDesc('id');
     }
@@ -39,13 +43,14 @@ class AttendanceListEmployeesView extends TableView
     public function headers(): array
     {
         return [
-            Header::title('ID')->sortBy('id'),
+//            Header::title('ID')->sortBy('id'),
             Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
             Header::title('Date'),
             Header::title('In Time')->sortBy('in_time'),
             Header::title('Out Time'),
             Header::title('Hours Worked'),
+            Header::title('Status')->sortBy('status'),
             Header::title('Status')->sortBy('status'),
             Header::title('Created at')->sortBy('created_at'),
         ];
@@ -67,7 +72,7 @@ class AttendanceListEmployeesView extends TableView
         }
 
         return [
-            $model->id,
+//            $model->id,
             $model->emp_code,
             $model->user_name,
             $model->date,
@@ -75,7 +80,7 @@ class AttendanceListEmployeesView extends TableView
             $model->out_time,
             $hours_worked . ' H',
             $model->status,
-            $model->created_at
+            $model->created_at,
         ];
     }
 

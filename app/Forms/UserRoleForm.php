@@ -15,6 +15,5 @@ class UserRoleForm extends Form
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);
-        ;
     }
 }

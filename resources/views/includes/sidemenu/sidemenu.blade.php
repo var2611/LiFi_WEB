@@ -1,0 +1,5 @@
+@extends('includes.sidemenu.main')
+@extends('includes.sidemenu.att-menu')
+@extends('includes.sidemenu.emp-menu')
+@extends('includes.sidemenu.leave-menu')
+@extends('includes.sidemenu.salary-menu')
