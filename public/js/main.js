@@ -1,5 +1,5 @@
 // Hide submenus
-$('#body-row .collapse').collapse('shown');
+// $('#body-row .collapse').collapse('shown');
 
 // Collapse/Expand icon
 $('#collapse-icon').addClass('fa-angle-double-left');
