@@ -153,9 +153,9 @@ class User extends Authenticatable
     /**
      * @return Company|Builder
      */
-    public function getCompanyData(): Company
+    public function getCompanyData(): ?Company
     {
-        return Company::whereId($this->getCompanyId())->first();
+        return Company::whereId($this->getCompanyId())->first() ?? null;
     }
 
     public function getCompanyId(): int

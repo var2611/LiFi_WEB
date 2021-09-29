@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -45,5 +46,21 @@ use Illuminate\Support\Carbon;
  */
 class EmpBankDetail extends Model
 {
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'bank_name',
+        'description',
+        'account_number',
+        'IFSC_code',
+        'is_active',
+        'is_visible',
+        'updated_by',
+        'created_by',
+        'deleted_by',
+        'deleted_at',
+    ];
+
 
 }

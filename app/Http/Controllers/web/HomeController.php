@@ -35,12 +35,8 @@ class HomeController extends Controller
 
     public function demo(LaravelViews $laravelViews)
     {
-        $data['tab1'] = $laravelViews->create(LeaveListMyView::class);
-
-        $data['tab2'] = $laravelViews->create(LeaveListEmployeesView::class);
-
-
-        return view('demo_table', $data);
+        notify()->connect('success', 'Updation','Employee Bank Details Updated Successfully.');
+        return view('demo_table');
 
     }
 }

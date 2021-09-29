@@ -5,7 +5,7 @@ namespace App\Forms\Salary;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
-class OverTimeTypeTypeForm extends Form
+class OverTimeTypeForm extends Form
 {
     public function buildForm()
     {

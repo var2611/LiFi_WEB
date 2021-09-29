@@ -13,7 +13,7 @@ use LaravelViews\Views\TableView;
 
 class AttendanceListEmployeesView extends TableView
 {
-    public $searchBy = ['name', 'emp_code'];
+    public $searchBy = ['user_name', 'emp_code'];
     protected $paginate = 20;
 
     /**

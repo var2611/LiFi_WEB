@@ -9,6 +9,7 @@ class EmployeeBankDetailForm extends Form
 {
     public function buildForm()
     {
+//        print_r($this->getModel());
         $this
             ->add('bank_name', Field::TEXT, [
                 'rules' => 'required|max:50'
@@ -17,7 +18,8 @@ class EmployeeBankDetailForm extends Form
                 'rules' => 'max:400'
             ])
             ->add('account_number', Field::NUMBER, [
-                'rules' => 'required|max:50',
+                'rules' => 'required',
+                'attr' => ['maxlength' => '25'],
                 'second_name' => 'account_number_confirmation',
             ])
             ->add('IFSC_code', Field::TEXT, [
@@ -34,7 +36,7 @@ class EmployeeBankDetailForm extends Form
             ])
             ->add('id', Field::HIDDEN, [
                 'value' => $this->getModel()->id ?? null
-            ])->add('id', Field::HIDDEN, [
+            ])->add('user_id', Field::HIDDEN, [
                 'value' => $this->getModel()->user_id ?? null
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [

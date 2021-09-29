@@ -1,16 +1,14 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
-
-function test()
-{
-//    print_r("test");
-}
 
 function sendSMS($mobile, $message)
 {
@@ -167,3 +165,6 @@ function getUserNameFromFlashCode($flash_code)
 
     return $userEmployee->User->name;
 }
+
+
+

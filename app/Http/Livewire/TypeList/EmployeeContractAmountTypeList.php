@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\TypeList;
 
-use App\Models\LeaveType;
+use App\Models\EmpContractAmountType;
+use App\Models\SalaryAllowanceType;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class LeaveTypeTableView extends TableView
+class EmployeeContractAmountTypeList extends TableView
 {
     /**
      * Sets a initial query with the data to fill the table
@@ -16,7 +17,7 @@ class LeaveTypeTableView extends TableView
      */
     public function repository(): Builder
     {
-        return LeaveType::query();
+        return EmpContractAmountType::query();
     }
 
     /**
@@ -29,7 +30,6 @@ class LeaveTypeTableView extends TableView
         return [
             Header::title('No')->sortBy('id'),
             Header::title('Name')->sortBy('name'),
-            Header::title('description'),
             Header::title('created at')->sortBy('created_at')
         ];
     }
@@ -37,14 +37,13 @@ class LeaveTypeTableView extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model LeaveType model for each row
+     * @param $model EmpContractAmountType model for each row
      */
     public function row($model): array
     {
         return [
             $model->id,
             $model->name,
-            $model->description,
             $model->created_at,
         ];
     }

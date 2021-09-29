@@ -23,57 +23,19 @@ class AttendanceController extends Controller
 //        $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return string
-     */
-    public function index(LaravelViews $laravelViews): string
+    public function index()
     {
-        $laravelViews->create(AttendanceTableView::class)
-            ->layout('main-list', 'container', [
-                'title' => 'Users Attendance',
-                'refresh' => 'true',
-                'att' => true,
-            ]);
 
-//        return view('user_employee_table', [
-//            'view' => $laravelViews
-//        ]);
-
-        return $laravelViews->render();
     }
 
     public function empAttendanceListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(AttendanceListEmployeesView::class)
-            ->layout('main-list', 'container', [
-                'title' => 'Users Attendance',
-                'refresh' => 'true',
-                'att' => true,
-            ]);
-
-//        return view('user_employee_table', [
-//            'view' => $laravelViews
-//        ]);
-
-        return $laravelViews->render();
+        return $this->createList($laravelViews, AttendanceListEmployeesView::class, 'Employees Attendance', 'att', true);
     }
 
     public function myAttendanceListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(AttendanceListMyView::class)
-            ->layout('main-list', 'container', [
-                'title' => 'My Attendance',
-                'refresh' => 'false',
-                'att' => true,
-            ]);
-
-//        return view('user_employee_table', [
-//            'view' => $laravelViews
-//        ]);
-
-        return $laravelViews->render();
+        return $this->createList($laravelViews, AttendanceListMyView::class, 'My Attendance', 'att');
     }
 
     public function att_view(string $id): string

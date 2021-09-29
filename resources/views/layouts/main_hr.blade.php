@@ -30,6 +30,7 @@
 
     @laravelViewsStyles
     @livewireStyles
+    @notifyCss
 </head>
 <body>
 <div id="app">
@@ -48,6 +49,8 @@
     </div>
     @yield('footer')
 </div>
+<x:notify-messages />
 @laravelViewsScripts
+@notifyJs
 </body>
 </html>

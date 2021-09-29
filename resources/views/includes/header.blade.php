@@ -1,4 +1,5 @@
-<?php $companyData = Auth::user()->getCompanyData(); ?>
+<?php $user = Auth::user() ?? null; $companyData = null; ?>
+<?php if ($user) $companyData = $user->getCompanyData() ?? null; ?>
 @section('header')
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
@@ -6,9 +7,9 @@
                   {{ config('app.name', 'Laravel') }}
                 </a>--}}
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ URL::asset("images/" . $companyData->logo ) ?? URL::asset("images/logo_nav.svg") }}"
-                    class="logo"
-                    alt="logo"></a>
+                <img src="{{ URL::asset($companyData ?"images/" . $companyData->logo : "images/logo_nav.svg"  ) }}"
+                     class="logo"
+                     alt="logo"></a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"

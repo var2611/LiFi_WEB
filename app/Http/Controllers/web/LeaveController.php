@@ -11,12 +11,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Livewire\LeaveListEmployeesView;
 use App\Http\Livewire\LeaveListMyView;
 use App\Http\Livewire\LeaveTypeTableView;
+use App\Http\Livewire\TypeList\LeaveTypeList;
 use App\Models\FormModels\ApplyLeave;
 use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
@@ -67,69 +67,31 @@ class LeaveController extends Controller
 
     }
 
-    public function editLeaveTypeCreate()
+    public function leaveTypeCreate(string $id = null)
     {
-        $title = "Apply Leave";
-
         $model = new LeaveType();
-        $form = $this->form(EditLeaveTypeForm::class, [
-            'method' => 'POST',
-            'model' => $model,
-            'leave' => true,
-            'url' => route('leave-type-store')
-        ]);
-
-        return view('layouts.hrms_forms', compact('form'), ['leave' => true]);
+        return $this->createForm($id, EditLeaveTypeForm::class, $model, route('leave-type-store'), 'leave');
     }
 
-    public function storeLeaveTypeStore(): RedirectResponse
+    public function leaveTypeStore(): string
     {
-        $form = $this->form(EditLeaveTypeForm::class);
-        $form->redirectIfNotValid();
-
-        $data = $form->getFieldValues();
-
-        $leaveType = (new LeaveType)->createLeaveTypeModel($data);
-        if ($leaveType->created_by == null) {
-            $leaveType->created_by = Auth::id();
-        }
-        $leaveType->updated_by = Auth::id();
-        $leaveType->save();
-
-        return redirect()->route('leave-type-list');
+        $model = new LeaveType();
+        return $this->saveFormData(EditLeaveTypeForm::class, $model, 'leave-type-list', 'leave', 'Leave Type');
     }
 
     public function myLeaveListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(LeaveListMyView::class)
-            ->layout('main-list', 'container', [
-                'title' => 'My Leave List',
-                'leave' => true,
-            ]);
-
-        return $laravelViews->render();
+        return $this->createList($laravelViews, LeaveListMyView::class, 'My Leave List', 'leave');
     }
 
     public function empLeaveListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(LeaveListEmployeesView::class)
-            ->layout('main-list', 'container', [
-                'title' => 'Employee Leave List',
-                'leave' => true,
-            ]);
-
-        return $laravelViews->render();
+        return $this->createList($laravelViews, LeaveListEmployeesView::class, 'Employee Leave List', 'leave');
     }
 
     public function typeLeaveListView(LaravelViews $laravelViews): string
     {
-        $laravelViews->create(LeaveTypeTableView::class)
-            ->layout('main-list', 'container', [
-                'title' => 'Leave Type List',
-                'leave' => true,
-            ]);
-
-        return $laravelViews->render();
+        return $this->createList($laravelViews, LeaveTypeList::class, 'Leave Type List', 'leave');
     }
 
     public function generate_pdf()

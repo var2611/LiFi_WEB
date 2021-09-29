@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
+use Kris\LaravelFormBuilder\FormBuilderTrait;
+use LaravelViews\LaravelViews;
 use Mockery\Exception;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, FormBuilderTrait;
 
     public $pole_fail_data_value = "00";
     public $pole_auth_value = "01";
@@ -91,11 +95,6 @@ class Controller extends BaseController
         $this->response['response_status'] = 1;
     }
 
-    public function return_response(): JsonResponse
-    {
-        return response()->json($this->response, $this->status, []);
-    }
-
     public function return_response_unauthorised(): JsonResponse
     {
         $this->set_return_response_unauthorised();
@@ -109,6 +108,11 @@ class Controller extends BaseController
         $this->response['message'] = $message;
         $this->response['api_status_code'] = 412;
         $this->response['response_status'] = 1;
+    }
+
+    public function return_response(): JsonResponse
+    {
+        return response()->json($this->response, $this->status, []);
     }
 
     /**
@@ -189,4 +193,75 @@ class Controller extends BaseController
         $this->response['response_status'] = 1;
     }
 
+    function createForm($id, string $className, Model $model, string $route, string $sidemenuName)
+    {
+        try {
+            if ($id) {
+                $model = $model->whereId($id)->first();
+            }
+
+            $form = $this->form($className, [
+                'method' => 'POST',
+                'model' => $model,
+                'url' => $route,
+                $sidemenuName => true,
+            ]);
+            return view('layouts.hrms_forms', compact('form'));
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
+    }
+
+    /**
+     * @param Controller $controller
+     * @param string $className
+     * @param Model $model
+     * @param string $route
+     * @param string $sidemenuName
+     * @param string $message
+     * @return string
+     */
+    function saveFormData(string $className, Model $model, string $route, string $sidemenuName, string $message): string
+    {
+        $form = $this->form($className);
+
+        $form->redirectIfNotValid();
+
+        // Do saving and other things...
+        $formData = $form->getFieldValues();
+        $attribute = null;
+        if ($formData['id'] == null) {
+            $formData['created_by'] = Auth::id();
+        } else {
+            $attribute['id'] = $formData['id'];
+        }
+        $formData['updated_by'] = Auth::id();
+
+        if ($attribute) {
+            $saveData = $model::updateOrCreate($attribute, $formData);
+        } else {
+            $saveData = $model::create($formData);
+        }
+
+        if ($saveData) {
+            notify()->success("$message Updated Successfully.");
+        } else {
+            notify()->error("$message Update has Some Issue Please try Again.");
+        }
+        $data[$sidemenuName] = true;
+
+        return redirect()->route($route, $data);
+    }
+
+    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, bool $refresh_page = false): string
+    {
+        $laravelViews->create($className)
+            ->layout('main-list', 'container', [
+                'title' => $title,
+                'refresh' => $refresh_page,
+                $sidemenuName => true,
+            ]);
+
+        return $laravelViews->render();
+    }
 }

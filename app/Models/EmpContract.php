@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -55,5 +56,24 @@ use Illuminate\Support\Carbon;
  */
 class EmpContract extends Model
 {
+    use HasFactory;
 
+    protected $fillable = [
+        'user_employee_id',
+        'name',
+        'description',
+        'date',
+        'start_date',
+        'end_date',
+        'days',
+        'status',
+        'emp_contract_amount_type_id',
+        'amount',
+        'is_active',
+        'is_visible',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'deleted_at',
+    ];
 }

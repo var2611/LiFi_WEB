@@ -172,7 +172,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
-
+        Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         /*
          * Application Service Providers...
          */

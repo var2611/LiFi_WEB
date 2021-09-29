@@ -20,7 +20,7 @@
     </div>--}}
 
     <div class="bg">
-        <img src="{{ URL::asset("images/rr_factory.jpg") }}" alt="bg">
+        <img src="{{ URL::asset("images/background_rr.jpg") }}" alt="bg">
         <div class="bg-image"></div>
         <div class="center text-white"><h1>Welcome</h1></div>
         <div class="center text-white mt-5">
