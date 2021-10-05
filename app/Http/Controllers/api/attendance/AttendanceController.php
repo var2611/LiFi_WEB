@@ -43,7 +43,7 @@ class AttendanceController extends Controller
                         $user = UserEmployee::whereEmpCode(strtoupper($emp_code))->first(['user_id']);
 
                         if ($user)
-                            $attendanceData = $attendanceData->whereUserId($user->user_id);
+                            $attendanceData = $attendanceData->where('attendances.user_id', $user->user_id);
                         else
                             $this->set_return_response_unsuccessful("Employee Code does not exist.");
                     }
