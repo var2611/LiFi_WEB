@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class EmployeeLeaveTableView extends TableView
+class ListEmployeeLeaveView extends TableView
 {
     public $searchBy = ['user.name', 'user.mobile', 'emp_code'];
 

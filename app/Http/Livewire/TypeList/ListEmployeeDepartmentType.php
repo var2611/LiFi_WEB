@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\TypeList;
 
-use App\Models\OvertimeType;
+use App\Models\EmpDepartmentType;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class OverTimeTypeList extends TableView
+class ListEmployeeDepartmentType extends TableView
 {
     /**
      * Sets a initial query with the data to fill the table
@@ -16,7 +16,7 @@ class OverTimeTypeList extends TableView
      */
     public function repository(): Builder
     {
-        return OvertimeType::query();
+        return EmpDepartmentType::query();
     }
 
     /**
@@ -36,7 +36,7 @@ class OverTimeTypeList extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model OvertimeType model for each row
+     * @param $model EmpDepartmentType model for each row
      */
     public function row($model): array
     {

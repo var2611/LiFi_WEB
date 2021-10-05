@@ -147,11 +147,15 @@ class UserController extends Controller
     /**
      * login api
      *
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
-    public function login()
+    public function login(): JsonResponse
     {
-        if (Auth::attempt(['mobile' => request('mobile'), 'password' => request('password')])) {
+        if (Auth::attempt(['mobile' => request('mobile'), 'password' => request('password')]) ||
+            Auth::attempt(['mobile' => request('email'), 'password' => request('password')]) ||
+            Auth::attempt(['email' => request('mobile'), 'password' => request('password')]) ||
+            Auth::attempt(['email' => request('email'), 'password' => request('password')])
+        ) {
 //        if (Auth::attempt(['mac_address' => request('mac_address'), 'password' => request('password')])) {
 
             $user = Auth::user();
@@ -191,8 +195,6 @@ class UserController extends Controller
         if ($this->ApiValidator($request->all(), $rules)) {
 
             try {
-
-
                 $input = $request->all();
                 $checkUserExist = User::whereEmail($input['email'])->first();
                 if (empty($checkUserExist)) {

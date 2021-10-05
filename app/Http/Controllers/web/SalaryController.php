@@ -19,7 +19,7 @@ class SalaryController extends Controller
     public function overTimeTypeStore(): string
     {
         $model = new OvertimeType();
-        return $this->saveFormData(OverTimeTypeForm::class, $model, 'leave-type-list', 'salary', 'Over Time Type');
+        return $this->formStore(OverTimeTypeForm::class, $model, 'list-leave-type', 'salary', 'Over Time Type');
     }
     public function salaryAllowanceTypeCreate(string $id = null)
     {
@@ -30,7 +30,7 @@ class SalaryController extends Controller
     public function salaryAllowanceTypeStore(): string
     {
         $model = new SalaryAllowanceType();
-        return $this->saveFormData(SalaryAllowanceTypeForm::class, $model, 'leave-type-list', 'salary', 'Salary Allowance Type');
+        return $this->formStore(SalaryAllowanceTypeForm::class, $model, 'list-leave-type', 'salary', 'Salary Allowance Type');
     }
 
 }

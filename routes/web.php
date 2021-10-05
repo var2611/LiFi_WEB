@@ -34,15 +34,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::view('/dashboard', '/hrms.dashboard')->name('hr_dashboard');
     Route::view('/welcome', '/hrms.welcome')->name('hr_welcome');
 
-    Route::get('/user_employee', [UserEmployeeController::class, 'index'])->name('UsersList');
+    Route::get('/list-employee', [UserEmployeeController::class, 'empList'])->name('list-employee');
+    Route::get('/list-role', [UserEmployeeController::class, 'userRoleList'])->name('list-role');
     Route::get('/attendance-list-emp', [AttendanceController::class, 'empAttendanceListView'])->name('attendance-list-emp');
     Route::get('/attendance-list-my', [AttendanceController::class, 'myAttendanceListView'])->name('attendance-list-my');
 
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
 
-    Route::get('/leave-type-list', [LeaveController::class, 'typeLeaveListView'])->name('leave-type-list');
-    Route::get('/leave-list-my', [LeaveController::class, 'myLeaveListView'])->name('leave-list-my');
-    Route::get('/leave-list-emp', [LeaveController::class, 'empLeaveListView'])->name('leave-list-emp');
+    Route::get('/list-leave-type', [LeaveController::class, 'listLeaveTypeView'])->name('list-leave-type');
+    Route::get('/list-leave-my', [LeaveController::class, 'listLeaveMyView'])->name('list-leave-my');
+    Route::get('/list-leave-emp', [LeaveController::class, 'listLeaveEmpView'])->name('list-leave-emp');
 
 
 
@@ -52,20 +53,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/leave-type-store', [LeaveController::class, 'leaveTypeStore'])->name('leave-type-store');
 
     /*Leave Form*/
-    Route::get('/leave-apply', [LeaveController::class, 'applyLeaveFormCreate'])->name('leave-apply');
+    Route::get('/edit-leave-apply', [LeaveController::class, 'applyLeaveFormCreate'])->name('edit-leave-apply');
     Route::post('/leave-store', [LeaveController::class, 'applyLeaveFormStore'])->name('leave-store');
 
     /*User Role Form*/
-    Route::get('/user-role-edit/{id?}', [UserRoleController::class, 'create'])->name('user-role-edit');
-    Route::post('/user-role-store', [UserRoleController::class, 'store'])->name('user-role-store');
+    Route::get('/user-role-edit/{id?}', [UserEmployeeController::class, 'userRoleFormCreate'])->name('user-role-edit');
+    Route::post('/user-role-store', [UserEmployeeController::class, 'userRoleFormStore'])->name('user-role-store');
 
     /*Employee Forms*/
     Route::get('/emp-registration-att-edit', [UserEmployeeController::class, 'empRegistrationForAttFormCreate'])->name('emp-registration-att-edit');
     Route::post('/emp-registration-att-store', [UserEmployeeController::class, 'empRegistrationForAttFormStore'])->name('emp-registration-att-store');
 
+    /*Employee Registration Forms*/
+    Route::get('/emp-registration-edit', [UserEmployeeController::class, 'empRegistrationFormCreate'])->name('emp-registration-edit');
+    Route::post('/emp-registration-store', [UserEmployeeController::class, 'empRegistrationFormStore'])->name('emp-registration-store');
+
     /*Employee Bank Detail Forms*/
     Route::get('/emp-bank-detail-edit/{id}', [UserEmployeeController::class, 'empBankDetailFormCreate'])->name('emp-bank-detail-edit');
     Route::post('/emp-bank-detail-store', [UserEmployeeController::class, 'empBankDetailFormStore'])->name('emp-bank-detail-store');
+
+    /*Employee Bank Detail Forms*/
+    Route::get('/emp-pf-detail-edit/{id}', [UserEmployeeController::class, 'empPFDetailFormCreate'])->name('emp-pf-detail-edit');
+    Route::post('/emp-pf-detail-store', [UserEmployeeController::class, 'empPFDetailFormStore'])->name('emp-pf-detail-store');
 
     /*Employee Contract Amount Type Forms*/
     Route::get('/emp-contract-amount-type-edit/{id?}', [UserEmployeeController::class, 'empContractAmountTypeFormCreate'])->name('emp-contract-amount-type-edit');
@@ -84,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/salary-allowance-type-store', [SalaryController::class, 'salaryAllowanceTypeStore'])->name('salary-allowance-type-store');
 
     Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
+    Route::get('/edit-user-profile/{id}', [UserEmployeeController::class, 'editUserProfile'])->name('edit-user-profile');
 
     //HRMS Forms --End
 });

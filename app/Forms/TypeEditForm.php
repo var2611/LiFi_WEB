@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Forms\Salary;
+namespace App\Forms;
 
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
-class OverTimeTypeForm extends Form
+class TypeEditForm extends Form
 {
     public function buildForm()
     {
         $this
             ->add('name', Field::TEXT, [
-                'rules' => 'required|max:25',
+                'rules' => 'required|max:25'
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],

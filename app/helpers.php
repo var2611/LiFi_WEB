@@ -1,12 +1,9 @@
 <?php
 
-use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
 
@@ -123,33 +120,47 @@ function att_register_user(string $mobile, string $name): ?User
     return null;
 }
 
-function att_register_new_employee($data, User $user): UserEmployee
+function att_register_new_employee($data, User $user): ?UserEmployee
 {
     $name = $data->name;
+    $user_id = $user->id ?? null;
     $last_name = $data->last_name ?? '';
     $surname = $data->surname ?? '';
     $emp_code = $data->emp_code;
-    $firebase_token = $data->firebase_token ?? '';
+    $firebase_token = $data->firebase_token ?? null;
     $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
 
-    $user->name = $name;
-    $user->surname = $surname;
-    $user->last_name = $last_name;
-    $user->firebase_token = $firebase_token;
-    $user->updated_by = Auth::user()->id;
-    $user->save();
+    if ($user_id) {
 
-    $userEmployee = new UserEmployee();
-    $userEmployee->user_id = $user->id;
-    $userEmployee->user_role_id = 2;
-    $userEmployee->company_id = $company_id;
-    $userEmployee->emp_code = $emp_code;
-    $userEmployee->flash_code = generate_random_unique_string();
-    $userEmployee->created_by = Auth::user()->id;
-    $userEmployee->updated_by = Auth::user()->id;
-    $userEmployee->save();
+        $user->name = $name;
+        $user->surname = $surname;
+        $user->last_name = $last_name;
+        if ($firebase_token) {
+            $user->firebase_token = $firebase_token;
+        }
+        $user->updated_by = Auth::user()->id;
+        $user->save();
 
-    return $userEmployee;
+        $userEmployee = UserEmployee::whereUserId($user_id)->first();
+        if (empty($userEmployee)) {
+            $userEmployee = new UserEmployee();
+            $userEmployee->user_id = $user_id;
+            $userEmployee->user_role_id = 2;
+            $userEmployee->company_id = $company_id;
+            $userEmployee->emp_code = strtoupper($emp_code);
+            $userEmployee->flash_code = generate_random_unique_string();
+            $userEmployee->created_by = Auth::user()->id;
+        } else {
+            $userEmployee->user_id = $user_id;
+            $userEmployee->company_id = $company_id;
+            $userEmployee->emp_code = strtoupper($emp_code);
+        }
+        $userEmployee->updated_by = Auth::user()->id;
+        $userEmployee->save();
+
+        return $userEmployee;
+    }
+    return null;
 }
 
 function getLeaveTypeIDByName(string $leave_type)
@@ -166,5 +177,10 @@ function getUserNameFromFlashCode($flash_code)
     return $userEmployee->User->name;
 }
 
-
-
+function apiAccessCheck(array $allowed_user_roles): bool
+{
+    if (Auth::user()->UserApi) {
+        return in_array(Auth::user()->UserApi->user_role_id, $allowed_user_roles);
+    } else
+        return false;
+}

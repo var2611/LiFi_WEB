@@ -64,7 +64,7 @@
                             <a href="{{ route('attendance-list-emp') }}">Attendance</a>
                         </li>
                         <li class="hide-desktop nav-item list-group-item">
-                            <a href="{{ route('UsersList') }}">Users</a>
+                            <a href="{{ route('list-employee') }}">Users</a>
                         </li>
                     @endguest
                 </ul>

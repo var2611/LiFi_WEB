@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class EmployeeContractAmountTypeList extends TableView
+class ListEmployeeContractAmountType extends TableView
 {
     /**
      * Sets a initial query with the data to fill the table

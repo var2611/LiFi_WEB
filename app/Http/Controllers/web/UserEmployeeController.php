@@ -7,18 +7,25 @@ namespace App\Http\Controllers\web;
 use App\Forms\Emp\EmployeeBankDetailForm;
 use App\Forms\Emp\EmployeeContractAmountTypeForm;
 use App\Forms\Emp\EmployeeDepartmentTypeForm;
+use App\Forms\Emp\EmployeePFDetailForm;
 use App\Forms\Emp\EmployeeRegistrationForAttForm;
+use App\Forms\Emp\EmployeeRegistrationForm;
+use App\Forms\TypeEditForm;
 use App\Http\Controllers\Controller;
-use App\Http\Livewire\UserEmployeeTableView;
+use App\Http\Livewire\ListEmployeeView;
+use App\Http\Livewire\TypeList\ListUserRole;
 use App\Models\EmpBankDetail;
 use App\Models\EmpContractAmountType;
 use App\Models\EmpDepartmentType;
-use App\Models\FormModels\EmpRegForAtt;
+use App\Models\EmpPfDetail;
+use App\Models\FormModels\EmpRegForData;
+use App\Models\User;
 use App\Models\UserEmployee;
+use App\Models\UserRole;
+use Auth;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
-use Request;
 
 class UserEmployeeController extends Controller
 {
@@ -34,24 +41,17 @@ class UserEmployeeController extends Controller
 
     public function empRegistrationForAttFormCreate()
     {
-        $form = $this->form(EmployeeRegistrationForAttForm::class, [
-            'method' => 'POST',
-            'url' => route('emp-registration-att-store'),
-            'employee' => true,
-        ]);
+        $model = new UserEmployee();
+        $form = $this->createFormData(null, EmployeeDepartmentTypeForm::class, $model, route('emp-registration-att-store'), 'employee');
 
         return view('layouts.hrms_forms', compact('form'));
     }
 
     public function empRegistrationForAttFormStore(): RedirectResponse
     {
-        $form = $this->form(EmployeeRegistrationForAttForm::class);
-
-        $form->redirectIfNotValid();
-
-        // Do saving and other things...
-        $formData = $form->getFieldValues();
-        $empRegForAttForm = new EmpRegForAtt($formData);
+        $formData = $this->formStoreData(EmployeeRegistrationForAttForm::class);
+        $empRegForAttForm = new EmpRegForData($formData);
+        $empRegForAttForm = $empRegForAttForm->attData();
 
         $user = att_register_user($empRegForAttForm->mobile, "New User");
         $user_employee = att_register_new_employee($empRegForAttForm, $user);
@@ -63,32 +63,106 @@ class UserEmployeeController extends Controller
         }
         $data['user'] = true;
 
-        return redirect()->route('UsersList', $data);
+        return redirect()->route('list-employee', $data);
+    }
+
+    public function empRegistrationFormCreate(string $id)
+    {
+        $form = $this->empRegistrationFormCreateData($id);
+        return $this->createFormView($form);
+    }
+
+    private function empRegistrationFormCreateData(string $id)
+    {
+        $model = User::where('users.id', $id)
+            ->join('user_employees', 'users.id', '=', 'user_employees.user_id')
+//            ->with(['UserEmployee:id,user_id,user_role_id,company_id,emp_code,flash_code'])
+            ->first([
+                'users.id',
+                'users.name',
+                'users.surname',
+                'users.last_name',
+                'users.mobile',
+                'users.email',
+                'users.password',
+                'users.firebase_token',
+                'users.mac_address',
+                'users.is_active',
+                'users.is_visible',
+                'users.created_by',
+                'users.updated_by',
+                'user_employees.user_role_id',
+                'user_employees.company_id',
+                'user_employees.emp_code',
+                'user_employees.flash_code',
+            ]);
+        return $this->createFormData(null, EmployeeRegistrationForm::class, $model, route('emp-registration-store'), 'employee');
+    }
+
+    public function empRegistrationFormStore(): RedirectResponse
+    {
+        $formData = $this->formStoreData(EmployeeRegistrationForm::class);
+
+        $empRegForm = new EmpRegForData($formData);
+        $empRegForm = $empRegForm->userData();
+        $empRegForm = $empRegForm->userEmpData();
+
+        $user = User::whereMobile($empRegForm->mobile)->first();
+        $user_employee = att_register_new_employee($empRegForm, $user);
+
+        $this->formStoreNotify($user_employee, 'Employee');
+        $data['employee'] = true;
+        $data['id'] = $user->id;
+
+        return redirect()->route('edit-user-profile', $data);
+    }
+
+    public function empPFDetailFormCreate(string $id)
+    {
+        $form = $this->empPFDetailFormCreateData($id);
+
+        return $this->createFormView($form);
+    }
+
+    private function empPFDetailFormCreateData(string $id)
+    {
+        $model = EmpPfDetail::whereUserId($id)->first();
+
+        if (!$model) {
+            $model = new EmpPfDetail();
+        }
+        return $this->createFormData(null, EmployeePFDetailForm::class, $model, route('emp-pf-detail-store'), 'employee');
+    }
+
+    public function empPFDetailFormStore(): string
+    {
+        $model = new EmpPfDetail();
+        return $this->formStore(EmployeePFDetailForm::class, $model, 'list-employee', 'employee', 'PF Detail');
     }
 
     public function empBankDetailFormCreate(string $id)
     {
-        $userEmployee = UserEmployee::whereUserId($id)->first();
+        $form = $this->empBankDetailFormCreateData($id);
+
+        return $this->createFormView($form);
+    }
+
+    private function empBankDetailFormCreateData(string $id)
+    {
         $model = EmpBankDetail::whereUserId($id)->first();
 
-        $form = $this->form(EmployeeBankDetailForm::class, [
-            'method' => 'POST',
-            'model' => $model,
-            'url' => route('emp-bank-detail-store'),
-            'employee' => true,
-        ]);
+        if (!$model) {
+            $model = new EmpBankDetail();
+        }
 
-        return view('layouts.hrms_forms', compact('form'));
+        return $this->createFormData(null, EmployeeBankDetailForm::class, $model, route('emp-bank-detail-store'), 'employee');
     }
 
     public function empBankDetailFormStore(): RedirectResponse
     {
-        $form = $this->form(EmployeeBankDetailForm::class);
+        $formData = $this->formStoreData(EmployeeBankDetailForm::class);
 
-        $form->redirectIfNotValid();
-
-        // Do saving and other things...
-        $formData = $form->getFieldValues();
+        $userID = $formData['user_id'];
         $attribute = null;
         if ($formData['id'] == null) {
             $formData['created_by'] = Auth::id();
@@ -97,19 +171,16 @@ class UserEmployeeController extends Controller
         }
         $saveData = EmpBankDetail::updateOrCreate($attribute, $formData);
 
-        if ($saveData) {
-            notify()->success('Employee Bank Details Updated Successfully.');
-        } else {
-            notify()->error('Employee Bank Details Update has Some Issue Please try Again.');
-        }
+        $this->formStoreNotify($saveData, 'Employee');
         $data['employee'] = true;
 
-        return redirect()->route('UsersList', $data);
+        return redirect()->route('edit - user - profile / ' . $userID, $data);
     }
 
     public function empContractAmountTypeFormCreate(string $id = null)
     {
         $model = new EmpContractAmountType();
+
         return $this->createForm($id, EmployeeContractAmountTypeForm::class, $model, route('emp-contract-amount-type-store'), 'employee');
 
     }
@@ -117,10 +188,23 @@ class UserEmployeeController extends Controller
     public function empContractAmountTypeFormStore(): string
     {
         $model = new EmpContractAmountType();
-        return $this->saveFormData(EmployeeContractAmountTypeForm::class, $model, 'UsersList', 'employee', 'Employee Contract Amount Type');
+
+        return $this->formStore(EmployeeContractAmountTypeForm::class, $model, 'list-employee', 'employee', 'Employee Contract Amount Type');
     }
 
-    public function empDepartmentTypeFormCreate(string $id = null)
+    public function userRoleFormCreate(string $id = null)
+    {
+        $model = new UserRole();
+        return $this->createForm($id, TypeEditForm::class, $model, route('user-role-store'), 'employee');
+    }
+
+    public function userRoleFormStore(): string
+    {
+        $model = new UserRole();
+        return $this->formStore(TypeEditForm::class, $model, 'list-role', 'employee', 'User Role');
+    }
+
+    public function empDepartmentTypeFormCreate(string $id)
     {
         $model = new EmpDepartmentType();
         return $this->createForm($id, EmployeeDepartmentTypeForm::class, $model, route('emp-department-type-store'), 'employee');
@@ -129,8 +213,7 @@ class UserEmployeeController extends Controller
     public function empDepartmentTypeFormStore(): string
     {
         $model = new EmpDepartmentType();
-
-        return $this->saveFormData(EmployeeDepartmentTypeForm::class, $model, 'UsersList', 'employee', 'Employee Department Type');
+        return $this->formStore(EmployeeDepartmentTypeForm::class, $model, 'list-employee', 'employee', 'Employee Department Type');
     }
 
     /**
@@ -140,8 +223,33 @@ class UserEmployeeController extends Controller
      * @param Request $request
      * @return string
      */
-    public function index(LaravelViews $laravelViews, Request $request): string
+    public function empList(LaravelViews $laravelViews, Request $request): string
     {
-        return $this->createList($laravelViews, UserEmployeeTableView::class, 'Users List', 'employee');
+        return $this->createList($laravelViews, ListEmployeeView::class, 'Employee list', 'employee');
+    }
+
+    public function userRoleList(LaravelViews $laravelViews): string
+    {
+        return $this->createList($laravelViews, ListUserRole::class, 'User Role list', 'employee');
+    }
+
+    public function editUserProfile(string $id)
+    {
+        $user = UserEmployee::whereUserId($id)->first();
+        if ($user) {
+            $data = array();
+            $data['formUserDetail'] = $this->empRegistrationFormCreateData($id);
+            $data['formOfficeTiming'] = $this->empBankDetailFormCreateData($id);
+            $data['formDepartmentDetail'] = $this->empBankDetailFormCreateData($id);
+            $data['formBankDetail'] = $this->empBankDetailFormCreateData($id);
+            $data['formPFDetail'] = $this->empPFDetailFormCreateData($id);
+
+            return view('hrms.edit-user-profile', ['data' => $data]);
+        } else {
+
+            $this->notifyMessage(false, 'Select user is invalid. Please Contact Site Administrator.');
+
+            return redirect()->route('list-employee');
+        }
     }
 }

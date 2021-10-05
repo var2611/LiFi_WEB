@@ -12,7 +12,10 @@ class EmployeePFDetailForm extends Form
         $this
             ->add('account_number', Field::NUMBER, [
                 'rules' => 'required|max:50',
+                'attr' => ['maxlength' => '25'],
                 'second_name' => 'account_number_confirmation',
+                'first_options' => ['label' => 'Account number'],
+                'second_options' => ['label' => 'Account number confirmation'],
             ])
             ->add('bank_name', Field::TEXT, [
                 'rules' => 'required|max:50'
@@ -34,7 +37,7 @@ class EmployeePFDetailForm extends Form
             ])
             ->add('id', Field::HIDDEN, [
                 'value' => $this->getModel()->id ?? null
-            ])->add('id', Field::HIDDEN, [
+            ])->add('user_id', Field::HIDDEN, [
                 'value' => $this->getModel()->user_id ?? null
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [

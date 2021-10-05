@@ -5,9 +5,8 @@ namespace App\Http\Controllers\web;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Livewire\AttendanceListEmployeesView;
-use App\Http\Livewire\AttendanceListMyView;
-use App\Http\Livewire\AttendanceTableView;
+use App\Http\Livewire\ListAttendanceEmployeesView;
+use App\Http\Livewire\ListAttendanceMyView;
 use App\Models\AttendanceData;
 use LaravelViews\LaravelViews;
 
@@ -30,12 +29,12 @@ class AttendanceController extends Controller
 
     public function empAttendanceListView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, AttendanceListEmployeesView::class, 'Employees Attendance', 'att', true);
+        return $this->createList($laravelViews, ListAttendanceEmployeesView::class, 'Employees Attendance', 'att', true);
     }
 
     public function myAttendanceListView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, AttendanceListMyView::class, 'My Attendance', 'att');
+        return $this->createList($laravelViews, ListAttendanceMyView::class, 'My Attendance', 'att');
     }
 
     public function att_view(string $id): string

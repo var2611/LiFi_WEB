@@ -12,7 +12,6 @@ class SalaryAllowanceTypeForm extends Form
         $this
             ->add('name', Field::TEXT, [
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->name ?? ''
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],

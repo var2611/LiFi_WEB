@@ -16,42 +16,34 @@ class SalaryForm extends Form
         $this
             ->add('name', Field::TEXT, [
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->name ?? ''
             ])
             ->add('contract_amount', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('total_days', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('present_days', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('absent_days', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('basic', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('hra', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('salary_amount', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
-                'value' => $this->getModel()->contract_amount
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],

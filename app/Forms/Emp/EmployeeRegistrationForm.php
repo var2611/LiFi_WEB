@@ -15,12 +15,13 @@ class EmployeeRegistrationForm extends Form
 
         $this
             ->add('emp_code', Field::TEXT, [
-                'rules' => 'required'
+                'rules' => 'required',
             ])
-            ->add('user_role', Field::SELECT, [
-                'choices' => Arr::pluck($user_role, 'name', 'id'),
-                'empty_value' => '=== Select User Role ==='
-            ])
+//            ->add('user_role', Field::SELECT, [
+//                'choices' => Arr::pluck($user_role, 'name', 'id'),
+//                'selected' => $this->getModel()->user_role_id,
+//                'empty_value' => '=== Select User Role ==='
+//            ])
             ->add('name', Field::TEXT, [
                 'rules' => 'required'
             ])
@@ -28,18 +29,19 @@ class EmployeeRegistrationForm extends Form
                 'rules' => 'required'
             ])
             ->add('last_name', Field::TEXT, [
-                'rules' => 'required'
+                'rules' => ''
             ])
             ->add('mobile', Field::NUMBER, [
                 'rules' => 'required'
             ])
             ->add('email', Field::EMAIL, [
-                'rules' => 'required'
-            ])
-            ->add('password', Field::TEXT, [
                 'rules' => 'required',
-                'second_name' => 'password_confirmation',
             ])
+//            ->add('password', 'repeated', [
+//                'type' => 'password',
+//                'rules' => 'required',
+//                'second_name' => 'password_confirmation',
+//            ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],
                 'selected' => $this->getModel()->is_active ?? 0,

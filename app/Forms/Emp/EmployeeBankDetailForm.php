@@ -17,10 +17,13 @@ class EmployeeBankDetailForm extends Form
             ->add('description', Field::TEXT, [
                 'rules' => 'max:400'
             ])
-            ->add('account_number', Field::NUMBER, [
+            ->add('account_number', 'repeated', [
+                'type' => 'number',
                 'rules' => 'required',
                 'attr' => ['maxlength' => '25'],
                 'second_name' => 'account_number_confirmation',
+                'first_options' => ['label' => 'Account number'],
+                'second_options' => ['label' => 'Account number confirmation'],
             ])
             ->add('IFSC_code', Field::TEXT, [
                 'rules' => 'required|max:50'

@@ -75,6 +75,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereLastName($value)
  * @method static Builder|User whereSurname($value)
  * @method static UserFactory factory(...$parameters)
+ * @property-read UserApi|null $UserApi
  */
 class User extends Authenticatable
 {
@@ -132,6 +133,11 @@ class User extends Authenticatable
         return $this->hasOne(UserEmployee::class, 'user_id');
     }
 
+    public function UserApi(): HasOne
+    {
+        return $this->hasOne(UserApi::class, 'user_id');
+    }
+
     /**
      * @return bool
      */
@@ -158,8 +164,13 @@ class User extends Authenticatable
         return Company::whereId($this->getCompanyId())->first() ?? null;
     }
 
-    public function getCompanyId(): int
+    public function getCompanyId(): ?int
     {
-        return Auth::user()->UserEmployee->company_id;
+        if (Auth::user()->UserEmployee)
+            return Auth::user()->UserEmployee->company_id;
+        elseif (Auth::user()->UserApi)
+            return Auth::user()->UserApi->company_id;
+        else
+            return null;
     }
 }

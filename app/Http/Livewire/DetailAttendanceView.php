@@ -6,7 +6,7 @@ use App\Models\AttendanceData;
 use Carbon\Carbon;
 use LaravelViews\Views\DetailView;
 
-class AttendanceDetailView extends DetailView
+class DetailAttendanceView extends DetailView
 {
     public $title = "Title";
     public $subtitle = "Subtitle or description";

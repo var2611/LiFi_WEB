@@ -6,12 +6,12 @@ namespace App\Http\Controllers\web;
 
 use App\Forms\Leave\ApplyLeaveForm;
 use App\Forms\Leave\EditLeaveTypeForm;
-use App\Forms\UserRoleForm;
+use App\Forms\TypeEditForm;
 use App\Http\Controllers\Controller;
-use App\Http\Livewire\LeaveListEmployeesView;
-use App\Http\Livewire\LeaveListMyView;
+use App\Http\Livewire\ListLeaveEmployeesView;
+use App\Http\Livewire\ListLeaveMyView;
 use App\Http\Livewire\LeaveTypeTableView;
-use App\Http\Livewire\TypeList\LeaveTypeList;
+use App\Http\Livewire\TypeList\ListLeaveType;
 use App\Models\FormModels\ApplyLeave;
 use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
@@ -63,7 +63,7 @@ class LeaveController extends Controller
         $employee_leave->updated_by = Auth::id();
         $employee_leave->save();
 
-        return redirect()->route('leave-list-my');
+        return redirect()->route('list-leave-my');
 
     }
 
@@ -76,29 +76,29 @@ class LeaveController extends Controller
     public function leaveTypeStore(): string
     {
         $model = new LeaveType();
-        return $this->saveFormData(EditLeaveTypeForm::class, $model, 'leave-type-list', 'leave', 'Leave Type');
+        return $this->formStore(EditLeaveTypeForm::class, $model, 'list-leave-type', 'leave', 'Leave Type');
     }
 
-    public function myLeaveListView(LaravelViews $laravelViews): string
+    public function listLeaveMyView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, LeaveListMyView::class, 'My Leave List', 'leave');
+        return $this->createList($laravelViews, ListLeaveMyView::class, 'My Leave List', 'leave');
     }
 
-    public function empLeaveListView(LaravelViews $laravelViews): string
+    public function listLeaveEmpView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, LeaveListEmployeesView::class, 'Employee Leave List', 'leave');
+        return $this->createList($laravelViews, ListLeaveEmployeesView::class, 'Employee Leave List', 'leave');
     }
 
-    public function typeLeaveListView(LaravelViews $laravelViews): string
+    public function listLeaveTypeView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, LeaveTypeList::class, 'Leave Type List', 'leave');
+        return $this->createList($laravelViews, ListLeaveType::class, 'Leave Type List', 'leave');
     }
 
     public function generate_pdf()
     {
         $model = new ApplyLeave(null);
         $model->user_id = Auth::id();
-        $form = $this->form(UserRoleForm::class, [
+        $form = $this->form(TypeEditForm::class, [
             'method' => 'POST',
             'model' => $model,
             'url' => route('leave-type-store')

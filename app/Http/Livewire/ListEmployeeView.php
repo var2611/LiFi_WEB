@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\User;
 use App\Models\UserEmployee;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class UserEmployeeTableView extends TableView
+class ListEmployeeView extends TableView
 {
-    public $searchBy = ['user.name', 'user.mobile', 'emp_code'];
+    public $searchBy = ['name', 'mobile', 'UserEmployee.emp_code'];
     protected $paginate = 20;
 
     /**
@@ -23,11 +25,15 @@ class UserEmployeeTableView extends TableView
         $user = Auth::user();
         $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
 
-        $data = UserEmployee::query()
-            ->with(['User', 'UserRole']);
+        $data = User::query()
+            ->with(['UserEmployee', 'UserEmployee.UserRole:id,name']);
 
         if ($company_id != 1) {
-            $data = $data->whereCompanyId($company_id);
+            $data->whereHas('UserEmployee', function ($q) use ($company_id) {
+                $q->where('company_id', '=', $company_id);
+//                $q->where('user_id', '=', 'users.id');
+            });
+//            $data = $data->whereCompanyId($company_id);
         }
 
         return $data;
@@ -53,17 +59,24 @@ class UserEmployeeTableView extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model UserEmployee model for each row
+     * @param $model User model for each row
      */
     public function row($model): array
     {
         return [
-            $model->emp_code,
-            $model->User->name,
-            $model->User->surname,
-            $model->User->mobile,
-            $model->flash_code,
+            $model->UserEmployee->emp_code ?? '',
+            $model->name,
+            $model->surname,
+            $model->mobile,
+            $model->UserEmployee->flash_code ?? '',
             $model->created_at->diffForHumans()
+        ];
+    }
+
+    protected function actionsByRow()
+    {
+        return [
+            new RedirectAction("edit-user-profile", 'See user', 'edit'),
         ];
     }
 }

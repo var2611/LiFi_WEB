@@ -9,15 +9,15 @@
     </a>
     <!-- Submenu content -->
     <div id='submenu2' class="collapse sidebar-submenu {{ isset($leave) ? 'show' : '' }}">
-        <a href="{{ route('leave-apply') }}" class="list-group-item list-group-item-action bg-dark text-white">
+        <a href="{{ route('edit-leave-apply') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Apply leave</span>
         </a>
-        <a href="{{ route('leave-list-my') }}"
+        <a href="{{ route('list-leave-my') }}"
            class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">My leave list</span>
         </a>
         @if(Auth::user()->isHR() || Auth::user()->isAdmin())
-            <a href="{{ route('leave-list-emp') }}"
+            <a href="{{ route('list-leave-emp') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Employee Leave List</span>
             </a>
@@ -25,7 +25,7 @@
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Edit Leave Type</span>
             </a>
-            <a href="{{ route('leave-type-list') }}"
+            <a href="{{ route('list-leave-type') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Leave Type List</span>
             </a>

@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\TypeList;
 
-use App\Models\LeaveType;
+use App\Models\OvertimeType;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class LeaveTypeList extends TableView
+class ListOverTimeType extends TableView
 {
     /**
      * Sets a initial query with the data to fill the table
@@ -16,7 +16,7 @@ class LeaveTypeList extends TableView
      */
     public function repository(): Builder
     {
-        return LeaveType::query();
+        return OvertimeType::query();
     }
 
     /**
@@ -29,7 +29,6 @@ class LeaveTypeList extends TableView
         return [
             Header::title('No')->sortBy('id'),
             Header::title('Name')->sortBy('name'),
-            Header::title('description'),
             Header::title('created at')->sortBy('created_at')
         ];
     }
@@ -37,14 +36,13 @@ class LeaveTypeList extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model LeaveType model for each row
+     * @param $model OvertimeType model for each row
      */
     public function row($model): array
     {
         return [
             $model->id,
             $model->name,
-            $model->description,
             $model->created_at,
         ];
     }

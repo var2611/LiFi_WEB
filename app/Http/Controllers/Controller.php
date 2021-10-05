@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Livewire\TypeList\ListUserRole;
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -193,27 +195,44 @@ class Controller extends BaseController
         $this->response['response_status'] = 1;
     }
 
-    function createForm($id, string $className, Model $model, string $route, string $sidemenuName)
+    function createForm(string $id = null, string $className, Model $model, string $route, string $sidemenuName)
+    {
+        try {
+            $form = $this->createFormData($id, $className, $model, $route, $sidemenuName);
+            return $this->createFormView($form);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
+    }
+
+    function createFormData(string $id = null, string $className, Model $model = null, string $route, string $sidemenuName)
     {
         try {
             if ($id) {
                 $model = $model->whereId($id)->first();
             }
 
-            $form = $this->form($className, [
+            return $this->form($className, [
                 'method' => 'POST',
                 'model' => $model,
                 'url' => $route,
                 $sidemenuName => true,
             ]);
-            return view('layouts.hrms_forms', compact('form'));
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
+    function createFormView($form)
+    {
+        try {
+            return view('layouts.hrms_forms', compact('form'));
+        } catch (\Exception $exception) {
+
+        }
+    }
+
     /**
-     * @param Controller $controller
      * @param string $className
      * @param Model $model
      * @param string $route
@@ -221,14 +240,30 @@ class Controller extends BaseController
      * @param string $message
      * @return string
      */
-    function saveFormData(string $className, Model $model, string $route, string $sidemenuName, string $message): string
+    function formStore(string $className, Model $model, string $route, string $sidemenuName, string $message): string
+    {
+        $formData = $this->formStoreData($className);
+
+        $saveData = $this->formStoreSaveModel($formData, $model);
+
+        $this->formStoreNotify($saveData, $message);
+
+        $data[$sidemenuName] = true;
+
+        return redirect()->route($route, $data);
+    }
+
+    function formStoreData(string $className): array
     {
         $form = $this->form($className);
-
         $form->redirectIfNotValid();
 
         // Do saving and other things...
-        $formData = $form->getFieldValues();
+        return $form->getFieldValues();
+    }
+
+    function formStoreSaveModel($formData, Model $model)
+    {
         $attribute = null;
         if ($formData['id'] == null) {
             $formData['created_by'] = Auth::id();
@@ -243,19 +278,22 @@ class Controller extends BaseController
             $saveData = $model::create($formData);
         }
 
+        return $saveData;
+    }
+
+    function formStoreNotify($saveData, $message)
+    {
         if ($saveData) {
             notify()->success("$message Updated Successfully.");
         } else {
             notify()->error("$message Update has Some Issue Please try Again.");
         }
-        $data[$sidemenuName] = true;
-
-        return redirect()->route($route, $data);
     }
 
     function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, bool $refresh_page = false): string
     {
-        $laravelViews->create($className)
+        $laravelViews
+            ->create($className)
             ->layout('main-list', 'container', [
                 'title' => $title,
                 'refresh' => $refresh_page,
@@ -263,5 +301,14 @@ class Controller extends BaseController
             ]);
 
         return $laravelViews->render();
+    }
+
+    function notifyMessage(bool $is_success, $message)
+    {
+        if ($is_success) {
+            notify()->success("$message");
+        } else {
+            notify()->error("$message");
+        }
     }
 }

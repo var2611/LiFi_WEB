@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\attendance\AttendanceController;
 use App\Http\Controllers\api\attendance\LiFiAttendanceController;
 use App\Http\Controllers\api\pole\LiFiPoleController;
 use App\Http\Controllers\api\pole\PoleController;
@@ -69,6 +70,7 @@ Route::post('att/checkUserRegistration', [UserController::class, 'att_check_user
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('demoV', [TestController::class, 'demoV']);
 
+    Route::post('get-attendance', [AttendanceController::class, 'getAttendance']);
     Route::post('userDetails', [UserController::class, 'user_details']);
 
     Route::post('poleMain', [PoleController::class, 'poleMain']);

@@ -9,7 +9,7 @@ use LaravelViews\Facades\Header;
 use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 
-class LeaveListMyView extends TableView
+class ListLeaveMyView extends TableView
 {
     public $searchBy = ['user.name', 'user.mobile', 'emp_code'];
 

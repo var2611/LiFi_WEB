@@ -2,13 +2,23 @@
 
 namespace App\Http\Livewire\TypeList;
 
-use App\Models\EmpDepartmentType;
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
+use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
+use LaravelViews\Views\Traits\WithAlerts;
 
-class EmployeeDepartmentTypeList extends TableView
+class ListUserRole extends TableView
 {
+    use WithAlerts;
+
+    public $searchBy = ['name'];
+    /** After */
+//    protected $model = UserRole::class;
+
+    /** Before */
     /**
      * Sets a initial query with the data to fill the table
      *
@@ -16,7 +26,7 @@ class EmployeeDepartmentTypeList extends TableView
      */
     public function repository(): Builder
     {
-        return EmpDepartmentType::query();
+        return UserRole::query()->whereIsVisible(0);
     }
 
     /**
@@ -36,14 +46,27 @@ class EmployeeDepartmentTypeList extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model EmpDepartmentType model for each row
+     * @param $model UserRole model for each row
      */
-    public function row($model): array
+    public function row(UserRole $model): array
     {
         return [
             $model->id,
-            $model->name,
+            UI::editable($model, 'name'),
             $model->created_at,
+        ];
+    }
+
+    public function update(UserRole $model, $data)
+    {
+        $model->update($data);
+        $this->success();
+    }
+
+    protected function actionsByRow()
+    {
+        return [
+            new RedirectAction("user-role-edit", 'See user', 'edit'),
         ];
     }
 }
