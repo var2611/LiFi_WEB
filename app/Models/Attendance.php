@@ -62,6 +62,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Attendance whereBreakInTime($value)
  * @method static Builder|Attendance whereBreakOutTime($value)
  * @method static Builder|Attendance whereBreakTime($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttBreak[] $AttBreak
+ * @property-read int|null $att_break_count
  */
 class Attendance extends Model
 {

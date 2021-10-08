@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -53,13 +54,16 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpContract whereUpdatedBy($value)
  * @method static Builder|EmpContract whereUserEmployeeId($value)
  * @mixin Eloquent
+ * @property int $user_id
+ * @property-read User $User
+ * @method static Builder|EmpContract whereUserId($value)
  */
 class EmpContract extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_employee_id',
+        'user_id',
         'name',
         'description',
         'date',
@@ -76,4 +80,9 @@ class EmpContract extends Model
         'deleted_by',
         'deleted_at',
     ];
+
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
 }

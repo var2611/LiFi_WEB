@@ -259,3 +259,9 @@ function checkOutMissingEntry()
         }
     }
 }
+
+function getUserFullName(int $id): string
+{
+    $user = User::whereId($id)->first();
+    return $user->name . ' ' . ($user->last_name ? $user->last_name . ' ' : '' ). $user->surname;
+}

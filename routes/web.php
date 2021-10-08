@@ -79,6 +79,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/emp-pf-detail-store', [UserEmployeeController::class, 'empPFDetailFormStore'])->name('emp-pf-detail-store');
 
     /*Employee Contract Amount Type Forms*/
+    Route::get('/emp-contract-edit/{id?}', [UserEmployeeController::class, 'empContractFormCreate'])->name('emp-contract-edit');
+    Route::post('/emp-contract-store', [UserEmployeeController::class, 'empContractFormStore'])->name('emp-contract-store');
+
+    /*Employee Contract Amount Type Forms*/
     Route::get('/emp-contract-amount-type-edit/{id?}', [UserEmployeeController::class, 'empContractAmountTypeFormCreate'])->name('emp-contract-amount-type-edit');
     Route::post('/emp-contract-amount-type-store', [UserEmployeeController::class, 'empContractAmountTypeFormStore'])->name('emp-contract-amount-type-store');
 

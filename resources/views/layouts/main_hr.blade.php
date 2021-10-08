@@ -31,6 +31,21 @@
     @laravelViewsStyles
     @livewireStyles
     @notifyCss
+
+    <script type="text/javascript">
+        function GetDays(){
+            var dropdt = new Date(document.getElementById("end_date").value);
+            var pickdt = new Date(document.getElementById("start_date").value);
+            return parseInt((dropdt - pickdt) / (24 * 3600 * 1000));
+        }
+
+        function cal(){
+            if(document.getElementById("end_date")){
+                document.getElementById("days").value=GetDays();
+            }
+        }
+
+    </script>
 </head>
 <body>
 <div id="app">
@@ -52,5 +67,6 @@
 <x:notify-messages/>
 @laravelViewsScripts
 @notifyJs
+
 </body>
 </html>

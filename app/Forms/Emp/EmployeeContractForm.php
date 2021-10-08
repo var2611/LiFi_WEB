@@ -15,32 +15,39 @@ class EmployeeContractForm extends Form
 
         $this
             ->add('name', Field::TEXT, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25'
             ])
             ->add('description', Field::TEXT, [
                 'rules' => 'max:400'
             ])
             ->add('date', Field::DATE, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required'
             ])
             ->add('start_date', Field::DATE, [
+                'attr' => ['onchange' => 'cal()'],
+                'id' => 'start_date',
                 'rules' => 'required'
             ])
             ->add('end_date', Field::DATE, [
+                'attr' => ['onchange' => 'cal()'],
+                'id' => 'end_date',
                 'rules' => 'required'
             ])
             ->add('days', Field::TEXT, [
-                'rules' => 'required'
+                'id' => 'days',
+                'rules' => 'required|numeric|gt:0'
             ])
             ->add('status', Field::TEXT, [
                 'rules' => 'required'
             ])
-            ->add('emp_contract_amount_type_id', Field::TEXT, [
+            ->add('emp_contract_amount_type_id', Field::SELECT, [
                 'choices' => Arr::pluck($data, 'name', 'id'),
                 'empty_value' => '=== Select Type ==='
             ])
             ->add('amount', Field::TEXT, [
-                'rules' => 'required'
+                'rules' => 'required|numeric|gt:0'
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],
@@ -52,8 +59,8 @@ class EmployeeContractForm extends Form
                 'selected' => '0',
                 'empty_value' => '=== Select Type ==='
             ])
-            ->add('user_employee_id', Field::HIDDEN, [
-                'value' => $this->getModel()->user_employee_id ?? null
+            ->add('user_id', Field::HIDDEN, [
+                'value' => $this->getModel()->USER_id ?? null
             ])
             ->add('id', Field::HIDDEN, [
                 'value' => $this->getModel()->id ?? null

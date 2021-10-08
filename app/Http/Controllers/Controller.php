@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
-use Kris\LaravelFormBuilder\FormBuilder;
+use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
 use Mockery\Exception;
+use Redirect;
 
 class Controller extends BaseController
 {
@@ -200,18 +205,29 @@ class Controller extends BaseController
      * @param Model $model
      * @param string $route
      * @param string $sidemenuName
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
+     * @param string $view
+     * @return Application|Factory|RedirectResponse|View
      */
-    function createForm(string $id = null, string $className, Model $model, string $route, string $sidemenuName)
+    function createForm(string $id = null, string $className, Model $model, string $route, string $sidemenuName, string $view = 'layouts.hrms_forms')
     {
         try {
             $form = $this->createFormData($id, $className, $model, $route, $sidemenuName);
-            return $this->createFormView($form);
+            return $this->createFormView($form, $view);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
+            $this->notifyMessage(false, 'Site Error : ' . $exception->getMessage());
+            return Redirect::back();
         }
     }
 
+    /**
+     * @param string|null $id
+     * @param string $className
+     * @param Model|null $model
+     * @param string $route
+     * @param string $sidemenuName
+     * @return Form|RedirectResponse
+     */
     function createFormData(string $id = null, string $className, Model $model = null, string $route, string $sidemenuName)
     {
         try {
@@ -227,15 +243,33 @@ class Controller extends BaseController
             ]);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
+            $this->notifyMessage(false, 'Site Error : ' . $exception->getMessage());
+            return Redirect::back();
         }
     }
 
-    function createFormView($form)
+    function notifyMessage(bool $is_success, $message)
+    {
+        if ($is_success) {
+            notify()->success("$message");
+        } else {
+            notify()->error("$message");
+        }
+    }
+
+    /**
+     * @param $form
+     * @param string $view
+     * @return Application|Factory|RedirectResponse|View
+     */
+    function createFormView($form, string $view = 'layouts.hrms_forms')
     {
         try {
-            return view('layouts.hrms_forms_two_col', compact('form'));
+            return view($view, compact('form'));
         } catch (\Exception $exception) {
-
+            echo $exception->getMessage();
+            $this->notifyMessage(false, 'Site Error : ' . $exception->getMessage());
+            return Redirect::back();
         }
     }
 
@@ -245,18 +279,13 @@ class Controller extends BaseController
      * @param string $route
      * @param string $sidemenuName
      * @param string $message
-     * @return string
+     * @return void
      */
     function formStore(string $className, Model $model, string $route, string $sidemenuName, string $message)
     {
         $formData = $this->formStoreData($className);
 
-        $form = $this->form($className, [
-            'model' => $model
-        ]);
-
-
-        echo json_encode($form->getFieldValues());
+        echo json_encode($formData);
 
 //        $saveData = $this->formStoreSaveModel($formData, $model);
 //
@@ -315,14 +344,5 @@ class Controller extends BaseController
             ]);
 
         return $laravelViews->render();
-    }
-
-    function notifyMessage(bool $is_success, $message)
-    {
-        if ($is_success) {
-            notify()->success("$message");
-        } else {
-            notify()->error("$message");
-        }
     }
 }

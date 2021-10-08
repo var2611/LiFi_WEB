@@ -24,9 +24,13 @@ class ApplyLeaveForm extends Form
                 'empty_value' => '=== Select Type ==='
             ])
             ->add('date_from', Field::DATE, [
+                'attr' => ['onchange' => 'cal()'],
+                'id' => 'start_date',
                 'rules' => 'required'
             ])
             ->add('date_to', Field::DATE, [
+                'attr' => ['onchange' => 'cal()'],
+                'id' => 'end_date',
                 'rules' => 'required'
             ])
             ->add('from_time', Field::TIME, [
@@ -36,6 +40,7 @@ class ApplyLeaveForm extends Form
                 'rules' => 'required'
             ])
             ->add('days', Field::TEXT, [
+                'id' => 'days',
                 'rules' => 'required|min:1',
             ])
             ->add('reason', Field::TEXTAREA, [
