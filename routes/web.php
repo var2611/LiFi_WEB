@@ -44,6 +44,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/list-leave-type', [LeaveController::class, 'listLeaveTypeView'])->name('list-leave-type');
     Route::get('/list-leave-my', [LeaveController::class, 'listLeaveMyView'])->name('list-leave-my');
     Route::get('/list-leave-emp', [LeaveController::class, 'listLeaveEmpView'])->name('list-leave-emp');
+    Route::get('/list-salary-allowance-type', [SalaryController::class, 'salaryAllowanceTypeList'])->name('list-salary-allowance-type');
+    Route::get('/list-overtime-type', [SalaryController::class, 'overtimeTypeList'])->name('list-overtime-type');
 
 
 
@@ -72,7 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/emp-bank-detail-edit/{id}', [UserEmployeeController::class, 'empBankDetailFormCreate'])->name('emp-bank-detail-edit');
     Route::post('/emp-bank-detail-store', [UserEmployeeController::class, 'empBankDetailFormStore'])->name('emp-bank-detail-store');
 
-    /*Employee Bank Detail Forms*/
+    /*Employee PF Detail Forms*/
     Route::get('/emp-pf-detail-edit/{id}', [UserEmployeeController::class, 'empPFDetailFormCreate'])->name('emp-pf-detail-edit');
     Route::post('/emp-pf-detail-store', [UserEmployeeController::class, 'empPFDetailFormStore'])->name('emp-pf-detail-store');
 
@@ -85,11 +87,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/emp-department-type-store', [UserEmployeeController::class, 'empDepartmentTypeFormStore'])->name('emp-department-type-store');
 
     /*Over Time Type Forms*/
-    Route::get('/over-time-type-edit/{id?}', [SalaryController::class, 'overTimeTypeCreate'])->name('over-time-type-edit');
-    Route::post('/over-time-type-store', [SalaryController::class, 'overTimeTypeStore'])->name('over-time-type-store');
+    Route::get('/overtime-type-edit/{id?}', [SalaryController::class, 'overTimeTypeCreate'])->name('overtime-type-edit');
+    Route::post('/overtime-type-store', [SalaryController::class, 'overTimeTypeStore'])->name('overtime-type-store');
 
     /*Salary Allowance Type Forms*/
     Route::get('/salary-allowance-type-edit/{id?}', [SalaryController::class, 'salaryAllowanceTypeCreate'])->name('salary-allowance-type-edit');
+    Route::post('/salary-allowance-type-store', [SalaryController::class, 'salaryAllowanceTypeStore'])->name('salary-allowance-type-store');
+
+    /*Salary Forms*/
+    Route::get('/salary-edit/{id?}', [SalaryController::class, 'salaryCreate'])->name('salary-edit');
     Route::post('/salary-allowance-type-store', [SalaryController::class, 'salaryAllowanceTypeStore'])->name('salary-allowance-type-store');
 
     Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');

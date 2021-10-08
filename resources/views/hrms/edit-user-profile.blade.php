@@ -26,10 +26,10 @@
             {!! form($data['formUserDetail']) !!}
         </div>
         <div class="tab-pane fade" role="tabpanel" id="tab_tab2">
-            {!! form($data['formOfficeTiming']) !!}
+{{--            {!! form($data['formOfficeTiming']) !!}--}}
         </div>
         <div class="tab-pane fade" role="tabpanel" id="tab_tab3">
-            {!! form($data['formDepartmentDetail']) !!}
+{{--            {!! form($data['formDepartmentDetail']) !!}--}}
         </div>
         <div class="tab-pane fade" role="tabpanel" id="tab_tab4">
             {!! form($data['formBankDetail']) !!}

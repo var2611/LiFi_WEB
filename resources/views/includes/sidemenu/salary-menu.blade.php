@@ -9,16 +9,16 @@
     </a>
 
     <div id='submenu3' class="collapse sidebar-submenu">
-        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+        <a href="{{ route('list-salary-allowance-type') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Allowance Types</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+        <a href="{{ route('salary-allowance-type-edit') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Add New Allowance Type</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+        <a href="{{ route('list-overtime-type') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Overtime Types</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+        <a href="{{ route('overtime-type-edit') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Add New Overtime Type</span>
         </a>
     </div>

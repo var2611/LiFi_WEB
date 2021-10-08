@@ -11,7 +11,7 @@ class EmployeePFDetailForm extends Form
     {
         $this
             ->add('account_number', Field::NUMBER, [
-                'rules' => 'required|max:50',
+                'rules' => 'required',
                 'attr' => ['maxlength' => '25'],
                 'second_name' => 'account_number_confirmation',
                 'first_options' => ['label' => 'Account number'],

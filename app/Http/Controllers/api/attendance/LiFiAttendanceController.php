@@ -185,7 +185,7 @@ class LiFiAttendanceController extends Controller
      */
     private function checkForBreakInEntry(string $flash_code)
     {
-        $todayDate = date('Y-m-d');
+        $todayDate = getTodayDate();
         return Attendance::whereFlashCode($flash_code)
             ->where('date', '=', $todayDate)
             ->whereNotNull('out_time')
@@ -194,7 +194,7 @@ class LiFiAttendanceController extends Controller
 
     private function addOutBreakAttendance(Attendance $attendance): Attendance
     {
-        $todayDate = date('Y-m-d');
+        $todayDate = getTodayDate();
         $currentDateTime = now();
 
         $break_time = (strtotime($currentDateTime) - strtotime($attendance->out_time)) / 3600;
@@ -221,7 +221,7 @@ class LiFiAttendanceController extends Controller
 
     private function checkForAlreadyInAttendance(string $flash_code)
     {
-        $todayDate = date('Y-m-d');
+        $todayDate = getTodayDate();
         return Attendance::whereFlashCode($flash_code)
             ->where('date', '=', $todayDate)
             ->whereNull('out_time')
@@ -230,7 +230,7 @@ class LiFiAttendanceController extends Controller
 
     private function addOutAttendance(Attendance $attendance): Attendance
     {
-        $todayDate = date('Y-m-d');
+        $todayDate = getTodayDate();
         $currentDateTime = now();
 
         $hours_worked = (strtotime($currentDateTime) - strtotime($attendance->in_time)) / 3600;
@@ -246,7 +246,7 @@ class LiFiAttendanceController extends Controller
 
     private function addNewAttendance(string $flash_code, UserEmployee $userEmployee): Attendance
     {
-        $todayDate = date('Y-m-d');
+        $todayDate = getTodayDate();
         $currentDateTime = now();
 
         $attendance = new Attendance();
@@ -265,7 +265,7 @@ class LiFiAttendanceController extends Controller
 
     private function logAttendance($flash_code, UserEmployee $userEmployee)
     {
-        $todayDate = date('Y-m-d');
+        $todayDate = getTodayDate();
         $currentDateTime = now();
 
         $attendance_log = new LogAttendance();

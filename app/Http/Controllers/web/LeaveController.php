@@ -73,10 +73,11 @@ class LeaveController extends Controller
         return $this->createForm($id, EditLeaveTypeForm::class, $model, route('leave-type-store'), 'leave');
     }
 
-    public function leaveTypeStore(): string
+    public function leaveTypeStore()
     {
         $model = new LeaveType();
-        return $this->formStore(EditLeaveTypeForm::class, $model, 'list-leave-type', 'leave', 'Leave Type');
+        return
+            $this->formStore(EditLeaveTypeForm::class, $model, 'list-leave-type', 'leave', 'Leave Type');
     }
 
     public function listLeaveMyView(LaravelViews $laravelViews): string

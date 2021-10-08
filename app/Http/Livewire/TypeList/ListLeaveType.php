@@ -11,17 +11,17 @@ use LaravelViews\Views\TableView;
 class ListLeaveType extends TableView
 {
     /** After */
-    protected $model = LeaveType::class;
+//    protected $model = LeaveType::class;
 
     /**
      * Sets a initial query with the data to fill the table
      *
      * @return Builder Eloquent query
      */
-//    public function repository(): Builder
-//    {
-//        return LeaveType::query();
-//    }
+    public function repository(): Builder
+    {
+        return LeaveType::query()->whereIsVisible(0);
+    }
 
     /**
      * Sets the headers of the table as you want to be displayed

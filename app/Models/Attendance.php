@@ -8,6 +8,8 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -84,8 +86,13 @@ class Attendance extends Model
         'is_visible',
     ];
 
-    public function User()
+    public function User(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function AttBreak(): HasMany
+    {
+        return $this->hasMany(AttBreak::class, 'attendance_id');
     }
 }

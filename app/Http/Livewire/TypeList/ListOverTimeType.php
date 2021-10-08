@@ -4,6 +4,7 @@ namespace App\Http\Livewire\TypeList;
 
 use App\Models\OvertimeType;
 use Illuminate\Database\Eloquent\Builder;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
@@ -16,7 +17,7 @@ class ListOverTimeType extends TableView
      */
     public function repository(): Builder
     {
-        return OvertimeType::query();
+        return OvertimeType::query()->whereIsVisible(0);
     }
 
     /**
@@ -44,6 +45,13 @@ class ListOverTimeType extends TableView
             $model->id,
             $model->name,
             $model->created_at,
+        ];
+    }
+
+    protected function actionsByRow(): array
+    {
+        return [
+            new RedirectAction("overtime-type-edit", 'Edit Overtime Type', 'edit'),
         ];
     }
 }

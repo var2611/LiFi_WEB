@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Livewire\TypeList\ListUserRole;
-use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -13,6 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
+use Kris\LaravelFormBuilder\FormBuilder;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
 use Mockery\Exception;
@@ -195,6 +194,14 @@ class Controller extends BaseController
         $this->response['response_status'] = 1;
     }
 
+    /**
+     * @param string|null $id
+     * @param string $className
+     * @param Model $model
+     * @param string $route
+     * @param string $sidemenuName
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
+     */
     function createForm(string $id = null, string $className, Model $model, string $route, string $sidemenuName)
     {
         try {
@@ -226,7 +233,7 @@ class Controller extends BaseController
     function createFormView($form)
     {
         try {
-            return view('layouts.hrms_forms', compact('form'));
+            return view('layouts.hrms_forms_two_col', compact('form'));
         } catch (\Exception $exception) {
 
         }
@@ -240,17 +247,24 @@ class Controller extends BaseController
      * @param string $message
      * @return string
      */
-    function formStore(string $className, Model $model, string $route, string $sidemenuName, string $message): string
+    function formStore(string $className, Model $model, string $route, string $sidemenuName, string $message)
     {
         $formData = $this->formStoreData($className);
 
-        $saveData = $this->formStoreSaveModel($formData, $model);
+        $form = $this->form($className, [
+            'model' => $model
+        ]);
 
-        $this->formStoreNotify($saveData, $message);
 
-        $data[$sidemenuName] = true;
+        echo json_encode($form->getFieldValues());
 
-        return redirect()->route($route, $data);
+//        $saveData = $this->formStoreSaveModel($formData, $model);
+//
+//        $this->formStoreNotify($saveData, $message);
+//
+//        $data[$sidemenuName] = true;
+//
+//        return redirect()->route($route, $data);
     }
 
     function formStoreData(string $className): array

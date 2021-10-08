@@ -2,9 +2,6 @@
 
 namespace App\Forms\Salary;
 
-use App\Models\EmpContract;
-use App\Models\OvertimeType;
-use App\Models\UserEmployee;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
@@ -40,6 +37,7 @@ class SalaryForm extends Form
             ->add('hra', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
+                'label' => 'HRA',
             ])
             ->add('salary_amount', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
@@ -57,6 +55,9 @@ class SalaryForm extends Form
             ])
             ->add('id', Field::HIDDEN, [
                 'value' => $this->getModel()->id ?? null
+            ])
+            ->add('add', Field::BUTTON_BUTTON, [
+                'wrapper' => ['class'=> 'col-sm-6'],
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);

@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire\TypeList;
 
-use App\Models\LeaveType;
 use App\Models\SalaryAllowanceType;
 use Illuminate\Database\Eloquent\Builder;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
@@ -17,7 +17,7 @@ class ListSalaryAllowanceType extends TableView
      */
     public function repository(): Builder
     {
-        return SalaryAllowanceType::query();
+        return SalaryAllowanceType::query()->whereIsVisible(0);
     }
 
     /**
@@ -39,12 +39,19 @@ class ListSalaryAllowanceType extends TableView
      *
      * @param $model SalaryAllowanceType model for each row
      */
-    public function row($model): array
+    public function row(SalaryAllowanceType $model): array
     {
         return [
             $model->id,
             $model->name,
             $model->created_at,
+        ];
+    }
+
+    protected function actionsByRow(): array
+    {
+        return [
+            new RedirectAction("salary-allowance-type-edit", 'Edit Salary Allowance Type', 'edit'),
         ];
     }
 }

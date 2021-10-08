@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\AttBreak;
+use App\Models\Attendance;
 use App\Models\Device;
 use App\Models\LeaveType;
 use App\Models\User;
@@ -183,4 +185,77 @@ function apiAccessCheck(array $allowed_user_roles): bool
         return in_array(Auth::user()->UserApi->user_role_id, $allowed_user_roles);
     } else
         return false;
+}
+
+/**
+ * @return false|string Current Date Y-m-d
+ */
+function getTodayDate()
+{
+    return date('Y-m-d');
+}
+
+function getTodayDateTime()
+{
+    return date('Y-m-d H:m:s');
+}
+
+function checkOutMissingEntry()
+{
+    $todayDate = getTodayDate();
+    $todayDateTime = getTodayDateTime();
+    $attendances = Attendance::join('att_breaks as ab', 'attendances.id', '=', 'ab.attendance_id')
+        ->join('user_employees as ue', 'attendances.user_id', '=', 'ue.user_id')
+        ->whereRaw("attendances.updated_at = ab.updated_at")
+//        ->where('ue.company_id', 2)
+//        ->where('attendances.user_id', 1)
+//        ->where('attendances.id', 255)
+        ->where('attendances.date', '!=', $todayDate)
+        ->where('ab.break_time', '>', 1)
+        ->whereNull('attendances.out_time')
+
+//        ->toSql();
+//        ->with(['AttBreak'])
+        ->get([
+            'attendances.id',
+            'attendances.user_id',
+            'attendances.name',
+            'attendances.flash_code',
+            'attendances.date',
+            'attendances.in_time',
+            'attendances.out_time',
+            'attendances.hours_worked',
+            'attendances.break_time',
+            'attendances.difference',
+            'attendances.status',
+            'attendances.is_active',
+            'attendances.is_visible',
+            'attendances.created_by',
+            'attendances.updated_by',
+            'attendances.deleted_by',
+            'attendances.created_at',
+            'attendances.updated_at',
+            'attendances.deleted_at',
+        ]);
+
+    if (!empty($attendances) && count($attendances) > 0) {
+        /* @var $attendance Attendance */
+        foreach ($attendances as $attendance) {
+            $attBreak = AttBreak::whereAttendanceId($attendance->id)->whereUpdatedAt($attendance->updated_at)->first();
+
+            if (!empty($attBreak)) {
+                $attBreak->deleted_at = $todayDateTime;
+                $attBreak->deleted_by = 1;
+                $attBreak->save();
+
+                $attendance->out_time = $attBreak->break_out_time;
+                $hours_worked = (strtotime($attendance->out_time) - strtotime($attendance->in_time)) / 3600;
+
+                $attendance->hours_worked = $hours_worked;
+                $attendance->break_time = $attendance->break_time ? ($attendance->break_time - $attBreak->break_time) : 0;
+                $attendance->updated_by = 1;
+                $attendance->save();
+            }
+        }
+    }
 }
