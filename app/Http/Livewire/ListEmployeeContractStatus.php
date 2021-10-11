@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\TypeList;
+namespace App\Http\Livewire;
 
-use App\Models\EmpDepartmentType;
+use App\Models\EmpContractStatus;
 use Illuminate\Database\Eloquent\Builder;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class ListEmployeeDepartmentType extends TableView
+class ListEmployeeContractStatus extends TableView
 {
     /**
      * Sets a initial query with the data to fill the table
@@ -16,7 +17,7 @@ class ListEmployeeDepartmentType extends TableView
      */
     public function repository(): Builder
     {
-        return EmpDepartmentType::query();
+        return EmpContractStatus::query()->whereIsVisible(0);
     }
 
     /**
@@ -36,14 +37,24 @@ class ListEmployeeDepartmentType extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model EmpDepartmentType model for each row
+     * @param $model EmpContractStatus model for each row
      */
-    public function row($model): array
+    public function row(EmpContractStatus $model): array
     {
         return [
             $model->id,
             $model->name,
             $model->created_at,
+        ];
+    }
+
+    /**
+     * @return RedirectAction[]
+     */
+    protected function actionsByRow(): array
+    {
+        return [
+            new RedirectAction('emp-contract-status-edit', 'Edit Contract Status', 'edit'),
         ];
     }
 }

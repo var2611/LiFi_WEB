@@ -13,16 +13,20 @@ use Illuminate\Support\Carbon;
  * App\Models\EmpContract
  *
  * @property int $id
- * @property int $user_employee_id
+ * @property int $user_id
  * @property string|null $name
  * @property string|null $description
  * @property string|null $date
  * @property string|null $start_date
  * @property string|null $end_date
+ * @property string|null $start_time
+ * @property string|null $end_time
+ * @property string|null $hours
  * @property string|null $days
- * @property string|null $status
- * @property int|null $emp_contract_amount_type_id
+ * @property int $emp_contract_type_id
+ * @property int $emp_contract_status_id
  * @property string|null $amount
+ * @property int|null $emp_work_shift_id
  * @property int $is_active
  * @property int $is_visible
  * @property string $created_by
@@ -31,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @property-read User $User
  * @method static Builder|EmpContract newModelQuery()
  * @method static Builder|EmpContract newQuery()
  * @method static Builder|EmpContract query()
@@ -42,21 +47,27 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpContract whereDeletedAt($value)
  * @method static Builder|EmpContract whereDeletedBy($value)
  * @method static Builder|EmpContract whereDescription($value)
- * @method static Builder|EmpContract whereEmpContractAmountTypeId($value)
+ * @method static Builder|EmpContract whereEmpContractStatusId($value)
+ * @method static Builder|EmpContract whereEmpContractTypeId($value)
+ * @method static Builder|EmpContract whereEmpWorkShiftId($value)
  * @method static Builder|EmpContract whereEndDate($value)
+ * @method static Builder|EmpContract whereEndTime($value)
+ * @method static Builder|EmpContract whereHours($value)
  * @method static Builder|EmpContract whereId($value)
  * @method static Builder|EmpContract whereIsActive($value)
  * @method static Builder|EmpContract whereIsVisible($value)
  * @method static Builder|EmpContract whereName($value)
  * @method static Builder|EmpContract whereStartDate($value)
- * @method static Builder|EmpContract whereStatus($value)
+ * @method static Builder|EmpContract whereStartTime($value)
  * @method static Builder|EmpContract whereUpdatedAt($value)
  * @method static Builder|EmpContract whereUpdatedBy($value)
- * @method static Builder|EmpContract whereUserEmployeeId($value)
- * @mixin Eloquent
- * @property int $user_id
- * @property-read User $User
  * @method static Builder|EmpContract whereUserId($value)
+ * @mixin Eloquent
+ * @property int|null $emp_shift_data_id
+ * @property-read \App\Models\EmpContractStatus $EmpContractStatus
+ * @property-read \App\Models\EmpContractType $EmpContractType
+ * @method static Builder|EmpContract whereEmpShiftDataId($value)
+ * @property-read \App\Models\EmpShiftData $EmpShiftData
  */
 class EmpContract extends Model
 {
@@ -69,10 +80,14 @@ class EmpContract extends Model
         'date',
         'start_date',
         'end_date',
+        'start_time',
+        'end_time',
+        'hours',
         'days',
-        'status',
-        'emp_contract_amount_type_id',
+        'emp_contract_type_id',
+        'emp_contract_status_id',
         'amount',
+        'emp_work_shift_id',
         'is_active',
         'is_visible',
         'created_by',
@@ -84,5 +99,20 @@ class EmpContract extends Model
     public function User(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id');
+    }
+
+    public function EmpContractType(): BelongsTo
+    {
+        return $this->belongsTo(EmpContractType::class, 'id');
+    }
+
+    public function EmpContractStatus(): BelongsTo
+    {
+        return $this->belongsTo(EmpContractStatus::class, 'id');
+    }
+
+    public function EmpShiftData(): BelongsTo
+    {
+        return $this->belongsTo(EmpShiftData::class, 'id');
     }
 }

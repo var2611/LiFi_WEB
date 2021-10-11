@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,7 +63,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Attendance whereBreakInTime($value)
  * @method static Builder|Attendance whereBreakOutTime($value)
  * @method static Builder|Attendance whereBreakTime($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttBreak[] $AttBreak
+ * @property-read Collection|AttBreak[] $AttBreak
  * @property-read int|null $att_break_count
  */
 class Attendance extends Model

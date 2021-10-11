@@ -279,21 +279,27 @@ class Controller extends BaseController
      * @param string $route
      * @param string $sidemenuName
      * @param string $message
-     * @return void
+     * @return RedirectResponse
      */
-    function formStore(string $className, Model $model, string $route, string $sidemenuName, string $message)
+    function formStore(string $className, Model $model, string $route, string $sidemenuName, string $message): RedirectResponse
     {
-        $formData = $this->formStoreData($className);
+        try {
+            $formData = $this->formStoreData($className);
 
-        echo json_encode($formData);
+//        echo json_encode($formData);
 
-//        $saveData = $this->formStoreSaveModel($formData, $model);
-//
-//        $this->formStoreNotify($saveData, $message);
-//
-//        $data[$sidemenuName] = true;
-//
-//        return redirect()->route($route, $data);
+            $saveData = $this->formStoreSaveModel($formData, $model);
+
+            $this->formStoreNotify($saveData, $message);
+
+            $data[$sidemenuName] = true;
+
+            return redirect()->route($route, $data);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            $this->notifyMessage(false, 'Site Error : ' . $exception->getMessage());
+            return Redirect::back();
+        }
     }
 
     function formStoreData(string $className): array
@@ -333,7 +339,7 @@ class Controller extends BaseController
         }
     }
 
-    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, bool $refresh_page = false): string
+    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, string $routeAddNew = null, bool $refresh_page = false): string
     {
         $laravelViews
             ->create($className)
@@ -341,6 +347,7 @@ class Controller extends BaseController
                 'title' => $title,
                 'refresh' => $refresh_page,
                 $sidemenuName => true,
+                'add_btn_route' => $routeAddNew,
             ]);
 
         return $laravelViews->render();

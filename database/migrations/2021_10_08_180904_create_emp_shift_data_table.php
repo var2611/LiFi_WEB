@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmpContractsTable extends Migration
+class CreateEmpShiftDataTable extends Migration
 {
     use MigrationTrait;
 
@@ -16,18 +16,17 @@ class CreateEmpContractsTable extends Migration
      */
     public function up()
     {
-        Schema::create('emp_contracts', function (Blueprint $table) {
+        Schema::create('emp_shift_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->string('description')->nullable();
-            $table->date('date')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('days')->nullable();
-            $table->string('status')->nullable();
-            $table->foreignId('emp_contract_amount_type_id')->nullable();
-            $table->string('amount')->nullable();
+            $table->foreignId('emp_work_shift_id')->nullable()->constrained();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->string('hours')->nullable();
             $this->runColumns($table);
         });
     }
@@ -39,6 +38,6 @@ class CreateEmpContractsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('emp_contracts');
+        Schema::dropIfExists('emp_shift_data');
     }
 }

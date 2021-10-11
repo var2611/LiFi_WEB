@@ -25,7 +25,7 @@ class DetailAttendanceView extends DetailView
         return [
             'Employee Code' => $model->emp_code,
             'Mobile' => $model->mobile,
-            'Registration Date' => $model->user_registered_at . " : ".Carbon::parse($model->user_registered_at)->diffForHumans(),
+            'Registration Date' => $model->user_registered_at . " : " . Carbon::parse($model->user_registered_at)->diffForHumans(),
         ];
     }
 }

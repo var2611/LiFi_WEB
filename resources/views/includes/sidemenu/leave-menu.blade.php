@@ -21,10 +21,6 @@
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Employee Leave List</span>
             </a>
-            <a href="{{ route('leave-type-edit') }}"
-               class="list-group-item list-group-item-action bg-dark text-white">
-                <span class="menu-collapsed">Edit Leave Type</span>
-            </a>
             <a href="{{ route('list-leave-type') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Leave Type List</span>

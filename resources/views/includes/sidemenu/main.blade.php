@@ -35,6 +35,8 @@
 
             @yield('salary-menu')
 
+            @yield('emp-contract-menu')
+
 
             <a href="#" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">

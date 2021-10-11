@@ -8,6 +8,22 @@ body {
 /*    justify-content: center;*/
 /*}*/
 
+/* Style Dashboard add buttons */
+.btn-plus {
+    background-color: DodgerBlue; /* Blue background */
+    border: none; /* Remove borders */
+    float: right;
+    color: white; /* White text */
+    padding: 8px 8px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.btn-plus:hover {
+    background-color: RoyalBlue;
+}
+
 .row-btn {
     /*float: right;*/
 }

@@ -33,15 +33,15 @@
     @notifyCss
 
     <script type="text/javascript">
-        function GetDays(){
+        function GetDays() {
             var dropdt = new Date(document.getElementById("end_date").value);
             var pickdt = new Date(document.getElementById("start_date").value);
             return parseInt((dropdt - pickdt) / (24 * 3600 * 1000));
         }
 
-        function cal(){
-            if(document.getElementById("end_date")){
-                document.getElementById("days").value=GetDays();
+        function cal() {
+            if (document.getElementById("end_date")) {
+                document.getElementById("days").value = GetDays();
             }
         }
 
@@ -57,7 +57,16 @@
         <div class="row" id="body-row">
             @yield('sidemenu')
             <div class="main_hr_container">
-                <h1><strong>{{ $title ?? "" }}</strong></h1>
+                @if(isset($title)||isset($add_btn_route))
+                    <div class="mb-4">
+                        <h1><strong>{{ $title ?? "" }}</strong></h1>
+                        @if(isset($add_btn_route))
+                            <a href="{{ $add_btn_route ?? '#' }}">
+                                <button class="btn-plus"><i class="fas fa-plus"></i></button>
+                            </a>
+                        @endif
+                    </div>
+                @endif
                 @yield('container')
             </div>
         </div>

@@ -6,8 +6,8 @@ use App\Forms\Salary\OverTimeTypeForm;
 use App\Forms\Salary\SalaryAllowanceTypeForm;
 use App\Forms\Salary\SalaryForm;
 use App\Http\Controllers\Controller;
-use App\Http\Livewire\TypeList\ListOverTimeType;
-use App\Http\Livewire\TypeList\ListSalaryAllowanceType;
+use App\Http\Livewire\ListOverTimeType;
+use App\Http\Livewire\ListSalaryAllowanceType;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
@@ -42,12 +42,12 @@ class SalaryController extends Controller
 
     public function salaryAllowanceTypeList(LaravelViews $laravelViews, Request $request): string
     {
-        return $this->createList($laravelViews, ListSalaryAllowanceType::class, 'Salary Allowance Type List', 'salary');
+        return $this->createList($laravelViews, ListSalaryAllowanceType::class, 'Salary Allowance Type List', 'salary', route('salary-allowance-type-edit'));
     }
 
     public function overtimeTypeList(LaravelViews $laravelViews, Request $request): string
     {
-        return $this->createList($laravelViews, ListOverTimeType::class, 'Overtime Type List', 'salary');
+        return $this->createList($laravelViews, ListOverTimeType::class, 'Overtime Type List', 'salary', route('overtime-type-edit'));
     }
 
     public function salaryCreate(string $id = null)

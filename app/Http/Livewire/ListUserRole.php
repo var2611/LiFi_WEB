@@ -1,15 +1,24 @@
 <?php
 
-namespace App\Http\Livewire\TypeList;
+namespace App\Http\Livewire;
 
-use App\Models\OvertimeType;
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
+use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
+use LaravelViews\Views\Traits\WithAlerts;
 
-class ListOverTimeType extends TableView
+class ListUserRole extends TableView
 {
+    use WithAlerts;
+
+    public $searchBy = ['name'];
+    /** After */
+//    protected $model = UserRole::class;
+
+    /** Before */
     /**
      * Sets a initial query with the data to fill the table
      *
@@ -17,7 +26,7 @@ class ListOverTimeType extends TableView
      */
     public function repository(): Builder
     {
-        return OvertimeType::query()->whereIsVisible(0);
+        return UserRole::query()->whereIsVisible(0);
     }
 
     /**
@@ -37,21 +46,30 @@ class ListOverTimeType extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model OvertimeType model for each row
+     * @param $model UserRole model for each row
      */
-    public function row($model): array
+    public function row(UserRole $model): array
     {
         return [
             $model->id,
-            $model->name,
+            UI::editable($model, 'name'),
             $model->created_at,
         ];
     }
 
+    public function update(UserRole $model, $data)
+    {
+        $model->update($data);
+        $this->success();
+    }
+
+    /**
+     * @return RedirectAction[]
+     */
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction("overtime-type-edit", 'Edit Overtime Type', 'edit'),
+            new RedirectAction("user-role-edit", 'See user', 'edit'),
         ];
     }
 }

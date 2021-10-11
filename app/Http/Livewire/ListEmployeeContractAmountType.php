@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\TypeList;
+namespace App\Http\Livewire;
 
-use App\Models\SalaryAllowanceType;
+use App\Models\EmpContractAmountType;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class ListSalaryAllowanceType extends TableView
+class ListEmployeeContractAmountType extends TableView
 {
     /**
      * Sets a initial query with the data to fill the table
@@ -17,7 +17,7 @@ class ListSalaryAllowanceType extends TableView
      */
     public function repository(): Builder
     {
-        return SalaryAllowanceType::query()->whereIsVisible(0);
+        return EmpContractAmountType::query()->whereIsVisible(0);
     }
 
     /**
@@ -37,9 +37,9 @@ class ListSalaryAllowanceType extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model SalaryAllowanceType model for each row
+     * @param $model EmpContractAmountType model for each row
      */
-    public function row(SalaryAllowanceType $model): array
+    public function row($model): array
     {
         return [
             $model->id,
@@ -48,10 +48,13 @@ class ListSalaryAllowanceType extends TableView
         ];
     }
 
+    /**
+     * @return RedirectAction[]
+     */
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction("salary-allowance-type-edit", 'Edit Salary Allowance Type', 'edit'),
+            new RedirectAction('emp-contract-amount-type-edit', 'Edit Contract Amount Type', 'edit'),
         ];
     }
 }

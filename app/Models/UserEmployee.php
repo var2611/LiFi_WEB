@@ -48,7 +48,7 @@ use Illuminate\Support\Carbon;
  * @property-read UserRole $UserRole
  * @property int $company_id
  * @method static Builder|UserEmployee whereCompanyId($value)
- * @property-read \App\Models\Company $Company
+ * @property-read Company $Company
  */
 class UserEmployee extends Model
 {

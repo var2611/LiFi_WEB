@@ -29,7 +29,7 @@ class AttendanceController extends Controller
 
     public function empAttendanceListView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListAttendanceEmployeesView::class, 'Employees Attendance', 'att', true);
+        return $this->createList($laravelViews, ListAttendanceEmployeesView::class, 'Employees Attendance', 'att', null, true);
     }
 
     public function myAttendanceListView(LaravelViews $laravelViews): string

@@ -6,6 +6,8 @@ use App\Models\Device;
 use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
 
@@ -211,7 +213,7 @@ function checkOutMissingEntry()
 //        ->where('attendances.user_id', 1)
 //        ->where('attendances.id', 255)
         ->where('attendances.date', '!=', $todayDate)
-        ->where('ab.break_time', '>', 1)
+//        ->where('ab.break_time', '>', 1)
         ->whereNull('attendances.out_time')
 
 //        ->toSql();
@@ -263,5 +265,22 @@ function checkOutMissingEntry()
 function getUserFullName(int $id): string
 {
     $user = User::whereId($id)->first();
-    return $user->name . ' ' . ($user->last_name ? $user->last_name . ' ' : '' ). $user->surname;
+    return $user->name . ' ' . ($user->last_name ? $user->last_name . ' ' : '') . $user->surname;
+}
+
+/**
+ * @return Builder[]|Collection
+ */
+function getUserList()
+{
+    $user = Auth::user();
+    $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
+
+    $data = User::with(['UserEmployee']);
+    if ($company_id != 1) {
+        $data->whereHas('UserEmployee', function ($q) use ($company_id) {
+            $q->where('company_id', '=', $company_id);
+        });
+    }
+    return $data->get();
 }

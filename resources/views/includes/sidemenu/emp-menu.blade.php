@@ -21,9 +21,6 @@
             <a href="{{ route('list-role') }}" class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Role Types</span>
             </a>
-            <a href="{{ route('user-role-edit') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                <span class="menu-collapsed">Add New Role</span>
-            </a>
         </div>
     @endif
 @endsection

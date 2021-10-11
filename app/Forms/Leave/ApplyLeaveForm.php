@@ -41,7 +41,7 @@ class ApplyLeaveForm extends Form
             ])
             ->add('days', Field::TEXT, [
                 'id' => 'days',
-                'rules' => 'required|min:1',
+                'rules' => 'required|numeric|gt:0',
             ])
             ->add('reason', Field::TEXTAREA, [
                 'rules' => 'required | max:400'

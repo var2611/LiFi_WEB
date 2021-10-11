@@ -3,3 +3,4 @@
 @extends('includes.sidemenu.emp-menu')
 @extends('includes.sidemenu.leave-menu')
 @extends('includes.sidemenu.salary-menu')
+@extends('includes.sidemenu.emp-contract-menu')

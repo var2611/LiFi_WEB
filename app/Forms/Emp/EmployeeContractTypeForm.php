@@ -2,25 +2,24 @@
 
 namespace App\Forms\Emp;
 
+use App\Models\EmpContractAmountType;
 use App\Models\EmpContractStatus;
-use App\Models\EmpContractType;
+use App\Models\EmpWorkShift;
 use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
-class EmployeeContractForm extends Form
+class EmployeeContractTypeForm extends Form
 {
     public function buildForm()
     {
-        $companyUser = getUserList()->toArray();
-        $empContractType = EmpContractType::get(['id', 'name'])->toArray();
+        $empContractAmountTypes = EmpContractAmountType::get(['id', 'name'])->toArray();
         $empContractStatuses = EmpContractStatus::get(['id', 'name'])->toArray();
+        $empWorkShift = EmpWorkShift::get(['id', 'name'])->toArray();
 
         $this
-            ->add('user_id', Field::SELECT, [
-                'choices' => Arr::pluck($companyUser, 'name', 'id'),
-                'empty_value' => '=== Select Type ===',
-                'rules' => 'required',
+            ->add('name', Field::TEXT, [
+                'rules' => 'required|max:25'
             ])
             ->add('description', Field::TEXT, [
                 'rules' => 'max:400'
@@ -43,18 +42,27 @@ class EmployeeContractForm extends Form
                 'id' => 'days',
                 'rules' => 'required|numeric|gt:0'
             ])
-            ->add('emp_contract_type_id', Field::SELECT, [
-                'choices' => Arr::pluck($empContractType, 'name', 'id'),
-                'empty_value' => '=== Select Type ===',
-                'rules' => 'required',
+            ->add('working_hours', Field::TEXT, [
+                'id' => 'days',
+                'rules' => 'numeric|gt:0'
             ])
             ->add('emp_contract_status_id', Field::SELECT, [
                 'choices' => Arr::pluck($empContractStatuses, 'name', 'id'),
                 'empty_value' => '=== Select Type ===',
                 'rules' => 'required',
             ])
+            ->add('emp_contract_amount_type_id', Field::SELECT, [
+                'choices' => Arr::pluck($empContractAmountTypes, 'name', 'id'),
+                'empty_value' => '=== Select Type ===',
+                'rules' => 'required',
+            ])
             ->add('amount', Field::TEXT, [
                 'rules' => 'required|numeric|gt:0'
+            ])
+            ->add('emp_work_shift_id', Field::SELECT, [
+                'choices' => Arr::pluck($empWorkShift, 'name', 'id'),
+                'empty_value' => '=== Select Type ===',
+                'rules' => 'required',
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],
@@ -65,6 +73,9 @@ class EmployeeContractForm extends Form
                 'choices' => ['0' => 'YES', '1' => 'NO'],
                 'selected' => '0',
                 'empty_value' => '=== Select Type ==='
+            ])
+            ->add('user_id', Field::HIDDEN, [
+                'value' => $this->getModel()->USER_id ?? null
             ])
             ->add('id', Field::HIDDEN, [
                 'value' => $this->getModel()->id ?? null

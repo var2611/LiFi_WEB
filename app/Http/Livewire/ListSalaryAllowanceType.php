@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Http\Livewire\TypeList;
+namespace App\Http\Livewire;
 
-use App\Models\LeaveType;
+use App\Models\SalaryAllowanceType;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class ListLeaveType extends TableView
+class ListSalaryAllowanceType extends TableView
 {
-    /** After */
-//    protected $model = LeaveType::class;
-
     /**
      * Sets a initial query with the data to fill the table
      *
@@ -20,7 +17,7 @@ class ListLeaveType extends TableView
      */
     public function repository(): Builder
     {
-        return LeaveType::query()->whereIsVisible(0);
+        return SalaryAllowanceType::query()->whereIsVisible(0);
     }
 
     /**
@@ -33,7 +30,6 @@ class ListLeaveType extends TableView
         return [
             Header::title('No')->sortBy('id'),
             Header::title('Name')->sortBy('name'),
-            Header::title('description'),
             Header::title('created at')->sortBy('created_at')
         ];
     }
@@ -41,15 +37,21 @@ class ListLeaveType extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model LeaveType model for each row
+     * @param $model SalaryAllowanceType model for each row
      */
-    public function row($model): array
+    public function row(SalaryAllowanceType $model): array
     {
         return [
             $model->id,
             $model->name,
-            $model->description,
             $model->created_at,
+        ];
+    }
+
+    protected function actionsByRow(): array
+    {
+        return [
+            new RedirectAction("salary-allowance-type-edit", 'Edit Salary Allowance Type', 'edit'),
         ];
     }
 }
