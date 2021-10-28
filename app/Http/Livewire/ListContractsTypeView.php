@@ -11,7 +11,7 @@ use LaravelViews\Views\TableView;
 
 class ListContractsTypeView extends TableView
 {
-    public $searchBy = ['name'];
+    public $searchBy = ['name', 'description'];
     protected $paginate = 20;
 
     /**
@@ -32,14 +32,15 @@ class ListContractsTypeView extends TableView
     public function headers(): array
     {
         return [
-            Header::title('Name'),
+            Header::title('No'),
+            Header::title('Name')->sortBy('name'),
             Header::title('Description'),
             Header::title('Date'),
             Header::title('Start Date'),
             Header::title('End Date'),
             Header::title('Working Hours'),
-            Header::title('Contract Name'),
-            Header::title('Shift Name'),
+            Header::title('Status'),
+            Header::title('Shift'),
             Header::title('Created At')->sortBy('created_at')
         ];
     }
@@ -52,6 +53,7 @@ class ListContractsTypeView extends TableView
     public function row(EmpContractType $model): array
     {
         return [
+            $model->id,
             $model->name,
             $model->description,
             $model->date,
@@ -64,13 +66,13 @@ class ListContractsTypeView extends TableView
         ];
     }
 
-    /**
-     * @return RedirectAction[]
-     */
-    protected function actionsByRow(): array
-    {
-        return [
-            new RedirectAction("edit-user-profile", 'See user', 'edit'),
-        ];
-    }
+//    /**
+//     * @return RedirectAction[]
+//     */
+//    protected function actionsByRow(): array
+//    {
+//        return [
+//            new RedirectAction("edit-user-profile", 'See user', 'edit'),
+//        ];
+//    }
 }

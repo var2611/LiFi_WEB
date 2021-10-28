@@ -84,7 +84,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/emp-pf-detail-store', [UserEmployeeController::class, 'empPFDetailFormStore'])->name('emp-pf-detail-store');
 
     /*Employee Contract Forms*/
-    Route::get('/emp-contract-edit/{id?}', [EmployeeContractController::class, 'empContractFormCreate'])->name('emp-contract-edit');
+    Route::get('/emp-contract-type-list-edit', [EmployeeContractController::class, 'empContractTypeListFormCreate'])->name('emp-contract-type-list-edit');
+    Route::get('/emp-contract-edit/{id?}/{user_id?}', [EmployeeContractController::class, 'empContractFormCreate'])->name('emp-contract-edit');
     Route::post('/emp-contract-store', [EmployeeContractController::class, 'empContractFormStore'])->name('emp-contract-store');
 
 
@@ -114,7 +115,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     /*Salary Forms*/
     Route::get('/salary-edit/{id?}', [SalaryController::class, 'salaryCreate'])->name('salary-edit');
+
     Route::post('/salary-allowance-type-store', [SalaryController::class, 'salaryAllowanceTypeStore'])->name('salary-allowance-type-store');
+
+    /*Import Salary Forms*/
+    Route::get('/import-salary-edit', [SalaryController::class, 'importSalaryCreate'])->name('import-salary-edit');
+    Route::post('/import-salary-store', [SalaryController::class, 'importSalaryStore'])->name('import-salary-store');
 
 //    Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
     Route::get('/edit-user-profile/{id}', [UserEmployeeController::class, 'editUserProfile'])->name('edit-user-profile');

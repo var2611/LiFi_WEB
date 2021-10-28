@@ -56,15 +56,18 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpContractType whereUpdatedBy($value)
  * @method static Builder|EmpContractType whereWorkingHours($value)
  * @mixin Eloquent
- * @property-read \App\Models\EmpContractAmountType $EmpContractAmountType
- * @property-read \App\Models\EmpContractStatus $EmpContractStatus
- * @property-read \App\Models\EmpWorkShift $EmpWorkShift
+ * @property-read EmpContractAmountType $EmpContractAmountType
+ * @property-read EmpContractStatus $EmpContractStatus
+ * @property-read EmpWorkShift $EmpWorkShift
+ * @property int|null $company_id
+ * @method static Builder|EmpContractType whereCompanyId($value)
  */
 class EmpContractType extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'name',
         'description',
         'date',

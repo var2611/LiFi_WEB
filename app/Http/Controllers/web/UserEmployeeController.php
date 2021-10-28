@@ -239,7 +239,7 @@ class UserEmployeeController extends Controller
     {
         $model = new EmpContractAmountType();
 
-        return $this->formStore(EmployeeContractAmountTypeForm::class, $model, 'list-employee', 'employee', 'Employee Contract Amount Type');
+        return $this->formStore(EmployeeContractAmountTypeForm::class, $model, 'list-contract-amount-type', 'employee', 'Employee Contract Amount Type');
     }
 
     /**
@@ -310,7 +310,8 @@ class UserEmployeeController extends Controller
             $data = array();
             $data['formUserDetail'] = $this->empRegistrationFormCreateData($id);
             $data['formOfficeTiming'] = $this->empBankDetailFormCreateData($id);
-            $data['formDepartmentDetail'] = (new EmployeeContractController)->empContractFormCreate($id);
+            $data['formDepartmentDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
+            $data['formContractDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
             $data['formBankDetail'] = $this->empBankDetailFormCreateData($id);
             $data['formPFDetail'] = $this->empPFDetailFormCreateData($id);
 

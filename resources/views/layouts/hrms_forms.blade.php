@@ -3,7 +3,7 @@
 @extends('includes.sidemenu.sidemenu')
 
 @section('container')
-    {!! form($form) !!}
+    @include('layouts.form')
     {{--    {!! form_start($form) !!}--}}
     {{--    {!! form_row($form->title) !!}--}}
     {{--    {!! form_until($form, 'description') !!}--}}

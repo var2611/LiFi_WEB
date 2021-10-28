@@ -65,14 +65,14 @@ class ListEmpContractsView extends TableView
             $model->created_at->diffForHumans()
         ];
     }
-
-    /**
-     * @return RedirectAction[]
-     */
-    protected function actionsByRow(): array
-    {
-        return [
-            new RedirectAction("edit-user-profile", 'See user', 'edit'),
-        ];
-    }
+//
+//    /**
+//     * @return RedirectAction[]
+//     */
+//    protected function actionsByRow(): array
+//    {
+//        return [
+//            new RedirectAction("edit-user-profile", 'See user', 'edit'),
+//        ];
+//    }
 }

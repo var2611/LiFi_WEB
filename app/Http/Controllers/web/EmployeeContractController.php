@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 use App\Forms\Emp\EmployeeContractForm;
 use App\Forms\Emp\EmployeeContractStatusForm;
 use App\Forms\Emp\EmployeeContractTypeForm;
+use App\Forms\Emp\EmployeeContractTypeListForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListContractsTypeView;
 use App\Http\Livewire\ListEmpContractsView;
@@ -13,14 +14,15 @@ use App\Http\Livewire\ListEmployeeContractStatus;
 use App\Models\EmpContract;
 use App\Models\EmpContractStatus;
 use App\Models\EmpContractType;
-use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\Form;
 use LaravelViews\LaravelViews;
+use Redirect;
 
 class EmployeeContractController extends Controller
 {
@@ -50,31 +52,74 @@ class EmployeeContractController extends Controller
     }
 
     /**
-     * @param string|null $id
      * @return Form|RedirectResponse
      */
-    public function empContractFormCreate(string $id = null)
+    public function empContractTypeListFormCreate(string $id)
     {
-        $model = EmpContract::whereUserId($id)->first();
 
-        if (!$model) {
+        $model = EmpContract::whereUserId($id)->whereIsActive(0)->first();
+
+
+        if (empty($model)) {
             $model = new EmpContract();
             $model->user_id = $id;
-            $model->name = getUserFullName($id);
-            $model->date = getTodayDate();
+
+            return $this->createFormData(null, EmployeeContractTypeListForm::class, $model, route('emp-contract-type-list-edit'), 'employee');
+        } else {
+            $model->isReadOnlyData = true;
+            return $this->form(EmployeeContractForm::class, [
+                'method' => 'POST',
+                'model' => $model,
+                'url' => route('emp-contract-store'),
+                'employee' => true,
+                'id' => $id,
+            ]);
         }
 
-        return $this->createFormData(null, EmployeeContractForm::class, $model, route('emp-contract-store'), 'employee');
     }
 
     /**
-     * @return RedirectResponse
+     * @param string|null $id
+     * @return Application|Factory|RedirectResponse|View
      */
-    public function empContractFormStore(): RedirectResponse
+    public function empContractFormCreate(string $id = null, string $user_id = null)
     {
-        $model = new EmpContract();
+        $empContractType = EmpContractType::whereId($id)->first();
+        $model = EmpContract::whereUserId($user_id)->first();
 
-        return $this->formStore(EmployeeContractForm::class, $model, 'list-emp-contract', 'employee', 'Employee Contract Amount Type');
+        if (empty($model)) {
+            $model = new EmpContract();
+            $model->user_id = $user_id;
+            $model->name = getUserFullName($user_id);
+            $model->date = getTodayDate();
+            $model->description = $empContractType->description;
+            $model->start_date = $empContractType->start_date;
+            $model->end_date = $empContractType->end_date;
+            $model->days = $empContractType->days;
+            $model->hours = $empContractType->working_hours;
+            $model->emp_contract_type_id = $empContractType->id;
+            $model->amount = $empContractType->amount;
+        }
+
+        $formData = $this->createFormData(null, EmployeeContractForm::class, $model, route('emp-contract-store'), 'employee');
+
+        return $this->createFormView($formData, 'layouts.form');
+    }
+
+    /**
+     * //     * @return RedirectResponse
+     */
+    public function empContractFormStore()
+    {
+        $formData = $this->formStoreData(EmployeeContractForm::class);
+
+        $empContract = edit_emp_contract($formData);
+
+        if (empty($empContract)) {
+            $this->notifyMessage(false, 'Employee Contract edit has some issue please contact site Administrator.');
+        }
+
+        return redirect()->route('list-employee');
     }
 
     /**
@@ -90,12 +135,15 @@ class EmployeeContractController extends Controller
             if (!$model) {
                 $model = new EmpContractType();
                 $model->date = getTodayDate();
+                $model->company_id = Auth::user()->getCompanyId();
             }
 
-            return $this->createForm(null, EmployeeContractTypeForm::class, $model, route('emp-contract-store'), 'employee');
+            return $this->createForm(null, EmployeeContractTypeForm::class, $model, route('contract-type-store'), 'contract');
 
         } catch (Exception $exception) {
             echo $exception->getMessage();
+            $this->notifyMessage(false, 'Site Error : ' . $exception->getMessage());
+            return Redirect::back();
         }
     }
 
@@ -104,9 +152,9 @@ class EmployeeContractController extends Controller
      */
     public function contractTypeFormStore(): RedirectResponse
     {
-        $model = new EmpContract();
+        $model = new EmpContractType();
 
-        return $this->formStore(EmployeeContractForm::class, $model, 'list-contract-type', 'employee', 'Employee Contract Amount Type');
+        return $this->formStore(EmployeeContractTypeForm::class, $model, 'list-contract-type', 'contract', 'Employee Contract Amount Type');
     }
 
     /**
@@ -117,7 +165,7 @@ class EmployeeContractController extends Controller
     {
         $model = new EmpContractStatus();
 
-        return $this->createForm($id, EmployeeContractStatusForm::class, $model, route('emp-contract-status-store'), 'employee');
+        return $this->createForm($id, EmployeeContractStatusForm::class, $model, route('emp-contract-status-store'), 'contract');
     }
 
     /**
@@ -127,7 +175,7 @@ class EmployeeContractController extends Controller
     {
         $model = new EmpContractStatus();
 
-        return $this->formStore(EmployeeContractStatusForm::class, $model, 'list-emp-contract-status', 'employee', 'Employee Contract Amount Type');
+        return $this->formStore(EmployeeContractStatusForm::class, $model, 'list-emp-contract-status', 'contract', 'Employee Contract Amount Type');
 
     }
 }

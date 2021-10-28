@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Forms\Salary\ImportSalary;
 use App\Forms\Salary\OverTimeTypeForm;
 use App\Forms\Salary\SalaryAllowanceTypeForm;
 use App\Forms\Salary\SalaryForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListOverTimeType;
 use App\Http\Livewire\ListSalaryAllowanceType;
+use App\Imports\ImportParthSalarySheet;
+use App\Models\ImportParthSalarySheetData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class SalaryController extends Controller
 {
@@ -54,5 +60,42 @@ class SalaryController extends Controller
     {
         $model = new Salary();
         return $this->createForm($id, SalaryForm::class, $model, route('overtime-type-store'), 'salary');
+    }
+
+    public function importSalaryCreate(){
+        $model = new ImportParthSalarySheetData();
+        $form = $this->createFormData(null, ImportSalary::class, $model, route('import-salary-store'), 'salary');
+
+        return $this->createFormView($form);
+    }
+    public function importSalaryStore(){
+        $model = new ImportParthSalarySheetData();
+//        $form = $this->formStoreData(ImportSalary::class);
+        $form = $this->form(ImportSalary::class);
+        $form->redirectIfNotValid();
+
+//        print_r($form->getFieldValues());
+        if ($form->getRequest()->hasFile('salary_sheet')) {
+
+            try {
+                $file = $form->getRequest()->file('salary_sheet');
+                $import = Excel::import(new ImportParthSalarySheet(), $file);
+
+//                (new ImportParthSalarySheet)->toCollection($file);
+
+//                $heading = (new HeadingRowImport(3))->toArray($file);
+
+//                echo json_encode($heading, JSON_PRETTY_PRINT);
+            } catch (ValidationException $e) {
+                $failures = $e->failures();
+
+                echo json_encode($failures, JSON_PRETTY_PRINT);
+            }
+
+            echo 'Success';
+        } else {
+            echo 'Fail';
+        }
+
     }
 }

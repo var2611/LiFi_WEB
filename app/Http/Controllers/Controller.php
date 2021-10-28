@@ -231,7 +231,7 @@ class Controller extends BaseController
     function createFormData(string $id = null, string $className, Model $model = null, string $route, string $sidemenuName)
     {
         try {
-            if ($id) {
+            if (!empty($model) && $id) {
                 $model = $model->whereId($id)->first();
             }
 
@@ -240,6 +240,7 @@ class Controller extends BaseController
                 'model' => $model,
                 'url' => $route,
                 $sidemenuName => true,
+                'id' => $id,
             ]);
         } catch (\Exception $exception) {
             echo $exception->getMessage();

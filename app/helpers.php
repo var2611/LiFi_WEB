@@ -3,6 +3,10 @@
 use App\Models\AttBreak;
 use App\Models\Attendance;
 use App\Models\Device;
+use App\Models\EmpContract;
+use App\Models\EmpContractType;
+use App\Models\EmpShiftData;
+use App\Models\EmpWorkShift;
 use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
@@ -283,4 +287,82 @@ function getUserList()
         });
     }
     return $data->get();
+}
+
+function edit_emp_contract($data)
+{
+
+    $id = $data['id'];
+    $description = $data['description'];
+    $date = $data['date'];
+    $emp_work_shift_data_id = $data['emp_work_shift_data_id'];
+    $emp_contract_type_id = $data['emp_contract_type_id'];
+    $emp_contract_status_id = $data['emp_contract_status_id'];
+    $amount = $data['amount'];
+    $is_active = $data['is_active'];
+    $is_visible = $data['is_visible'];
+    $user_id = $data['user_id'];
+
+    $attribute = null;
+    $empContract = null;
+
+    if ($data['id'] == null) {
+        $data['created_by'] = Auth::id();
+    } else {
+        $attribute['id'] = $id;
+    }
+    $data['updated_by'] = Auth::id();
+
+    $empContractType = EmpContractType::whereId($emp_contract_type_id)->first();
+    $empWorkShift = EmpWorkShift::whereId($emp_work_shift_data_id)->first();
+    $userEmployee = UserEmployee::whereUserId($user_id)->with(['User'])->first();
+
+    if ($id) {
+        $empContract = EmpContract::whereId($id)->first();
+        $empContract->emp_contract_status_id = $emp_contract_status_id;
+        $empContract->updated_by = Auth::id();
+        $empContract->save();
+
+    } else {
+        $userName = getUserFullName($userEmployee->user_id);
+
+        $emp_shift_data = new EmpShiftData();
+        $emp_shift_data->user_id = $userEmployee->user_id;
+        $emp_shift_data->name = $userName;
+        $emp_shift_data->description = $description;
+        $emp_shift_data->start_date = $empContractType->start_date;
+        $emp_shift_data->end_date = $empContractType->end_date;
+        $emp_shift_data->days = $empContractType->days;
+        $emp_shift_data->emp_work_shift_id = $empWorkShift->id;
+        $emp_shift_data->start_time = $empWorkShift->start_time;
+        $emp_shift_data->end_time = $empWorkShift->end_time;
+        $emp_shift_data->hours = $empWorkShift->hours;
+        $emp_shift_data->created_by = Auth::id();
+        $emp_shift_data->updated_by = Auth::id();
+        $emp_shift_data->save();
+
+        if ($emp_shift_data) {
+            $empContract = new EmpContract();
+            $empContract->user_id = $userEmployee->user_id;
+            $empContract->name = $userName;
+            $empContract->description = $description;
+            $empContract->date = $date;
+            $empContract->start_date = $empContractType->start_date;
+            $empContract->end_date = $empContractType->end_date;
+            $empContract->start_time = $emp_shift_data->start_time;
+            $empContract->end_time = $emp_shift_data->end_time;
+            $empContract->hours = $emp_shift_data->hours;
+            $empContract->days = $empContractType->days;
+            $empContract->emp_contract_type_id = $empContractType->id;
+            $empContract->emp_contract_status_id = $emp_contract_status_id;
+            $empContract->amount = $empContractType->amount > 0 ? $empContractType->amount : $amount;
+            $empContract->emp_shift_data_id = $emp_shift_data->id;
+            $empContract->is_active = $is_active;
+            $empContract->is_visible = $is_visible;
+            $empContract->created_by = Auth::id();
+            $empContract->updated_by = Auth::id();
+            $empContract->save();
+        }
+    }
+    return $empContract;
 }
