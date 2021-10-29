@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\UserEmployee;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
 
@@ -20,9 +21,7 @@ function sendSMS($mobile, $message)
     # code...
     echo "1";
     print_r($mobile);
-
     $curl = curl_init();
-
     curl_setopt_array($curl, array(
         CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
         CURLOPT_RETURNTRANSFER => true,
@@ -40,16 +39,12 @@ function sendSMS($mobile, $message)
             "content-type: application/json"
         ),
     ));
-
     $response = curl_exec($curl);
     $err = curl_error($curl);
-
     print_r($response);
     print_r($err);
-
     curl_close($curl);
     return $response;
-
 //    if ($err) {
 //        print_r($err);
 //    } else {
@@ -86,9 +81,7 @@ function create_new_device(User $user, string $name, string $mac_address, int $d
 function generate_random_unique_string(int $length = 6): string
 {
     $randomString = generate_random_string($length);
-
     $user_employee = UserEmployee::whereFlashCode($randomString)->first();
-
     if (empty($user_employee)) {
         return $randomString;
     } else {
@@ -104,7 +97,6 @@ function generate_random_string(int $length = 6): string
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
-
     return $randomString;
 }
 
@@ -137,7 +129,6 @@ function att_register_new_employee($data, User $user): ?UserEmployee
     $emp_code = $data->emp_code;
     $firebase_token = $data->firebase_token ?? null;
     $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
-
     if ($user_id) {
 
         $user->name = $name;
@@ -148,7 +139,6 @@ function att_register_new_employee($data, User $user): ?UserEmployee
         }
         $user->updated_by = Auth::user()->id;
         $user->save();
-
         $userEmployee = UserEmployee::whereUserId($user_id)->first();
         if (empty($userEmployee)) {
             $userEmployee = new UserEmployee();
@@ -165,7 +155,6 @@ function att_register_new_employee($data, User $user): ?UserEmployee
         }
         $userEmployee->updated_by = Auth::user()->id;
         $userEmployee->save();
-
         return $userEmployee;
     }
     return null;
@@ -181,7 +170,6 @@ function getUserNameFromFlashCode($flash_code)
     $userEmployee = UserEmployee::whereFlashCode($flash_code)
         ->with(['User'])
         ->first();
-
     return $userEmployee->User->name;
 }
 
@@ -243,20 +231,16 @@ function checkOutMissingEntry()
             'attendances.updated_at',
             'attendances.deleted_at',
         ]);
-
     if (!empty($attendances) && count($attendances) > 0) {
         /* @var $attendance Attendance */
         foreach ($attendances as $attendance) {
             $attBreak = AttBreak::whereAttendanceId($attendance->id)->whereUpdatedAt($attendance->updated_at)->first();
-
             if (!empty($attBreak)) {
                 $attBreak->deleted_at = $todayDateTime;
                 $attBreak->deleted_by = 1;
                 $attBreak->save();
-
                 $attendance->out_time = $attBreak->break_out_time;
                 $hours_worked = (strtotime($attendance->out_time) - strtotime($attendance->in_time)) / 3600;
-
                 $attendance->hours_worked = $hours_worked;
                 $attendance->break_time = $attendance->break_time ? ($attendance->break_time - $attBreak->break_time) : 0;
                 $attendance->updated_by = 1;
@@ -279,7 +263,6 @@ function getUserList()
 {
     $user = Auth::user();
     $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
-
     $data = User::with(['UserEmployee']);
     if ($company_id != 1) {
         $data->whereHas('UserEmployee', function ($q) use ($company_id) {
@@ -302,21 +285,17 @@ function edit_emp_contract($data)
     $is_active = $data['is_active'];
     $is_visible = $data['is_visible'];
     $user_id = $data['user_id'];
-
     $attribute = null;
     $empContract = null;
-
     if ($data['id'] == null) {
         $data['created_by'] = Auth::id();
     } else {
         $attribute['id'] = $id;
     }
     $data['updated_by'] = Auth::id();
-
     $empContractType = EmpContractType::whereId($emp_contract_type_id)->first();
     $empWorkShift = EmpWorkShift::whereId($emp_work_shift_data_id)->first();
     $userEmployee = UserEmployee::whereUserId($user_id)->with(['User'])->first();
-
     if ($id) {
         $empContract = EmpContract::whereId($id)->first();
         $empContract->emp_contract_status_id = $emp_contract_status_id;
@@ -325,7 +304,6 @@ function edit_emp_contract($data)
 
     } else {
         $userName = getUserFullName($userEmployee->user_id);
-
         $emp_shift_data = new EmpShiftData();
         $emp_shift_data->user_id = $userEmployee->user_id;
         $emp_shift_data->name = $userName;
@@ -340,7 +318,6 @@ function edit_emp_contract($data)
         $emp_shift_data->created_by = Auth::id();
         $emp_shift_data->updated_by = Auth::id();
         $emp_shift_data->save();
-
         if ($emp_shift_data) {
             $empContract = new EmpContract();
             $empContract->user_id = $userEmployee->user_id;
@@ -365,4 +342,25 @@ function edit_emp_contract($data)
         }
     }
     return $empContract;
+}
+
+/**
+ * @param $file
+ * @return string
+ */
+function get_file_extension(UploadedFile $file): string
+{
+    return $file->getClientOriginalExtension();
+}
+function upload_file($upload_path, $file_name, $file): string
+{
+
+    if (!file_exists(public_path() . $upload_path)) {
+        if (File::makeDirectory(public_path() . $upload_path, 0777, true)) {
+        }
+    }
+
+    $path = public_path() . $upload_path;
+    $file->move($path, $file_name);
+    return "http://lifi.navtechno.in" . $upload_path . $file_name;
 }

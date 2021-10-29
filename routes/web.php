@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\EmployeeContractController;
+use App\Http\Controllers\web\FreeLifiWifiController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\LeaveController;
 use App\Http\Controllers\web\SalaryController;
@@ -32,7 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/demo', [HomeController::class, 'demo'])->name('demo');
 
     Route::view('/dashboard', '/hrms.dashboard')->name('hr_dashboard');
-    Route::view('/welcome', '/hrms.welcome')->name('hr_welcome');
+    Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
+
 
     Route::get('/list-employee', [UserEmployeeController::class, 'empList'])->name('list-employee');
     Route::get('/list-role', [UserEmployeeController::class, 'userRoleList'])->name('list-role');
@@ -115,8 +117,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     /*Salary Forms*/
     Route::get('/salary-edit/{id?}', [SalaryController::class, 'salaryCreate'])->name('salary-edit');
-
     Route::post('/salary-allowance-type-store', [SalaryController::class, 'salaryAllowanceTypeStore'])->name('salary-allowance-type-store');
+
+    /*Salary Forms*/
+    Route::get('/free-lifi-wifi-file-edit', [FreeLifiWifiController::class, 'freeLiFiWiFiFileCreate'])->name('free-lifi-wifi-file-edit');
+    Route::post('/free-lifi-wifi-file-store', [FreeLifiWifiController::class, 'freeLiFiWiFiFileStore'])->name('free-lifi-wifi-file-store');
+    Route::get('/free-lifi-wifi-file-list', [FreeLifiWifiController::class, 'index'])->name('free-lifi-wifi-file-list');
 
     /*Import Salary Forms*/
     Route::get('/import-salary-edit', [SalaryController::class, 'importSalaryCreate'])->name('import-salary-edit');

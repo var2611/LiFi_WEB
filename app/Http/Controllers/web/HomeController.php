@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserEmployee;
 use Auth;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
 use LaravelViews\LaravelViews;
 
 class HomeController extends Controller
@@ -22,6 +23,7 @@ class HomeController extends Controller
 //        $this->middleware('auth');
     }
 
+
     /**
      * Show the application dashboard.
      *
@@ -33,6 +35,14 @@ class HomeController extends Controller
         $companyData = $user->getCompanyData();
 
         return view('hrms.dashboard', $companyData);
+    }
+
+    public function welcome(Request $request){
+        if (Auth::user()->isFreeLiFiWiFi()){
+            return redirect()->route('free-lifi-wifi-file-list');
+        }
+        return view('hrms.welcome');
+
     }
 
     public function demo(LaravelViews $laravelViews)

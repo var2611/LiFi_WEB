@@ -201,17 +201,17 @@ class Controller extends BaseController
 
     /**
      * @param string|null $id
-     * @param string $className
+     * @param string $formClassName
      * @param Model $model
      * @param string $route
      * @param string $sidemenuName
      * @param string $view
      * @return Application|Factory|RedirectResponse|View
      */
-    function createForm(string $id = null, string $className, Model $model, string $route, string $sidemenuName, string $view = 'layouts.hrms_forms')
+    function createForm(string $id = null, string $formClassName, Model $model, string $route, string $sidemenuName, string $view = 'layouts.hrms_forms')
     {
         try {
-            $form = $this->createFormData($id, $className, $model, $route, $sidemenuName);
+            $form = $this->createFormData($id, $formClassName, $model, $route, $sidemenuName);
             return $this->createFormView($form, $view);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
@@ -340,11 +340,11 @@ class Controller extends BaseController
         }
     }
 
-    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, string $routeAddNew = null, bool $refresh_page = false): string
+    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, string $routeAddNew = null, bool $refresh_page = false, string $layout='main-list'): string
     {
         $laravelViews
             ->create($className)
-            ->layout('main-list', 'container', [
+            ->layout($layout, 'container', [
                 'title' => $title,
                 'refresh' => $refresh_page,
                 $sidemenuName => true,

@@ -156,6 +156,16 @@ class User extends Authenticatable
         return $userRole == 1;
     }
 
+
+    /**
+     * @return bool
+     */
+    public function isFreeLiFiWiFi(): bool
+    {
+        $companyId = Auth::user()->getCompanyId();
+        return $companyId == 5;
+    }
+
     /**
      * @return Company|Builder
      */
