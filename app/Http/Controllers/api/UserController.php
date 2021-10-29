@@ -15,29 +15,6 @@ use Mockery\Exception;
 class UserController extends Controller
 {
 
-
-    public function demo()
-    {
-        // Test
-//        $key = 'rzp_test_GUVGJTiE5i9WJP';
-//        $secret = 'RdknMJYiNOToqWHvgepYIM1H';
-//        $api_url = '@api.razorpay.com/v1/';
-//
-//        $server_key = 'AAAAy-1xPcY:APA91bHqJD_2NS_shwPWZcT3HkbtrVRprO4JOi-8AVGTEnBgubVPcDVSMz8Ld2VApCDPozPiXsvJC00BhOxSgcqD8VB8y45LaFcZVo901GixNd_5tknJoEaRT2ZTKuXfAm6E_eC5Leyc';
-//        echo "Demo Working";
-//        $data['test'] = 'Demo';
-//
-//        $data['test'] = $this->send("918460113626", "test");
-//        $this->set_return_response_success($data, "User Logged In Successfully.");
-//        $this->set_return_response_unauthorised("Username or Password is incorrect.");
-
-
-//        test();
-//        return $this->return_response();
-
-
-    }
-
     function send($mobile, $message)
     {
         # code...

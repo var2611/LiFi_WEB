@@ -26,7 +26,7 @@ class FreeWifiLifiDataFiles extends TableView
     public function repository(): Builder
     {
 
-        return ImportLifiFreeWifiDataFile::query()->whereIsVisible(0);
+        return ImportLifiFreeWifiDataFile::query()->whereIsVisible(0)->orderByDesc('id');
     }
 
     /**
