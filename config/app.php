@@ -174,6 +174,7 @@ return [
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
         /*
          * Application Service Providers...

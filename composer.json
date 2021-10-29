@@ -19,6 +19,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "carlos-meneses/laravel-mpdf": "^2.1",
+        "consoletvs/charts": "7.*",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.3",
         "guzzlehttp/guzzle": "^7.0.1",
