@@ -352,7 +352,7 @@ function get_file_extension(UploadedFile $file): string
 {
     return $file->getClientOriginalExtension();
 }
-function upload_file($upload_path, $file_name, $file): string
+function upload_file($upload_path, $file_name, $file, string $urlRoot = "https://lifi.navtechno.in"): string
 {
 
     if (!file_exists(public_path() . $upload_path)) {
@@ -362,5 +362,5 @@ function upload_file($upload_path, $file_name, $file): string
 
     $path = public_path() . $upload_path;
     $file->move($path, $file_name);
-    return "http://lifi.navtechno.in" . $upload_path . $file_name;
+    return $urlRoot . $upload_path . $file_name;
 }
