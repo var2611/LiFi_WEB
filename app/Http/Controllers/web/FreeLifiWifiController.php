@@ -38,7 +38,7 @@ class FreeLifiWifiController extends Controller
     public function freeLiFiWiFiFileCreate(string $id = null)
     {
         $model = new ImportLifiFreeWifiDataFile();
-        return $this->createForm(null, UploadFreeLifiWifiFile::class, $model, route('free-lifi-wifi-file-store'), 'salary');
+        return $this->createForm(null, UploadFreeLifiWifiFile::class, $model, route('free-lifi-wifi-file-store'), 'salary','layouts.hrms_forms_no_side_menu');
     }
 
     public function freeLiFiWiFiFileStore()
