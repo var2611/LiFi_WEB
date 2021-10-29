@@ -48,8 +48,8 @@ class HomeController extends Controller
     public function demo(LaravelViews $laravelViews)
     {
 
-//        echo bcrypt('paarth@1234');
-        echo Attendance::whereDate('created_at', today())->count();
+        echo bcrypt('bsnl@freewifi#lifi');
+//        echo Attendance::whereDate('created_at', today())->count();
 
 //        $user = \Illuminate\Support\Facades\Auth::user();
 //        $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
