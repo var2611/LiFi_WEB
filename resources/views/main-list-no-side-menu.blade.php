@@ -8,3 +8,8 @@
 @extends('layouts.main_hr')
 @extends('includes.header')
 @extends('includes.footer')
+@section('lifi_lion')
+    <div>
+        <img src="{{URL::asset("images/logo_lion_lifi.svg")}}" alt="logo_lifi">
+    </div>
+@endsection

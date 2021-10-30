@@ -38,7 +38,7 @@
             @yield('emp-contract-menu')
 
 
-            <a href="#" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="{{ route('holiday-list') }}" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tree fa-fw mr-3"></span>
                     <span class="menu-collapsed">Holiday</span>

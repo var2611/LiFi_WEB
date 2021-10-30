@@ -46,13 +46,16 @@
                 @if(isset($title)||isset($add_btn_route))
                     <div class="mb-4">
                         <h1><strong>{{ $title ?? "" }}</strong></h1>
-                        @if(isset($add_btn_route))
+                        @if(isset($add_btn_route) && (Auth::user()->isHR() || Auth::user()->isAdmin()))
                             <a href="{{ $add_btn_route ?? '#' }}">
                                 <button class="btn-plus"><i class="fas fa-plus"></i></button>
                             </a>
                         @endif
                     </div>
                 @endif
+
+                @yield('lifi_lion')
+
                 @yield('container')
             </div>
         </div>

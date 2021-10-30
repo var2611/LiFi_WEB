@@ -109,7 +109,7 @@ class EmployeeContractController extends Controller
     /**
      * //     * @return RedirectResponse
      */
-    public function empContractFormStore()
+    public function empContractFormStore(): RedirectResponse
     {
         $formData = $this->formStoreData(EmployeeContractForm::class);
 
@@ -124,7 +124,7 @@ class EmployeeContractController extends Controller
 
     /**
      * @param string|null $id
-     * @return Form|RedirectResponse
+     * @return Application|Factory|RedirectResponse|View
      */
     public function contractTypeFormCreate(string $id = null)
     {

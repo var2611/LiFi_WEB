@@ -48,7 +48,7 @@ class HomeController extends Controller
     public function demo(LaravelViews $laravelViews)
     {
 
-        echo bcrypt('bsnl@freewifi#lifi');
+        echo bcrypt('gil@wifi#lifi');
 //        echo Attendance::whereDate('created_at', today())->count();
 
 //        $user = \Illuminate\Support\Facades\Auth::user();

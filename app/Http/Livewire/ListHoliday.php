@@ -2,18 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\ImportLifiFreeWifiDataFile;
-use App\Models\LeaveType;
+use App\Models\Holiday;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
-use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 
-class FreeWifiLifiDataFiles extends TableView
+class ListHoliday extends TableView
 {
-    protected $paginate = 20;
     public $searchBy = ['name', 'date'];
+    protected $paginate = 20;
 
     /** After */
 //    protected $model = LeaveType::class;
@@ -26,7 +25,7 @@ class FreeWifiLifiDataFiles extends TableView
     public function repository(): Builder
     {
 
-        return ImportLifiFreeWifiDataFile::query()->whereIsVisible(0)->orderByDesc('id');
+        return Holiday::query()->whereCompanyId(Auth::user()->getCompanyId())->whereIsVisible(0);
     }
 
     /**
@@ -39,23 +38,23 @@ class FreeWifiLifiDataFiles extends TableView
         return [
             Header::title('No')->sortBy('id'),
             Header::title('Name')->sortBy('name'),
+            Header::title('Description'),
             Header::title('Date')->sortBy('date'),
-            Header::title('Download'),
         ];
     }
 
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model ImportLifiFreeWifiDataFile model for each row
+     * @param $model Holiday model for each row
      */
-    public function row(ImportLifiFreeWifiDataFile $model): array
+    public function row(Holiday $model): array
     {
         return [
             $model->id,
             $model->name,
+            $model->description,
             $model->date,
-            UI::link('Download',$model->url)
         ];
     }
 

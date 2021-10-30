@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Forms\UploadFreeLifiWifiFile;
+use App\Forms\UploadFreeLifiWifiFileForm;
 use App\Http\Controllers\Controller;
-use App\Http\Livewire\FreeWifiLifiDataFiles;
+use App\Http\Livewire\ListFreeWifiLifiDataFiles;
 use App\Models\ImportLifiFreeWifiDataFile;
 use App\Models\ImportParthSalarySheetData;
 use Auth;
@@ -31,20 +31,20 @@ class FreeLifiWifiController extends Controller
             $addButtonRoute = 'free-lifi-wifi-file-edit';
 
         }
-        return $this->createList($laravelViews, FreeWifiLifiDataFiles::class, 'Free LiFI Wifi Data Usage files', 'employee', $addButtonRoute, false, 'main-list-no-side-menu');
+        return $this->createList($laravelViews, ListFreeWifiLifiDataFiles::class, 'Free LiFI Wifi Data Usage files', 'employee', $addButtonRoute, false, 'main-list-no-side-menu');
 
     }
 
     public function freeLiFiWiFiFileCreate(string $id = null)
     {
         $model = new ImportLifiFreeWifiDataFile();
-        return $this->createForm(null, UploadFreeLifiWifiFile::class, $model, route('free-lifi-wifi-file-store'), 'salary','layouts.hrms_forms_no_side_menu');
+        return $this->createForm(null, UploadFreeLifiWifiFileForm::class, $model, route('free-lifi-wifi-file-store'), 'salary','layouts.hrms_forms_no_side_menu');
     }
 
     public function freeLiFiWiFiFileStore()
     {
         $model = new ImportParthSalarySheetData();
-        $form = $this->form(UploadFreeLifiWifiFile::class);
+        $form = $this->form(UploadFreeLifiWifiFileForm::class);
         $form->redirectIfNotValid();
 //        print_r($form->getFieldValues());
         if ($form->getRequest()->hasFile('upload_file')) {

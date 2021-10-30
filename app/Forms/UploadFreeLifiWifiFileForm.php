@@ -5,7 +5,7 @@ namespace App\Forms;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
-class UploadFreeLifiWifiFile extends Form
+class UploadFreeLifiWifiFileForm extends Form
 {
     public function buildForm()
     {
