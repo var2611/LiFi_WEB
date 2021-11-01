@@ -132,7 +132,7 @@ Route::group(['middleware' => 'auth'], function () {
     /*Import Salary Forms*/
     Route::get('/holiday-edit', [HolidayController::class, 'holidayFormCreate'])->name('holiday-edit');
     Route::post('/holiday-store', [HolidayController::class, 'holidayFormStore'])->name('holiday-store');
-    Route::get('/holiday-list', [HolidayController::class, 'holidayList'])->name('holiday-list');
+    Route::get('/list-holiday', [HolidayController::class, 'holidayList'])->name('list-holiday');
 
 //    Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
     Route::get('/edit-user-profile/{id}', [UserEmployeeController::class, 'editUserProfile'])->name('edit-user-profile');
