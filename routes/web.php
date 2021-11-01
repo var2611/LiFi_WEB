@@ -3,6 +3,7 @@
 use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\EmployeeContractController;
 use App\Http\Controllers\web\FreeLifiWifiController;
+use App\Http\Controllers\web\HolidayController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\LeaveController;
 use App\Http\Controllers\web\SalaryController;
@@ -129,9 +130,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/import-salary-store', [SalaryController::class, 'importSalaryStore'])->name('import-salary-store');
 
     /*Import Salary Forms*/
-    Route::get('/holiday-edit', [SalaryController::class, 'holidayFormCreate'])->name('holiday-edit');
-    Route::post('/holiday-store', [SalaryController::class, 'holidayFormStore'])->name('holiday-store');
-    Route::post('/holiday-list', [SalaryController::class, 'holidayList'])->name('holiday-list');
+    Route::get('/holiday-edit', [HolidayController::class, 'holidayFormCreate'])->name('holiday-edit');
+    Route::post('/holiday-store', [HolidayController::class, 'holidayFormStore'])->name('holiday-store');
+    Route::get('/holiday-list', [HolidayController::class, 'holidayList'])->name('holiday-list');
 
 //    Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
     Route::get('/edit-user-profile/{id}', [UserEmployeeController::class, 'editUserProfile'])->name('edit-user-profile');
