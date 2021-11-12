@@ -22,7 +22,7 @@
     <div class="bg">
         <img src="{{ URL::asset("images/background_rr.jpg") }}" alt="bg">
         <div class="bg-image"></div>
-        <div class="center text-white"><h1>Welcome</h1></div>
+        <div class="center text-white"><h5>Welcome</h5></div>
         <div class="center text-white mt-5">
             <ul class="li-margin text-decoration-none flex justify-content-center">
                 <li><a href="{{ route('hr_dashboard') }}"><i class="fas fa-arrow-left"></i>Dashboard</a></li>

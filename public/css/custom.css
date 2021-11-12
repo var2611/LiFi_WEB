@@ -76,7 +76,6 @@ body {
     background: #343a40 !important;
     left: 0;
     width: 230px;
-+
 }
 
 .sidebar-collapsed {
@@ -266,6 +265,46 @@ body {
     padding: 0;
 }
 
+.info-box {
+    display: flex;
+}
+
+.bg-aqua {
+    border: 2px solid #1b4b72;
+    border-radius: 8px;
+}
+
+.info-box-icon {
+    display: block;
+    height: 90px;
+    width: 90px;
+    background-color: #1b4b72;
+    text-align: center;
+    color: white;
+    padding: 10px;
+    font-size: 40px;
+    border-radius: 6px 0 0 6px;
+}
+
+.info-box-content {
+    margin-top: 10px;
+    margin-left: 16px;
+}
+
+.info-box-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+}
+
+.info-box-number {
+    font-weight: bold;
+    font-size: 22px;
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
@@ -315,5 +354,14 @@ body {
     .hide-desktop {
         display: block;
     }
+
+    .top-box {
+        flex-direction: column;
+    }
+
+    .info-box {
+        margin-top: 10px;
+    }
+
 }
 

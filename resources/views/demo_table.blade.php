@@ -3,7 +3,7 @@
 @extends('includes.sidemenu.sidemenu')
 
 @section('container')
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs nav-fill" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" aria-current="tab1" href="#tab_tab1" role="tab" data-toggle="tab">Tab1</a>
         </li>

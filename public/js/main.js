@@ -39,30 +39,10 @@ function cal() {
     }
 }
 
-async function getContractDetail() {
-    jQuery(".loader").show();
-    if (document.getElementById("emp_contract_type_id")) {
 
-        var contract_type_id = document.getElementById('emp_contract_type_id').options[document.getElementById('emp_contract_type_id').selectedIndex].value
-        // alert(parseInt(contract_type_id));
-        var user_id = document.getElementsByName('user_id')[0].value;
-
-        let url = "{{ route('emp-contract-edit', ':id', ':user_id') }}";
-        url = url.replace(':id', contract_type_id);
-        url = url.replace(':user_id', user_id);
-
-        // alert((APP_URL));
-        await sleep(2000)
-        $('#details').load(APP_URL + '/emp-contract-edit/' + contract_type_id + '/' + user_id);
-        // document.location.href=url;
-    }
-
-    jQuery(".loader").hide();
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 
 

@@ -7,7 +7,8 @@
 
     {!! form_start($form) !!}
     <div class="row">
-            {!! form_row($form->data) !!}
+            {!! form_row($form->name) !!}
+            {!! form_row($form->description) !!}
         <div class="w-100"></div>
             {!! form_row($form->tags) !!}
     </div>

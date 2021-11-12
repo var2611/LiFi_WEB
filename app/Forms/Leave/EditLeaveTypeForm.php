@@ -10,18 +10,27 @@ class EditLeaveTypeForm extends Form
     public function buildForm()
     {
         $this
-            ->add('data', 'collection', [
-                'type' => 'form',
+//            ->add('data', 'collection', [
+//                'type' => 'form',
+//                'wrapper' => ['class' => 'row'],
+//
+//                'label' => false,
+//                'options' => [    // these are options for a single type
+//                    'class' => 'App\Forms\Leave\EditLeaveTypeForm1',
+//                    'label' => false,
+//                ]
+//            ])
+            ->add('name', Field::TEXT, [
                 'wrapper' => ['class' => 'col'],
-                'label' => false,
-                'options' => [    // these are options for a single type
-                    'class' => 'App\Forms\Leave\EditLeaveTypeForm1',
-                    'label' => false,
-                ]
+                'rules' => 'required|max:25',
+            ])
+            ->add('description', Field::TEXTAREA, [
+                'wrapper' => ['class' => 'col'],
+                'rules' => 'max:400',
             ])
             ->add('tags', 'collection', [
                 'type' => 'form',
-                'wrapper' => ['class' => 'col'],
+                'wrapper' => ['class' => 'row'],
                 'label' => false,
                 'options' => [    // these are options for a single type
                     'class' => 'App\Forms\Leave\EditLeaveTypeForm2',
