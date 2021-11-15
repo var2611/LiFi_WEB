@@ -20,7 +20,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Sessions</a></span>
-                    <span class="info-box-number">85</span>
+                    <span class="info-box-number">1912</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 85</a></span>
                 </div>
             </div>
         </div>
@@ -31,7 +32,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Unique Users</a></span>
-                    <span class="info-box-number">3</span>
+                    <span class="info-box-number">179</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 3</a></span>
                 </div>
             </div>
         </div>
@@ -42,7 +44,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Data Usage</a></span>
-                    <span class="info-box-number">16 GBs</span>
+                    <span class="info-box-number">369 GBs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 16 GBs</a></span>
                 </div>
             </div>
         </div>
@@ -53,7 +56,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Time Spent</a></span>
-                    <span class="info-box-number">35 Hrs</span>
+                    <span class="info-box-number">915 Hrs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 35 Hrs</a></span>
                 </div>
             </div>
         </div>

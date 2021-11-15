@@ -288,21 +288,30 @@ body {
 
 .info-box-content {
     margin-top: 10px;
-    margin-left: 16px;
+    margin-left: 14px;
 }
 
 .info-box-text {
     display: block;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
+    text-overflow: ellipsis;
+}
+
+.info-box-text-1 {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
     text-overflow: ellipsis;
 }
 
 .info-box-number {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 16px;
 }
 
 @media screen and (max-height: 450px) {
