@@ -31,6 +31,18 @@
                 <i class="fas fa-users"></i>
             </span>
                 <div class="info-box-content">
+                    <span class="info-box-text"><a href="#">Total Users</a></span>
+                    <span class="info-box-number">180</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 20</a></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-xs-8">
+            <div class="info-box bg-aqua">
+            <span class="info-box-icon">
+                <i class="fas fa-users"></i>
+            </span>
+                <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Unique Users</a></span>
                     <span class="info-box-number">180</span>
                     <span class="info-box-text-1"><a href="#">Last Day: 1</a></span>
