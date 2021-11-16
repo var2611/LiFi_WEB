@@ -20,8 +20,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Sessions</a></span>
-                    <span class="info-box-number">1912</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 85</a></span>
+                    <span class="info-box-number">1983</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 71</a></span>
                 </div>
             </div>
         </div>
@@ -32,8 +32,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Unique Users</a></span>
-                    <span class="info-box-number">179</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 3</a></span>
+                    <span class="info-box-number">180</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 1</a></span>
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Data Usage</a></span>
-                    <span class="info-box-number">369 GBs</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 16 GBs</a></span>
+                    <span class="info-box-number">384 GBs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 15 GBs</a></span>
                 </div>
             </div>
         </div>
@@ -56,8 +56,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Time Spent</a></span>
-                    <span class="info-box-number">915 Hrs</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 35 Hrs</a></span>
+                    <span class="info-box-number">943 Hrs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 28 Hrs</a></span>
                 </div>
             </div>
         </div>
