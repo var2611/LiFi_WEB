@@ -20,7 +20,7 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Sessions</a></span>
-                    <span class="info-box-number">1983</span>
+                    <span class="info-box-number">2066</span>
                     <span class="info-box-text-1"><a href="#">Last Day: 83</a></span>
                 </div>
             </div>
