@@ -21,7 +21,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Sessions</a></span>
                     <span class="info-box-number">1983</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 71</a></span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 83</a></span>
                 </div>
             </div>
         </div>
@@ -32,8 +32,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Total Users</a></span>
-                    <span class="info-box-number">180</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 20</a></span>
+                    <span class="info-box-number">184</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 24</a></span>
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Unique Users</a></span>
-                    <span class="info-box-number">180</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 1</a></span>
+                    <span class="info-box-number">184</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 4</a></span>
                 </div>
             </div>
         </div>
@@ -56,8 +56,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Data Usage</a></span>
-                    <span class="info-box-number">384 GBs</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 15 GBs</a></span>
+                    <span class="info-box-number">401 GBs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 17 GBs</a></span>
                 </div>
             </div>
         </div>
@@ -68,8 +68,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Time Spent</a></span>
-                    <span class="info-box-number">943 Hrs</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 28 Hrs</a></span>
+                    <span class="info-box-number">979 Hrs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: 36 Hrs</a></span>
                 </div>
             </div>
         </div>
