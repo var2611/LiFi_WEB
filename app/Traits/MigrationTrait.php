@@ -12,7 +12,7 @@ trait MigrationTrait
         $table->tinyInteger('is_visible')->default('0');
         $table->string('created_by');
         $table->string('updated_by');
-        $table->string('deleted_by')->nullable();;
+        $table->string('deleted_by')->nullable();
         $table->timestamps();
         $table->softDeletes();
     }

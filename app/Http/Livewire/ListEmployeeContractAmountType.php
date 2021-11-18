@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\EmpContractAmountType;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 

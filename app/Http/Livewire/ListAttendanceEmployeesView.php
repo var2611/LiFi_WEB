@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Filters\AttendanceDate;
+use App\Filters\FilterDate;
 use App\Models\AttendanceData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,7 +96,7 @@ class ListAttendanceEmployeesView extends TableView
     protected function filters()
     {
         return [
-            new AttendanceDate,
+            new FilterDate,
         ];
     }
 }

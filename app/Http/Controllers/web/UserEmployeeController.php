@@ -10,10 +10,10 @@ use App\Forms\Emp\EmployeeDepartmentTypeForm;
 use App\Forms\Emp\EmployeePFDetailForm;
 use App\Forms\Emp\EmployeeRegistrationForAttForm;
 use App\Forms\Emp\EmployeeRegistrationForm;
-use App\Forms\TypeEditForm;
+use App\Forms\UserRoleForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListEmployeeView;
-use App\Http\Livewire\ListUserRole;
+use App\Http\Livewire\UserRoleList;
 use App\Models\EmpBankDetail;
 use App\Models\EmpContractAmountType;
 use App\Models\EmpDepartmentType;
@@ -249,7 +249,7 @@ class UserEmployeeController extends Controller
     public function userRoleFormCreate(string $id = null)
     {
         $model = new UserRole();
-        return $this->createForm($id, TypeEditForm::class, $model, route('user-role-store'), 'employee');
+        return $this->createForm($id, UserRoleForm::class, $model, route('user-role-store'), 'employee');
     }
 
     /**
@@ -258,7 +258,7 @@ class UserEmployeeController extends Controller
     public function userRoleFormStore(): string
     {
         $model = new UserRole();
-        return $this->formStore(TypeEditForm::class, $model, 'list-role', 'employee', 'User Role');
+        return $this->formStore(UserRoleForm::class, $model, 'list-role', 'employee', 'User Role');
     }
 
     /**
@@ -300,7 +300,7 @@ class UserEmployeeController extends Controller
      */
     public function userRoleList(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListUserRole::class, 'User Role list', 'employee', route('user-role-edit'));
+        return $this->createList($laravelViews, UserRoleList::class, 'User Role list', 'employee', route('user-role-edit'));
     }
 
     public function editUserProfile(string $id)

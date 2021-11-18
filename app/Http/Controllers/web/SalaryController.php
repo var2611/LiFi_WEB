@@ -9,15 +9,12 @@ use App\Forms\Salary\SalaryForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListOverTimeType;
 use App\Http\Livewire\ListSalaryAllowanceType;
-use App\Imports\ImportParthSalarySheet;
-use App\Models\ImportParthSalarySheetData;
+use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
-use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class SalaryController extends Controller
@@ -62,14 +59,17 @@ class SalaryController extends Controller
         return $this->createForm($id, SalaryForm::class, $model, route('overtime-type-store'), 'salary');
     }
 
-    public function importSalaryCreate(){
-        $model = new ImportParthSalarySheetData();
+    public function importSalaryCreate()
+    {
+        $model = new ImportPublicWifiSeasonData();
         $form = $this->createFormData(null, ImportSalary::class, $model, route('import-salary-store'), 'salary');
 
         return $this->createFormView($form);
     }
-    public function importSalaryStore(){
-        $model = new ImportParthSalarySheetData();
+
+    public function importSalaryStore()
+    {
+        $model = new ImportPublicWifiSeasonData();
 //        $form = $this->formStoreData(ImportSalary::class);
         $form = $this->form(ImportSalary::class);
         $form->redirectIfNotValid();
@@ -79,11 +79,11 @@ class SalaryController extends Controller
 
             try {
                 $file = $form->getRequest()->file('salary_sheet');
-                $import = Excel::import(new ImportParthSalarySheet(), $file);
+//                $import = Excel::import(new ImportParthSalarySheet(), $file);
 
 //                (new ImportParthSalarySheet)->toCollection($file);
 
-//                $heading = (new HeadingRowImport(3))->toArray($file);
+//                $heading = (new HeadingRowImport(1))->toArray($file);
 
 //                echo json_encode($heading, JSON_PRETTY_PRINT);
             } catch (ValidationException $e) {

@@ -2,10 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\EmpContract;
 use App\Models\EmpContractType;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 

@@ -64,10 +64,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpContract whereUserId($value)
  * @mixin Eloquent
  * @property int|null $emp_shift_data_id
- * @property-read \App\Models\EmpContractStatus $EmpContractStatus
- * @property-read \App\Models\EmpContractType $EmpContractType
+ * @property-read EmpContractStatus $EmpContractStatus
+ * @property-read EmpContractType $EmpContractType
  * @method static Builder|EmpContract whereEmpShiftDataId($value)
- * @property-read \App\Models\EmpShiftData $EmpShiftData
+ * @property-read EmpShiftData $EmpShiftData
  */
 class EmpContract extends Model
 {

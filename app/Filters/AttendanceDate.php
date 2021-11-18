@@ -17,6 +17,6 @@ class AttendanceDate extends DateFilter
      */
     public function apply(Builder $query, Carbon $date, $request): Builder
     {
-         return $query->whereDate('date', $date);
+        return $query->whereDate('date', $date);
     }
 }

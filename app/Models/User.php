@@ -166,14 +166,6 @@ class User extends Authenticatable
         return $companyId == 5;
     }
 
-    /**
-     * @return Company|Builder
-     */
-    public function getCompanyData(): ?Company
-    {
-        return Company::whereId($this->getCompanyId())->first() ?? null;
-    }
-
     public function getCompanyId(): ?int
     {
         if (Auth::user()->UserEmployee)
@@ -182,5 +174,13 @@ class User extends Authenticatable
             return Auth::user()->UserApi->company_id;
         else
             return null;
+    }
+
+    /**
+     * @return Company|Builder
+     */
+    public function getCompanyData(): ?Company
+    {
+        return Company::whereId($this->getCompanyId())->first() ?? null;
     }
 }

@@ -27,6 +27,7 @@ Auth::routes();
 
 Route::view('/dashboard', '/dashboard')->name('dashboard');
 Route::view('/demo_table', '/demo_table')->name('demo_table');
+Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
 
 
 Route::group(['middleware' => 'auth'], function () {

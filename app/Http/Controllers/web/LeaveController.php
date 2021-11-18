@@ -6,7 +6,7 @@ namespace App\Http\Controllers\web;
 
 use App\Forms\Leave\ApplyLeaveForm;
 use App\Forms\Leave\EditLeaveTypeForm;
-use App\Forms\TypeEditForm;
+use App\Forms\UserRoleForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListLeaveEmployeesView;
 use App\Http\Livewire\ListLeaveMyView;
@@ -118,7 +118,7 @@ class LeaveController extends Controller
     {
         $model = new ApplyLeave(null);
         $model->user_id = Auth::id();
-        $form = $this->form(TypeEditForm::class, [
+        $form = $this->form(UserRoleForm::class, [
             'method' => 'POST',
             'model' => $model,
             'url' => route('leave-type-store')

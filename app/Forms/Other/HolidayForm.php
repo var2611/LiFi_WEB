@@ -2,11 +2,6 @@
 
 namespace App\Forms\Other;
 
-use App\Models\EmpContractAmountType;
-use App\Models\EmpContractStatus;
-use App\Models\EmpContractType;
-use App\Models\EmpWorkShift;
-use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 

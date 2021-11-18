@@ -20,8 +20,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Sessions</a></span>
-                    <span class="info-box-number">2066</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 83</a></span>
+                    <span class="info-box-number">{{ $additional_data->total_season }}</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: {{ $additional_data->last_day_season }}</a></span>
                 </div>
             </div>
         </div>
@@ -32,20 +32,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Total Users</a></span>
-                    <span class="info-box-number">184</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 24</a></span>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-2 col-xs-8">
-            <div class="info-box bg-aqua">
-            <span class="info-box-icon">
-                <i class="fas fa-users"></i>
-            </span>
-                <div class="info-box-content">
-                    <span class="info-box-text"><a href="#">Unique Users</a></span>
-                    <span class="info-box-number">184</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 4</a></span>
+                    <span class="info-box-number">{{ $additional_data->total_users }}</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: {{ $additional_data->last_day_users }}</a></span>
                 </div>
             </div>
         </div>
@@ -56,8 +44,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Data Usage</a></span>
-                    <span class="info-box-number">401 GBs</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 17 GBs</a></span>
+                    <span class="info-box-number">{{ round($additional_data->total_download_data) }} GBs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: {{ round($additional_data->last_day_download_data) }} GBs</a></span>
                 </div>
             </div>
         </div>
@@ -68,8 +56,8 @@
             </span>
                 <div class="info-box-content">
                     <span class="info-box-text"><a href="#">Time Spent</a></span>
-                    <span class="info-box-number">979 Hrs</span>
-                    <span class="info-box-text-1"><a href="#">Last Day: 36 Hrs</a></span>
+                    <span class="info-box-number">{{ round($additional_data->total_usage_time) }} Hrs</span>
+                    <span class="info-box-text-1"><a href="#">Last Day: {{ round($additional_data->last_day_usage_time) }} Hrs</a></span>
                 </div>
             </div>
         </div>

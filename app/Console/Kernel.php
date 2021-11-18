@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\web\FreeLifiWifiController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             checkOutMissingEntry();
+            (new FreeLifiWifiController())->fetchPublicWiFiData();
         })->timezone('Asia/Kolkata')
             ->at("01:00")
             ->runInBackground();

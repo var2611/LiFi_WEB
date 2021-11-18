@@ -57,7 +57,7 @@ class SalaryForm extends Form
                 'value' => $this->getModel()->id ?? null
             ])
             ->add('add', Field::BUTTON_BUTTON, [
-                'wrapper' => ['class'=> 'col-sm-6'],
+                'wrapper' => ['class' => 'col-sm-6'],
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);

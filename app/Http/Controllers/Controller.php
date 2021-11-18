@@ -340,7 +340,7 @@ class Controller extends BaseController
         }
     }
 
-    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, string $routeAddNew = null, bool $refresh_page = false, string $layout='main-list'): string
+    function createList(LaravelViews $laravelViews, string $className, string $title, string $sidemenuName, string $routeAddNew = null, bool $refresh_page = false, string $layout = 'main-list', $additionalData = null): string
     {
         $laravelViews
             ->create($className)
@@ -349,6 +349,7 @@ class Controller extends BaseController
                 'refresh' => $refresh_page,
                 $sidemenuName => true,
                 'add_btn_route' => $routeAddNew,
+                'additional_data' => $additionalData,
             ]);
 
         return $laravelViews->render();

@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\ImportParthSalarySheetData;
+use App\Models\ImportPublicWifiSeasonData;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -21,7 +21,7 @@ class ImportParthSalarySheet implements ToModel, WithBatchInserts, SkipsOnFailur
      */
     public function model(array $row)
     {
-        return new ImportParthSalarySheetData([
+        return new ImportPublicWifiSeasonData([
             'name' => $row['employee_name'],
             'UAN' => $row['uan'],
             'mobile' => '',

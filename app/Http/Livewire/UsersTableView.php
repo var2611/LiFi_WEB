@@ -52,7 +52,7 @@ class UsersTableView extends TableView
     protected function filters()
     {
         return [
-            new UsersActiveFilter,
+            new UsersActiveFilter('is_active'),
         ];
     }
 }

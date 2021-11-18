@@ -6,11 +6,10 @@ use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
-use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 use LaravelViews\Views\Traits\WithAlerts;
 
-class ListUserRole extends TableView
+class UserRoleList extends TableView
 {
     use WithAlerts;
 
@@ -52,7 +51,7 @@ class ListUserRole extends TableView
     {
         return [
             $model->id,
-            UI::editable($model, 'name'),
+            $model->name,
             $model->created_at,
         ];
     }
@@ -69,7 +68,7 @@ class ListUserRole extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction("user-role-edit", 'See user', 'edit'),
+//            new RedirectAction("user-role-edit", 'See user', 'edit'),
         ];
     }
 }

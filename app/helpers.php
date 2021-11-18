@@ -189,6 +189,11 @@ function getTodayDate()
     return date('Y-m-d');
 }
 
+function getYesterdayDate()
+{
+    return date('Y-m-d', strtotime("-1 days"));
+}
+
 function getTodayDateTime()
 {
     return date('Y-m-d H:m:s');
@@ -352,6 +357,7 @@ function get_file_extension(UploadedFile $file): string
 {
     return $file->getClientOriginalExtension();
 }
+
 function upload_file($upload_path, $file_name, $file, string $urlRoot = "https://lifi.navtechno.in"): string
 {
 
@@ -363,4 +369,48 @@ function upload_file($upload_path, $file_name, $file, string $urlRoot = "https:/
     $path = public_path() . $upload_path;
     $file->move($path, $file_name);
     return $urlRoot . $upload_path . $file_name;
+}
+
+/**
+ * Mass (bulk) insert or update on duplicate for Laravel 4/5
+ *
+ * insertOrUpdate([
+ *   ['id'=>1,'value'=>10],
+ *   ['id'=>2,'value'=>60]
+ * ]);
+ *
+ *
+ * @param array $rows
+ */
+function insertOrUpdate(array $rows): bool
+{
+    $table = 'import_public_wifi_season_data';
+
+
+    $first = reset($rows);
+
+    $columns = implode(',',
+        array_map(function ($value) {
+            return "$value";
+        }, array_keys($first))
+    );
+
+    $values = implode(',', array_map(function ($row) {
+            return '(' . implode(',',
+                    array_map(function ($value) {
+                        return '"' . str_replace('"', '""', $value) . '"';
+                    }, $row)
+                ) . ')';
+        }, $rows)
+    );
+
+    $updates = implode(',',
+        array_map(function ($value) {
+            return "$value = VALUES($value)";
+        }, array_keys($first))
+    );
+
+    $sql = "INSERT INTO {$table}({$columns}) VALUES {$values} ON DUPLICATE KEY UPDATE {$updates}";
+
+    return DB::statement($sql);
 }

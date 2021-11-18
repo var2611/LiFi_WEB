@@ -3,6 +3,6 @@
 @extends('includes.sidemenu.sidemenu')
 @section('container')
 {{--    <h1>Hellow</h1>--}}
-        <livewire:attendance-detail-view :model="$model" />
+        <livewire:detail-attendance-view :model="$model" />
 @endsection
 

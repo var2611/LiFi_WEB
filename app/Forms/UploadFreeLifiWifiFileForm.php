@@ -12,7 +12,7 @@ class UploadFreeLifiWifiFileForm extends Form
         $this
             ->add('upload_file', Field::FILE, [
                 'wrapper' => ['class' => 'col-sm-4'],
-                'attr' => ['accept' => '.xls,.xlsx,.csv'],
+//                'attr' => ['accept' => '.xls,.xlsx,.csv'],
                 'rules' => 'required',
             ])
             ->add('date', Field::DATE, [

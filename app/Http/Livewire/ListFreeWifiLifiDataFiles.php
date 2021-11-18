@@ -2,18 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\ImportLifiFreeWifiDataFile;
-use App\Models\LeaveType;
+use App\Filters\FilterDate;
+use App\Models\ImportPublicWifiSeasonData;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
-use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 
 class ListFreeWifiLifiDataFiles extends TableView
 {
-    protected $paginate = 20;
-    public $searchBy = ['name', 'date'];
+    public $searchBy = ['mobile', 'login_start_time'];
+    protected $paginate = 100;
 
     /** After */
 //    protected $model = LeaveType::class;
@@ -25,8 +24,7 @@ class ListFreeWifiLifiDataFiles extends TableView
      */
     public function repository(): Builder
     {
-
-        return ImportLifiFreeWifiDataFile::query()->whereIsVisible(0)->orderByDesc('id');
+        return ImportPublicWifiSeasonData::query();
     }
 
     /**
@@ -38,24 +36,30 @@ class ListFreeWifiLifiDataFiles extends TableView
     {
         return [
             Header::title('No')->sortBy('id'),
-            Header::title('Name')->sortBy('name'),
-            Header::title('Date')->sortBy('date'),
-            Header::title('Download'),
+            Header::title('Mobile')->sortBy('mobile'),
+            Header::title('Time Spent')->sortBy('converted_session_time'),
+            Header::title('Data Used')->sortBy('converted_total_data'),
+            Header::title('Start Time')->sortBy('login_start_time'),
+            Header::title('Stop Time')->sortBy('login_stop_time'),
+//            Header::title('Download'),
         ];
     }
 
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model ImportLifiFreeWifiDataFile model for each row
+     * @param $model ImportPublicWifiSeasonData model for each row
      */
-    public function row(ImportLifiFreeWifiDataFile $model): array
+    public function row(ImportPublicWifiSeasonData $model): array
     {
         return [
             $model->id,
-            $model->name,
-            $model->date,
-            UI::link('Download',$model->url)
+            $model->mobile_with_isd_code,
+            $model->converted_session_time,
+            $model->converted_total_data,
+            $model->login_start_time,
+            $model->login_stop_time,
+//            UI::link('Download',$model->url)
         ];
     }
 
@@ -66,6 +70,13 @@ class ListFreeWifiLifiDataFiles extends TableView
     {
         return [
             // new RedirectAction('leave-type-edit', 'Edit Contract Amount Type', 'download'),
+        ];
+    }
+
+    protected function filters()
+    {
+        return [
+            new FilterDate('login_start_time'),
         ];
     }
 }

@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attendance;
-use App\Models\User;
-use App\Models\UserEmployee;
 use Auth;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -37,8 +34,9 @@ class HomeController extends Controller
         return view('hrms.dashboard', $companyData);
     }
 
-    public function welcome(Request $request){
-        if (Auth::user()->isFreeLiFiWiFi()){
+    public function welcome(Request $request)
+    {
+        if (Auth::user()->isFreeLiFiWiFi()) {
             return redirect()->route('free-lifi-wifi-file-list');
         }
         return view('hrms.welcome');

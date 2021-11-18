@@ -65,10 +65,10 @@ Route::post('att/checkUserRegistration', [UserController::class, 'att_check_user
  * */
 
 //Route::post('demo1', 'UserController@demo1');
+Route::get('demoV', [TestController::class, 'demoV']);
 
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('demoV', [TestController::class, 'demoV']);
 
     Route::post('get-attendance', [AttendanceController::class, 'getAttendance']);
     Route::post('userDetails', [UserController::class, 'user_details']);
