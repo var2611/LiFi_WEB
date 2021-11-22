@@ -22,7 +22,7 @@ class ImportParthSalarySheet implements ToModel, WithBatchInserts, SkipsOnFailur
     public function model(array $row)
     {
         return new ImportPublicWifiSeasonData([
-            'name' => $row['employee_name'],
+            'name' => $row['name_of_the_employee'],
             'UAN' => $row['uan'],
             'mobile' => '',
             'description' => $row['department'],
@@ -32,14 +32,14 @@ class ImportParthSalarySheet implements ToModel, WithBatchInserts, SkipsOnFailur
             'department' => $row['department'],
             'category' => $row['category'],
             'minimum_wages' => $row['minimum_wages'],
-            'days_total' => $row['total_days'],
+            'days_total' => $row['tt_wrk_day'],
             'holiday' => $row['holiday'],
             'days_absent' => $row['days_absent'],
             'days_working' => $row['total_working_days'],
             'amount_advance_recovery' => $row['advance_recovery'],
             'amount_room_rent_excess' => $row['room_rentexcess_paid'],
             'salary_gross' => $row['actual_gross'],
-            'salary_basic' => $row['basic'],
+            'salary_basic' => $row['basic_da'],
             'salary_hra' => $row['hra'],
             'created_by' => Auth::id(),
             'updated_by' => Auth::id(),

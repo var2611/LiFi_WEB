@@ -66,4 +66,12 @@ class EmpRegForData
         return $this;
     }
 
+    public function paarthAttendanceUserdata(){
+        $this->company_id = $this->formData['company_id'] ?? null;
+        $this->name = $this->formData['name'] ?? null;
+        $this->surname = $this->formData['surname'] ?? null;
+        $this->emp_code = $this->formData['emp_code'] ?? null;
+        return $this;
+    }
+
 }

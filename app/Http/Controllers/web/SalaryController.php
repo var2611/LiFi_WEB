@@ -9,12 +9,14 @@ use App\Forms\Salary\SalaryForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListOverTimeType;
 use App\Http\Livewire\ListSalaryAllowanceType;
+use App\Imports\ImportPaarthAttendance;
 use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
+use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class SalaryController extends Controller
@@ -79,7 +81,7 @@ class SalaryController extends Controller
 
             try {
                 $file = $form->getRequest()->file('salary_sheet');
-//                $import = Excel::import(new ImportParthSalarySheet(), $file);
+                $import = Excel::import(new ImportPaarthAttendance(), $file);
 
 //                (new ImportParthSalarySheet)->toCollection($file);
 
@@ -92,9 +94,9 @@ class SalaryController extends Controller
                 echo json_encode($failures, JSON_PRETTY_PRINT);
             }
 
-            echo 'Success';
+//            echo 'Success';
         } else {
-            echo 'Fail';
+//            echo 'Fail';
         }
 
     }

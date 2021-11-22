@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\web\FreeLifiWifiController;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
@@ -15,13 +15,13 @@ class TestController extends Controller
     {
 //        checkOutMissingEntry();
 
-//        (new FreeLifiWifiController())->fetchPublicWiFiData();
+        (new FreeLifiWifiController())->fetchPublicWiFiData();
 
-        $additional_data = DB::select("select count(id)                                              as 'total_season',
+        $additional_data = \DB::select("select count(id)                                              as 'total_season',
        (select count(id)
         from import_public_wifi_season_data
         where date(login_start_time) = subdate(curdate(), 1)) as 'last_day_season',
-       round(sum(download_data) / 1024 / 1024 / 1024)         as 'total_download_data',
+       round(sum(total_data) / 1024 / 1024 / 1024)         as 'total_download_data',
        (select round(sum(download_data) / 1024 / 1024 / 1024)
         from import_public_wifi_season_data
         where date(login_start_time) = subdate(curdate(), 1)) as 'last_day_download_data',
@@ -31,7 +31,7 @@ class TestController extends Controller
         where date(login_start_time) = subdate(curdate(), 1)) as 'last_day_usage_time'
 from import_public_wifi_season_data");
 
-        echo $additional_data[0]->total_season;
+        echo json_encode($additional_data[0]);
 
 //        $total_season = ImportPublicWifiSeasonData::get()->count();
 //        $total_users = ImportPublicWifiSeasonData::distinct()->get('mobile')->count();

@@ -96,7 +96,7 @@ class ListAttendanceEmployeesView extends TableView
     protected function filters()
     {
         return [
-            new FilterDate,
+            new FilterDate('date'),
         ];
     }
 }

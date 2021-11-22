@@ -55,8 +55,8 @@ class FreeLifiWifiController extends Controller
        (select count(DISTINCT mobile)
         from import_public_wifi_season_data
         where date(login_start_time) = subdate(curdate(), 1)) as 'last_day_users',
-       round(sum(download_data) / 1024 / 1024 / 1024)         as 'total_download_data',
-       (select round(sum(download_data) / 1024 / 1024 / 1024)
+       round(sum(total_data) / 1024 / 1024 / 1024)         as 'total_download_data',
+       (select round(sum(total_data) / 1024 / 1024 / 1024)
         from import_public_wifi_season_data
         where date(login_start_time) = subdate(curdate(), 1)) as 'last_day_download_data',
        round(sum(session_time) / 60 / 60)                     as 'total_usage_time',
@@ -200,8 +200,8 @@ from import_public_wifi_season_data;");
 
                 $season_data = $data[1];
 //                print_r($season_data);
-                echo DB::statement('TRUNCATE import_public_wifi_season_data');
-                echo insertOrUpdate($season_data);
+                DB::statement('TRUNCATE import_public_wifi_season_data');
+                echo insertOrUpdate('import_public_wifi_season_data', $season_data);
             }
         }
     }

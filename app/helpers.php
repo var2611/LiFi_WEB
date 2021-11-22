@@ -120,6 +120,28 @@ function att_register_user(string $mobile, string $name): ?User
     return null;
 }
 
+function att_register_user_with_adhar(string $adhar_number, string $name): ?User
+{
+    try {
+        $input['adhar_number'] = $adhar_number;
+        $input['name'] = $name;
+        $checkUserExist = User::whereAdharNumber($input['adhar_number'])->first();
+        if (empty($checkUserExist)) {
+            $input['password'] = bcrypt('1234');
+            $user = User::create($input);
+            if (!empty($user)) {
+                return $user;
+            }
+        } else {
+            return $checkUserExist;
+        }
+
+    } catch (Exception $exception) {
+        return null;
+    }
+    return null;
+}
+
 function att_register_new_employee($data, User $user): ?UserEmployee
 {
     $name = $data->name;
@@ -129,6 +151,7 @@ function att_register_new_employee($data, User $user): ?UserEmployee
     $emp_code = $data->emp_code;
     $firebase_token = $data->firebase_token ?? null;
     $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
+
     if ($user_id) {
 
         $user->name = $name;
@@ -196,7 +219,13 @@ function getYesterdayDate()
 
 function getTodayDateTime()
 {
-    return date('Y-m-d H:m:s');
+    return date('Y-m-d H:i:s');
+}
+
+function getDateTimeFromStringAsFormat(string $from_format, string $to_format, string $time)
+{
+    $time = strtotime(date($from_format, strtotime($time)));
+    return date($to_format, $time);
 }
 
 function checkOutMissingEntry()
@@ -382,11 +411,8 @@ function upload_file($upload_path, $file_name, $file, string $urlRoot = "https:/
  *
  * @param array $rows
  */
-function insertOrUpdate(array $rows): bool
+function insertOrUpdate($table, array $rows): bool
 {
-    $table = 'import_public_wifi_season_data';
-
-
     $first = reset($rows);
 
     $columns = implode(',',

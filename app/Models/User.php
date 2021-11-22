@@ -76,6 +76,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereSurname($value)
  * @method static UserFactory factory(...$parameters)
  * @property-read UserApi|null $UserApi
+ * @property string|null $adhar_number For HRMS User who has no mobile or email
+ * @method static Builder|User whereAdharNumber($value)
  */
 class User extends Authenticatable
 {
@@ -92,6 +94,7 @@ class User extends Authenticatable
         'last_name',
         'mobile',
         'email',
+        'adhar_number',
         'password',
         'firebase_token',
         'mac_address',

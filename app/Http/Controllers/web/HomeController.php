@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Auth;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -46,7 +47,12 @@ class HomeController extends Controller
     public function demo(LaravelViews $laravelViews)
     {
 
-        echo bcrypt('gil@wifi#lifi');
+
+
+//        echo bcrypt('gil@wifi#lifi');
+//        echo  getTodayDateTime();
+
+//       echo getDateTimeFromStringAsFormat("Y-m-d H.i", "Y-m-d H:i", '2021-10-1 15.55');
 //        echo Attendance::whereDate('created_at', today())->count();
 
 //        $user = \Illuminate\Support\Facades\Auth::user();
