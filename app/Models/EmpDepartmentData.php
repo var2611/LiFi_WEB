@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\EmpDepartmentType
+ * App\Models\EmpDepartmentData
  *
  * @property int $id
- * @property string|null $name
+ * @property int|null $user_id
+ * @property int|null $emp_department_type_id
+ * @property string|null $description
  * @property int $is_active
  * @property int $is_visible
  * @property string $created_by
@@ -28,20 +30,25 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpDepartmentData whereCreatedBy($value)
  * @method static Builder|EmpDepartmentData whereDeletedAt($value)
  * @method static Builder|EmpDepartmentData whereDeletedBy($value)
+ * @method static Builder|EmpDepartmentData whereDescription($value)
+ * @method static Builder|EmpDepartmentData whereEmpDepartmentTypeId($value)
  * @method static Builder|EmpDepartmentData whereId($value)
  * @method static Builder|EmpDepartmentData whereIsActive($value)
  * @method static Builder|EmpDepartmentData whereIsVisible($value)
- * @method static Builder|EmpDepartmentData whereName($value)
  * @method static Builder|EmpDepartmentData whereUpdatedAt($value)
  * @method static Builder|EmpDepartmentData whereUpdatedBy($value)
+ * @method static Builder|EmpDepartmentData whereUserId($value)
  * @mixin Eloquent
+ * @property-read \App\Models\EmpDepartmentType|null $EmpDepartmentType
  */
-class EmpDepartmentType extends Model
+class EmpDepartmentData extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'user_id',
+        'emp_department_type_id',
+        'description',
         'is_active',
         'is_visible',
         'created_by',
@@ -49,4 +56,9 @@ class EmpDepartmentType extends Model
         'deleted_by',
         'deleted_at',
     ];
+
+    public function EmpDepartmentType()
+    {
+        return $this->belongsTo(EmpDepartmentType::class, 'user_id');
+    }
 }

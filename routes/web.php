@@ -28,6 +28,9 @@ Auth::routes();
 Route::view('/dashboard', '/dashboard')->name('dashboard');
 Route::view('/demo_table', '/demo_table')->name('demo_table');
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
+Route::get('/demoA', [SalaryController::class, 'calculateSalary'])->name('demoA');
+Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
+
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -44,11 +47,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/attendance-list-my', [AttendanceController::class, 'myAttendanceListView'])->name('attendance-list-my');
 
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
+    Route::get('/salary-view/{id}', [SalaryController::class, 'salaryView'])->name('salary-view');
 
     Route::get('/list-leave-type', [LeaveController::class, 'listLeaveTypeView'])->name('list-leave-type');
     Route::get('/list-leave-my', [LeaveController::class, 'listLeaveMyView'])->name('list-leave-my');
     Route::get('/list-leave-emp', [LeaveController::class, 'listLeaveEmpView'])->name('list-leave-emp');
 
+    Route::get('/list-salary', [SalaryController::class, 'salaryList'])->name('list-salary');
     Route::get('/list-salary-allowance-type', [SalaryController::class, 'salaryAllowanceTypeList'])->name('list-salary-allowance-type');
     Route::get('/list-overtime-type', [SalaryController::class, 'overtimeTypeList'])->name('list-overtime-type');
 

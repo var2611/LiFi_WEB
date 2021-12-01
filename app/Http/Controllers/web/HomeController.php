@@ -46,9 +46,6 @@ class HomeController extends Controller
 
     public function demo(LaravelViews $laravelViews)
     {
-
-
-
 //        echo bcrypt('gil@wifi#lifi');
 //        echo  getTodayDateTime();
 

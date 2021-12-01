@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\EmpDepartmentType;
+use App\Models\EmpDepartmentData;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
@@ -17,7 +17,7 @@ class ListEmployeeDepartmentType extends TableView
      */
     public function repository(): Builder
     {
-        return EmpDepartmentType::query();
+        return EmpDepartmentData::query();
     }
 
     /**
@@ -37,7 +37,7 @@ class ListEmployeeDepartmentType extends TableView
     /**
      * Sets the data to every cell of a single row
      *
-     * @param $model EmpDepartmentType model for each row
+     * @param $model EmpDepartmentData model for each row
      */
     public function row($model): array
     {

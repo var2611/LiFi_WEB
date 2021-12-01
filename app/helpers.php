@@ -5,16 +5,21 @@ use App\Models\Attendance;
 use App\Models\Device;
 use App\Models\EmpContract;
 use App\Models\EmpContractType;
+use App\Models\EmpDepartmentData;
+use App\Models\EmpDepartmentType;
+use App\Models\EmpPfDetail;
 use App\Models\EmpShiftData;
 use App\Models\EmpWorkShift;
 use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 function sendSMS($mobile, $message)
 {
@@ -207,6 +212,16 @@ function apiAccessCheck(array $allowed_user_roles): bool
 /**
  * @return false|string Current Date Y-m-d
  */
+function getDBDateAndTimeFormat()
+{
+    return "Y-m-d H:i";
+}
+
+function getDBDateFormat()
+{
+    return "Y-m-d";
+}
+
 function getTodayDate()
 {
     return date('Y-m-d');
@@ -224,8 +239,80 @@ function getTodayDateTime()
 
 function getDateTimeFromStringAsFormat(string $from_format, string $to_format, string $time)
 {
+//    echo strtotime($time) . '<br>';
     $time = strtotime(date($from_format, strtotime($time)));
     return date($to_format, $time);
+}
+
+function getDBDateFrom3FormatString(string $time = null)
+{
+    if (!$time)
+        return null;
+
+    $time = str_replace('/', '-', $time);
+    $format_initials = ['/', '.', '-'];
+    foreach ($format_initials as $format_initial) {
+        //if (strstr($string, $url)) { // mine version
+        if (strpos($time, $format_initial) !== FALSE) { // Yoshi version
+            $format = 'd' . $format_initial . 'm' . $format_initial . 'Y';
+//            echo $format . ' ' . $time . ' ';
+            return getDateTimeFromStringAsFormat($format, getDBDateFormat(), $time);
+        } else {
+//            echo $format_initial . ' ' . $time . ' ';
+//            return null;
+        }
+    }
+    return null;
+}
+
+function transformDate($value)
+{
+    if (!$value)
+        return null;
+    try {
+        return getDBDateFrom3FormatString(\date('m-d-Y', strtotime(Carbon::instance(Date::excelToDateTimeObject($value)))));
+    } catch (\ErrorException $e) {
+        return getDBDateFrom3FormatString($value);
+    }
+}
+
+function getSundays($month, $year, $days_in_month)
+{
+    $sundays = array();
+    //Create an instance of now
+//This is used to determine the current month and also to calculate the first and last day of the month
+    $now = new DateTime("$year-$month-01");
+
+//Create a DateTime representation of the first day of the current month based off of "now"
+    $start = new DateTime($now->format("$month/01/$year"));
+
+//Create a DateTime representation of the last day of the current month based off of "now"
+    $end = new DateTime($now->format("$month/$days_in_month/$year 23:59:59"));
+
+//Define our interval (1 Day)
+    $interval = new DateInterval('P1D');
+
+//Setup a DatePeriod instance to iterate between the start and end date by the interval
+    $period = new DatePeriod($start, $interval, $end);
+
+//Iterate over the DatePeriod instance
+    foreach ($period as $date) {
+        if ($date->format('w') == 0) {
+            array_push($sundays, $date->format('Y-m-d') . PHP_EOL);
+        }
+    }
+
+    return $sundays;
+}
+
+function format_number($number, $dec = 0, $trim = false)
+{
+    if ($trim) {
+        $parts = explode(".", (round($number, $dec) * 1));
+        $dec = isset($parts[1]) ? strlen($parts[1]) : 0;
+    }
+    $formatted = number_format($number, $dec);
+    return $formatted;
 }
 
 function checkOutMissingEntry()
@@ -366,7 +453,7 @@ function edit_emp_contract($data)
             $empContract->days = $empContractType->days;
             $empContract->emp_contract_type_id = $empContractType->id;
             $empContract->emp_contract_status_id = $emp_contract_status_id;
-            $empContract->amount = $empContractType->amount > 0 ? $empContractType->amount : $amount;
+            $empContract->salary_total = $empContractType->salary_total > 0 ? $empContractType->salary_total : $amount;
             $empContract->emp_shift_data_id = $emp_shift_data->id;
             $empContract->is_active = $is_active;
             $empContract->is_visible = $is_visible;
@@ -439,4 +526,133 @@ function insertOrUpdate($table, array $rows): bool
     $sql = "INSERT INTO {$table}({$columns}) VALUES {$values} ON DUPLICATE KEY UPDATE {$updates}";
 
     return DB::statement($sql);
+}
+
+function import_create_user_batch_data(array $data /*Name and Adhar Number Required*/): array
+{
+    $batch_user_data['adhar_number'] = $data['emp_code'];
+    $batch_user_data['name'] = explode(" ", $data['name'])[0];
+    $batch_user_data['surname'] = explode(" ", $data['name'])[1] ?? null;
+    $batch_user_data['password'] = bcrypt('1234');
+    $batch_user_data['created_by'] = Auth::user()->id;
+    $batch_user_data['updated_by'] = Auth::user()->id;
+    return $batch_user_data;
+}
+
+function import_create_user_employee_batch_data($batch_user_data, $company_id): array
+{
+    $i = 0;
+    $batch_user_emp_data = array();
+    $userDB = User::whereNotNull('adhar_number')->get(['id', 'adhar_number'])->toArray();
+
+    foreach ($batch_user_data as $user) {
+        $adhar_number = $user['adhar_number'];
+        $user_id = array_search($adhar_number, array_column($userDB, 'adhar_number'));
+
+        $user_employee = UserEmployee::whereEmpCode($adhar_number)->whereUserId($user_id)->first();
+        if (($user_employee && !empty($user_employee))) {
+            echo 'Skipped User Emp Code : ' . $adhar_number . ' User ID : ' . $user_id . '<br>';
+            continue;
+        }
+
+        $batch_user_emp_data[$i]['user_id'] = $userDB[$user_id]['id'] ?? 0;
+        $batch_user_emp_data[$i]['user_role_id'] = 2;
+        $batch_user_emp_data[$i]['company_id'] = $company_id;
+        $batch_user_emp_data[$i]['emp_code'] = $user['adhar_number'];
+        $batch_user_emp_data[$i]['flash_code'] = '0';
+        $batch_user_emp_data[$i]['created_by'] = Auth::user()->id;
+        $batch_user_emp_data[$i]['updated_by'] = Auth::user()->id;
+        $i++;
+    }
+    return $batch_user_emp_data;
+}
+
+function import_employee_hr_data($data): array
+{
+    $batch_employee_hr_data['adhar_number'] = $data['emp_code'];
+    $batch_employee_hr_data['emp_code'] = $data['emp_code'];
+    $batch_employee_hr_data['department'] = $data['department'];
+    $batch_employee_hr_data['description'] = $data['category'];
+    $batch_employee_hr_data['basic_salary'] = $data['basic_salary'];
+    $batch_employee_hr_data['salary_hra'] = $data['hra'];
+    $batch_employee_hr_data['date_of_join'] = $data['date_of_join'];
+    $batch_employee_hr_data['uan'] = $data['uan'];
+    $batch_employee_hr_data['pf_number'] = $data['pf_number'];
+
+    return $batch_employee_hr_data;
+}
+
+function import_emp_contract_pf_department_batch_entry($employee_contract_data, $company_id)
+{
+
+
+    $other_contract = EmpContractType::whereName('Other')->whereCompanyId($company_id)->first(['id']);
+
+    $userDB = User::whereNotNull('adhar_number')->get(['id', 'name', 'surname', 'adhar_number'])->toArray();
+    $department_types = EmpDepartmentType::whereNotNull('name')->get(['id', 'name'])->toArray();
+
+    $i = 0;
+    $j = 0;
+    $batch_employee_contract_data = array();
+    $batch_employee_department_data = array();
+    $batch_employee_pf_data = array();
+
+    try {
+        foreach ($employee_contract_data as $employee_contract) {
+            $searched_user = array_search($employee_contract['adhar_number'], array_column($userDB, 'adhar_number'));
+            $searched_department_type = array_search(trim(strtolower($employee_contract['department'])), array_column($department_types, 'name'));
+
+            $logged_in_user_id = Auth::id();
+            $department_type_id = $department_types[$searched_department_type]['id'];
+            $description = $employee_contract['description'];
+            $user_id = $userDB[$searched_user]['id'];
+            $user_name = $userDB[$searched_user]['name'] . ' ' . $userDB[$searched_user]['surname'];
+
+            $batch_employee_contract_data[$i]['user_id'] = $user_id;
+            $batch_employee_contract_data[$i]['name'] = $user_name;
+            $batch_employee_department_data[$i]['description'] = $description;
+            $batch_employee_contract_data[$i]['date'] = getTodayDate();
+            $batch_employee_contract_data[$i]['start_date'] = getDBDateFrom3FormatString($employee_contract['date_of_join']);
+            $batch_employee_contract_data[$i]['emp_contract_type_id'] = $other_contract->id;
+            $batch_employee_contract_data[$i]['emp_contract_status_id'] = 1;
+            $batch_employee_contract_data[$i]['hours'] = 8;
+            $batch_employee_contract_data[$i]['days'] = 364;
+            $batch_employee_contract_data[$i]['salary_basic'] = $employee_contract['basic_salary'] ?? 0;
+            $batch_employee_contract_data[$i]['salary_hra'] = $employee_contract['salary_hra'] ?? 0;
+            $batch_employee_contract_data[$i]['salary_total'] = ($employee_contract['basic_salary'] ?? 0) + ($employee_contract['salary_hra'] ?? 0);
+            $batch_employee_contract_data[$i]['created_by'] = $logged_in_user_id;
+            $batch_employee_contract_data[$i]['updated_by'] = $logged_in_user_id;
+
+            $batch_employee_department_data[$i]['user_id'] = $user_id;
+            $batch_employee_department_data[$i]['emp_department_type_id'] = $department_type_id;
+            $batch_employee_department_data[$i]['description'] = $description;
+            $batch_employee_department_data[$i]['created_by'] = $logged_in_user_id;
+            $batch_employee_department_data[$i]['updated_by'] = $logged_in_user_id;
+
+            if ($employee_contract['pf_number'] && $employee_contract['uan']) {
+                $batch_employee_pf_data[$j]['user_id'] = $user_id;
+                $batch_employee_pf_data[$j]['pf_number'] = $employee_contract['pf_number'];
+                $batch_employee_pf_data[$j]['uan'] = $employee_contract['uan'];
+                $batch_employee_pf_data[$j]['status'] = 1;
+                $batch_employee_pf_data[$j]['created_by'] = $logged_in_user_id;
+                $batch_employee_pf_data[$j]['updated_by'] = $logged_in_user_id;
+
+                $j++;
+            }
+
+            $i++;
+        }
+
+        echo 'Employee Department Created/Updated : ' . EmpDepartmentData::upsert($batch_employee_department_data, ['user_id', 'emp_department_type_id'], ['description', 'updated_by']) . '<br>';
+
+        echo 'Employee PF Details Created/Updated : ' . EmpPfDetail::upsert($batch_employee_pf_data, ['user_id', 'start_date'], ['bank_name', 'description', 'status', 'updated_by']) . '<br>';
+
+        echo 'Employee Contract Created/Updated : ' . EmpContract::upsert($batch_employee_contract_data, ['user_id', 'start_date'], ['name', 'description', 'date', 'end_date', 'start_time', 'hours', 'days', 'emp_contract_type_id', 'emp_contract_status_id', 'salary_basic', 'salary_hra', 'salary_total', 'emp_shift_data_id', 'updated_by']) . '<br>';
+    } catch (\Exception $ex) {
+        echo $ex . '<br>';
+        echo $i . '<br>';
+        echo json_encode($employee_contract) . '<br>';
+        echo json_encode($searched_user) . '<br>';
+    }
+
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -25,7 +26,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $days
  * @property int $emp_contract_type_id
  * @property int $emp_contract_status_id
- * @property string|null $amount
+ * @property string|null $salary_total
  * @property int|null $emp_work_shift_id
  * @property int $is_active
  * @property int $is_visible
@@ -68,6 +69,12 @@ use Illuminate\Support\Carbon;
  * @property-read EmpContractType $EmpContractType
  * @method static Builder|EmpContract whereEmpShiftDataId($value)
  * @property-read EmpShiftData $EmpShiftData
+ * @property string|null $salary_basic
+ * @property string|null $salary_hra
+ * @method static Builder|EmpContract whereSalaryBasic($value)
+ * @method static Builder|EmpContract whereSalaryHra($value)
+ * @method static Builder|EmpContract whereSalaryTotal($value)
+ * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
  */
 class EmpContract extends Model
 {
@@ -86,7 +93,9 @@ class EmpContract extends Model
         'days',
         'emp_contract_type_id',
         'emp_contract_status_id',
-        'amount',
+        'salary_basic',
+        'salary_hra',
+        'salary_total',
         'emp_work_shift_id',
         'is_active',
         'is_visible',
@@ -115,4 +124,11 @@ class EmpContract extends Model
     {
         return $this->belongsTo(EmpShiftData::class, 'id');
     }
+
+    public function EmpPfDetail(): HasOne
+    {
+        return $this->hasOne(EmpPfDetail::class, 'user_id', 'user_id');
+    }
+
+
 }

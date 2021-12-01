@@ -22,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $working_hours
  * @property int|null $emp_contract_status_id
  * @property int|null $emp_contract_amount_type_id
- * @property string|null $amount
+ * @property string|null $salary_total
  * @property int|null $emp_work_shift_id
  * @property int $is_active
  * @property int $is_visible
@@ -61,6 +61,11 @@ use Illuminate\Support\Carbon;
  * @property-read EmpWorkShift $EmpWorkShift
  * @property int|null $company_id
  * @method static Builder|EmpContractType whereCompanyId($value)
+ * @property string|null $salary_basic
+ * @property string|null $salary_hra
+ * @method static Builder|EmpContractType whereSalaryBasic($value)
+ * @method static Builder|EmpContractType whereSalaryHra($value)
+ * @method static Builder|EmpContractType whereSalaryTotal($value)
  */
 class EmpContractType extends Model
 {
@@ -77,7 +82,9 @@ class EmpContractType extends Model
         'working_hours',
         'emp_contract_status_id',
         'emp_contract_amount_type_id',
-        'amount',
+        'salary_basic',
+        'salary_hra',
+        'salary_total',
         'emp_work_shift_id',
         'is_active',
         'is_visible',

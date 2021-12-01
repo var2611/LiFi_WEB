@@ -98,7 +98,9 @@ class EmployeeContractController extends Controller
             $model->days = $empContractType->days;
             $model->hours = $empContractType->working_hours;
             $model->emp_contract_type_id = $empContractType->id;
-            $model->amount = $empContractType->amount;
+            $model->salary_basic = $empContractType->salary_basic;
+            $model->salary_hra = $empContractType->salary_hra;
+            $model->salary_total = $empContractType->salary_total;
         }
 
         $formData = $this->createFormData(null, EmployeeContractForm::class, $model, route('emp-contract-store'), 'employee');

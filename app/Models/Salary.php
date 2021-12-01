@@ -5,30 +5,26 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Salary
  *
  * @property int $id
- * @property int $user_employee_id
+ * @property int $user_id
  * @property int $emp_contract_id
  * @property string|null $name
  * @property string|null $date
- * @property string|null $contract_amount
  * @property string|null $total_days
  * @property string|null $present_days
  * @property string|null $absent_days
- * @property string|null $basic
- * @property string|null $hra
  * @property string|null $salary_amount
  * @property int $overtime_type_id
  * @property string|null $overtime_description
  * @property string|null $overtime_amount
  * @property string|null $salary_total
- * @property string|null $gross_earning
- * @property string|null $gross_deduction
- * @property string|null $net_pay
  * @property int $is_active
  * @property int $is_visible
  * @property string $created_by
@@ -66,10 +62,82 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Salary whereTotalDays($value)
  * @method static Builder|Salary whereUpdatedAt($value)
  * @method static Builder|Salary whereUpdatedBy($value)
- * @method static Builder|Salary whereUserEmployeeId($value)
+ * @method static Builder|Salary whereUserId($value)
  * @mixin Eloquent
+ * @property string|null $salary_contract_basic
+ * @property string|null $salary_contract_hra
+ * @property string|null $salary_contract_total
+ * @property string|null $salary_basic
+ * @property string|null $salary_hra
+ * @property string|null $salary_gross_earning
+ * @property string|null $salary_gross_deduction
+ * @property string|null $salary_net_pay
+ * @method static Builder|Salary whereSalaryBasic($value)
+ * @method static Builder|Salary whereSalaryContractBasic($value)
+ * @method static Builder|Salary whereSalaryContractHra($value)
+ * @method static Builder|Salary whereSalaryContractTotal($value)
+ * @method static Builder|Salary whereSalaryGrossDeduction($value)
+ * @method static Builder|Salary whereSalaryGrossEarning($value)
+ * @method static Builder|Salary whereSalaryHra($value)
+ * @method static Builder|Salary whereSalaryNetPay($value)
+ * @property-read \App\Models\EmpContract $EmpContract
+ * @property-read \App\Models\OvertimeType $OvertimeType
+ * @property-read \App\Models\User $User
+ * @property-read \App\Models\UserEmployee|null $UserEmployee
+ * @property int|null $month
+ * @property int|null $year
+ * @method static Builder|Salary whereMonth($value)
+ * @method static Builder|Salary whereYear($value)
  */
 class Salary extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'emp_contract_id',
+        'name',
+        'date',
+        'month',
+        'year',
+        'total_days',
+        'present_days',
+        'absent_days',
+        'salary_contract_basic',
+        'salary_contract_hra',
+        'salary_contract_total',
+        'salary_basic',
+        'salary_hra',
+        'salary_total',
+        'overtime_type_id',
+        'overtime_description',
+        'overtime_amount',
+        'salary_gross_earning',
+        'salary_gross_deduction',
+        'salary_net_pay',
+        'is_active',
+        'is_visible',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'deleted_at',
+    ];
 
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
+
+    public function EmpContract(): BelongsTo
+    {
+        return $this->belongsTo(EmpContract::class, 'id');
+    }
+
+    public function OvertimeType(): BelongsTo
+    {
+        return $this->belongsTo(OvertimeType::class, 'id');
+    }
+
+    public function UserEmployee(): HasOne
+    {
+        return $this->hasOne(UserEmployee::class, 'user_id', 'user_id');
+    }
 }

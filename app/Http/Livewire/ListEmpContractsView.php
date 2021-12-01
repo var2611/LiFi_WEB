@@ -56,7 +56,7 @@ class ListEmpContractsView extends TableView
             $model->date,
             $model->start_date,
             $model->end_date,
-            $model->amount,
+            $model->salary_total,
             $model->EmpContractType->name,
             $model->EmpContractStatus->name,
             $model->EmpShiftData->name,

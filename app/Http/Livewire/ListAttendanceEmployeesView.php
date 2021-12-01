@@ -51,7 +51,7 @@ class ListAttendanceEmployeesView extends TableView
             Header::title('Out Time'),
             Header::title('Hours Worked'),
             Header::title('Status')->sortBy('status'),
-            Header::title('Status')->sortBy('status'),
+//            Header::title('Status')->sortBy('status'),
             Header::title('Created at')->sortBy('created_at'),
         ];
     }

@@ -9,7 +9,9 @@
     </a>
 
     <div id='submenu3' class="collapse sidebar-submenu {{ isset($salary) ? 'show' : '' }}">
-        <a href="{{ route('list-salary-allowance-type') }}" class="list-group-item list-group-item-action bg-dark text-white">
+        <a href="{{ route('list-salary') }}" class="list-group-item list-group-item-action bg-dark text-white">
+            <span class="menu-collapsed">Salary List</span>
+        </a><a href="{{ route('list-salary-allowance-type') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Allowance Types</span>
         </a>
         <a href="{{ route('list-overtime-type') }}" class="list-group-item list-group-item-action bg-dark text-white">

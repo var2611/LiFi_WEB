@@ -63,7 +63,15 @@ class EmployeeContractForm extends Form
                 'rules' => 'required',
                 'label' => 'Emp contract status',
             ])
-            ->add('amount', Field::TEXT, [
+            ->add('salary_basic', Field::TEXT, [
+                'attr' => $attr,
+                'rules' => 'numeric|gt:0'
+            ])
+            ->add('salary_hra', Field::TEXT, [
+                'attr' => $attr,
+                'rules' => 'numeric|gt:0'
+            ])
+            ->add('salary_total', Field::TEXT, [
                 'attr' => $attr,
                 'rules' => 'numeric|gt:0'
             ])

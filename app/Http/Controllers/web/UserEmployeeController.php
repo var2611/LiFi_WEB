@@ -16,7 +16,7 @@ use App\Http\Livewire\ListEmployeeView;
 use App\Http\Livewire\UserRoleList;
 use App\Models\EmpBankDetail;
 use App\Models\EmpContractAmountType;
-use App\Models\EmpDepartmentType;
+use App\Models\EmpDepartmentData;
 use App\Models\EmpPfDetail;
 use App\Models\FormModels\EmpRegForData;
 use App\Models\User;
@@ -267,7 +267,7 @@ class UserEmployeeController extends Controller
      */
     public function empDepartmentTypeFormCreate(string $id)
     {
-        $model = new EmpDepartmentType();
+        $model = new EmpDepartmentData();
         return $this->createForm($id, EmployeeDepartmentTypeForm::class, $model, route('emp-department-type-store'), 'employee');
     }
 
@@ -276,7 +276,7 @@ class UserEmployeeController extends Controller
      */
     public function empDepartmentTypeFormStore(): string
     {
-        $model = new EmpDepartmentType();
+        $model = new EmpDepartmentData();
         return $this->formStore(EmployeeDepartmentTypeForm::class, $model, 'list-employee', 'employee', 'Employee Department Type');
     }
 

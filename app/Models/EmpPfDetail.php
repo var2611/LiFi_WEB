@@ -6,6 +6,8 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -43,6 +45,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpPfDetail whereUpdatedBy($value)
  * @method static Builder|EmpPfDetail whereUserId($value)
  * @mixin Eloquent
+ * @property string|null $uan
+ * @method static Builder|EmpPfDetail whereUan($value)
+ * @property string|null $pf_number
+ * @method static Builder|EmpPfDetail wherePfNumber($value)
+ * @property-read \App\Models\User $User
+ * @property-read \App\Models\UserEmployee|null $UserEmployee
  */
 class EmpPfDetail extends Model
 {
@@ -51,6 +59,7 @@ class EmpPfDetail extends Model
     protected $fillable = [
         'user_id',
         'account_number',
+        'uan',
         'bank_name',
         'description',
         'status',
@@ -61,4 +70,14 @@ class EmpPfDetail extends Model
         'deleted_by',
         'deleted_at',
     ];
+
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
+
+    public function UserEmployee(): HasOne
+    {
+        return $this->hasOne(UserEmployee::class, 'user_id', 'user_id');
+    }
 }

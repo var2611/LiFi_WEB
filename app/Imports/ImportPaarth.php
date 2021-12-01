@@ -10,7 +10,7 @@ class ImportPaarth implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            0 => new ImportPaarthAttendance()
+//            0 => new ImportPaarthAttendance()
         ];
     }
 }

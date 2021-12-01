@@ -49,6 +49,7 @@ use Illuminate\Support\Carbon;
  * @property int $company_id
  * @method static Builder|UserEmployee whereCompanyId($value)
  * @property-read Company $Company
+ * @property-read \App\Models\EmpDepartmentData $EmpDepartmentData
  */
 class UserEmployee extends Model
 {
@@ -70,6 +71,11 @@ class UserEmployee extends Model
     public function User()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function EmpDepartmentData()
+    {
+        return $this->belongsTo(EmpDepartmentData::class, 'user_id');
     }
 
     public function UserRole(): BelongsTo
