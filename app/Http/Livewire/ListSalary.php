@@ -70,7 +70,7 @@ class ListSalary extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction('salary-view', 'See Attendance Detail', 'eye'),
+            new RedirectAction('salary-slip', 'See Attendance Detail', 'eye'),
         ];
     }
 }

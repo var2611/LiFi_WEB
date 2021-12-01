@@ -19,10 +19,10 @@ class EmployeeRegistrationForAttForm extends Form
             ->add('name', Field::TEXT, [
                 'rules' => 'required'
             ])
-            ->add('surname', Field::TEXT, [
+            ->add('last_name', Field::TEXT, [
                 'rules' => 'required'
             ])
-            ->add('last_name', Field::TEXT, [
+            ->add('middle_name', Field::TEXT, [
                 'rules' => 'required'
             ])
             ->add('mobile', Field::TEXT, [

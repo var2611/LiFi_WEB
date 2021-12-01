@@ -51,6 +51,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|UserEmployee whereCompanyId($value)
  * @property-read Company $Company
  * @property-read \App\Models\EmpDepartmentData $EmpDepartmentData
+ * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
  */
 class UserEmployee extends Model
 {

@@ -46,7 +46,7 @@ class ImportParthSalarySheet implements OnEachRow, WithEvents
         $row = $row->toArray(null, true);
 
         if ($rowIndex == self::$total_row_count) {
-            echo 'User Created/Updated : ' . User::upsert($this->batch_user_data, ['name', 'adhar_number'], ['name', 'surname', 'updated_by']) . '<br>';
+            echo 'User Created/Updated : ' . User::upsert($this->batch_user_data, ['name', 'adhar_number'], ['name', 'last_name', 'updated_by']) . '<br>';
 
             $batch_user_emp_data = import_create_user_employee_batch_data($this->batch_user_data, $this->company_id);
 

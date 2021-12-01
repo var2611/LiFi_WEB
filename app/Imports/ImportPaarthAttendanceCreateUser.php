@@ -52,7 +52,7 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents
 
         if ($rowIndex == self::$total_row_count) {
 //            echo json_encode($this->batch_data);
-            echo 'User Created/Updated : ' . User::upsert($this->batch_user_data, ['name', 'adhar_number'], ['name', 'surname', 'updated_by']) . '<br>';
+            echo 'User Created/Updated : ' . User::upsert($this->batch_user_data, ['name', 'adhar_number'], ['name', 'last_name', 'updated_by']) . '<br>';
 
             $batch_user_emp_data = import_create_user_employee_batch_data($this->batch_user_data, $this->company_id);
 

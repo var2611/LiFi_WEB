@@ -152,7 +152,7 @@ function att_register_new_employee($data, User $user): ?UserEmployee
     $name = $data->name;
     $user_id = $user->id ?? null;
     $last_name = $data->last_name ?? '';
-    $surname = $data->surname ?? '';
+    $middle_name = $data->middle_name ?? '';
     $emp_code = $data->emp_code;
     $firebase_token = $data->firebase_token ?? null;
     $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
@@ -160,7 +160,7 @@ function att_register_new_employee($data, User $user): ?UserEmployee
     if ($user_id) {
 
         $user->name = $name;
-        $user->surname = $surname;
+        $user->middle_name = $middle_name;
         $user->last_name = $last_name;
         if ($firebase_token) {
             $user->firebase_token = $firebase_token;
@@ -374,7 +374,7 @@ function checkOutMissingEntry()
 function getUserFullName(int $id): string
 {
     $user = User::whereId($id)->first();
-    return $user->name . ' ' . ($user->last_name ? $user->last_name . ' ' : '') . $user->surname;
+    return $user->name . ' ' . ($user->middle_name ? $user->middle_name . ' ' : '') . $user->last_name;
 }
 
 /**
@@ -532,7 +532,8 @@ function import_create_user_batch_data(array $data /*Name and Adhar Number Requi
 {
     $batch_user_data['adhar_number'] = $data['emp_code'];
     $batch_user_data['name'] = explode(" ", $data['name'])[0];
-    $batch_user_data['surname'] = explode(" ", $data['name'])[1] ?? null;
+    $batch_user_data['last_name'] = explode(" ", $data['name'])[1] ?? null;
+    $batch_user_data['middle_name'] = explode(" ", $data['name'])[2] ?? null;
     $batch_user_data['password'] = bcrypt('1234');
     $batch_user_data['created_by'] = Auth::user()->id;
     $batch_user_data['updated_by'] = Auth::user()->id;
@@ -588,7 +589,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
 
     $other_contract = EmpContractType::whereName('Other')->whereCompanyId($company_id)->first(['id']);
 
-    $userDB = User::whereNotNull('adhar_number')->get(['id', 'name', 'surname', 'adhar_number'])->toArray();
+    $userDB = User::whereNotNull('adhar_number')->get(['id', 'name', 'middle_name', 'last_name', 'adhar_number'])->toArray();
     $department_types = EmpDepartmentType::whereNotNull('name')->get(['id', 'name'])->toArray();
 
     $i = 0;
@@ -606,7 +607,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
             $department_type_id = $department_types[$searched_department_type]['id'];
             $description = $employee_contract['description'];
             $user_id = $userDB[$searched_user]['id'];
-            $user_name = $userDB[$searched_user]['name'] . ' ' . $userDB[$searched_user]['surname'];
+            $user_name = $userDB[$searched_user]['name'] . ' ' . $userDB[$searched_user]['last_name'];
 
             $batch_employee_contract_data[$i]['user_id'] = $user_id;
             $batch_employee_contract_data[$i]['name'] = $user_name;

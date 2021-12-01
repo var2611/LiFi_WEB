@@ -14,6 +14,7 @@ class EmployeeRegistrationForm extends Form
 
         $this
             ->add('emp_code', Field::TEXT, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required',
             ])
 //            ->add('user_role', Field::SELECT, [
@@ -24,10 +25,10 @@ class EmployeeRegistrationForm extends Form
             ->add('name', Field::TEXT, [
                 'rules' => 'required'
             ])
-            ->add('surname', Field::TEXT, [
+            ->add('last_name', Field::TEXT, [
                 'rules' => 'required'
             ])
-            ->add('last_name', Field::TEXT, [
+            ->add('middle_name', Field::TEXT, [
                 'rules' => ''
             ])
             ->add('mobile', Field::NUMBER, [

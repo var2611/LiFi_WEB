@@ -98,7 +98,7 @@ class UserEmployeeController extends Controller
             ->first([
                 'users.id',
                 'users.name',
-                'users.surname',
+                'users.middle_name',
                 'users.last_name',
                 'users.mobile',
                 'users.email',

@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/attendance-list-my', [AttendanceController::class, 'myAttendanceListView'])->name('attendance-list-my');
 
     Route::get('/att_view/{id}', [AttendanceController::class, 'att_view'])->name('att_view');
-    Route::get('/salary-view/{id}', [SalaryController::class, 'salaryView'])->name('salary-view');
+    Route::get('/salary-slip/{id}', [SalaryController::class, 'salaryView'])->name('salary-slip');
 
     Route::get('/list-leave-type', [LeaveController::class, 'listLeaveTypeView'])->name('list-leave-type');
     Route::get('/list-leave-my', [LeaveController::class, 'listLeaveMyView'])->name('list-leave-my');

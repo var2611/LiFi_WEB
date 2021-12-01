@@ -12,7 +12,7 @@ use LaravelViews\Views\TableView;
 
 class ListLeaveEmployeesView extends TableView
 {
-    public $searchBy = ['user.name', 'user.surname', 'user.mobile', 'userEmployee.emp_code', 'leaveType.name'];
+    public $searchBy = ['user.name', 'user.last_name', 'user.middle_name', 'user.mobile', 'userEmployee.emp_code', 'leaveType.name'];
 
     protected $model = EmployeeLeave::class;
 
@@ -63,7 +63,7 @@ class ListLeaveEmployeesView extends TableView
             $model->id,
             $model->leaveType->name,
             $model->userEmployee->emp_code,
-            $model->user->name . ' ' . $model->user->surname,
+            $model->user->name . $model->user->middle_name ?? ' ' . $model->user->last_name,
             $model->date_from . ' ' . $model->from_time,
             $model->date_to . ' ' . $model->to_time,
             $model->days,

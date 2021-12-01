@@ -70,14 +70,14 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereMacAddress($value)
  * @property-read User|null $createdBy
  * @property-read UserEmployee|null $UserEmployee
- * @property string|null $surname
  * @property string|null $last_name
  * @method static Builder|User whereLastName($value)
- * @method static Builder|User whereSurname($value)
  * @method static UserFactory factory(...$parameters)
  * @property-read UserApi|null $UserApi
  * @property string|null $adhar_number For HRMS User who has no mobile or email
  * @method static Builder|User whereAdharNumber($value)
+ * @property string|null $middle_name
+ * @method static Builder|User whereMiddleName($value)
  */
 class User extends Authenticatable
 {
@@ -90,7 +90,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'surname',
+        'middle_name',
         'last_name',
         'mobile',
         'email',

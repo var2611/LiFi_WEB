@@ -129,7 +129,7 @@ class SalaryController extends Controller
         $pf_percentage = 12;
 
         $emp_contract_list = EmpContract::join('user_employees', 'emp_contracts.user_id', '=', 'user_employees.user_id')
-//            ->with(['User:id,name,surname', 'EmpPfDetail'])
+//            ->with(['User:id,name,last_name', 'EmpPfDetail'])
             ->where('user_employees.company_id', $company_id)
             ->get(['emp_contracts.id', 'emp_contracts.user_id', 'emp_contracts.name', 'emp_contracts.hours', 'emp_contracts.salary_basic', 'emp_contracts.salary_hra', 'emp_contracts.salary_total']);
 

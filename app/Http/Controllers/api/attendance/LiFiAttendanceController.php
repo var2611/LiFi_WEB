@@ -270,7 +270,7 @@ class LiFiAttendanceController extends Controller
 
         $attendance_log = new LogAttendance();
         $attendance_log->user_id = $userEmployee->user_id;
-        $attendance_log->name = $userEmployee->User->name . ' ' . $userEmployee->User->surname;
+        $attendance_log->name = $userEmployee->User->name . ' ' . $userEmployee->User->last_name;
         $attendance_log->flash_code = $flash_code;
         $attendance_log->date = $todayDate;
         $attendance_log->punch_time = $currentDateTime;

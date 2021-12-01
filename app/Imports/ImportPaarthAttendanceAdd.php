@@ -36,7 +36,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
         $this->month = $month;
         $this->year = $year;
         $this->days_in_month = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
-        $this->userDB = User::get(['id', 'name', 'surname', 'adhar_number'])->toArray();
+        $this->userDB = User::get(['id', 'name', 'last_name', 'adhar_number'])->toArray();
     }
 
     public static function beforeImport(BeforeImport $event)
@@ -133,7 +133,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
                 $search_data = array_search($adhar_number, array_column($this->userDB, 'adhar_number'));
 
                 $this->user_data['user_id'] = $this->userDB[$search_data]['id'];
-                $this->user_data['name'] = $this->userDB[$search_data]['name'] . ' ' . $this->userDB[$search_data]['surname'];
+                $this->user_data['name'] = $this->userDB[$search_data]['name'] . ' ' . $this->userDB[$search_data]['last_name'];
 
                 $this->previous_user_index = $rowIndex;
             }
