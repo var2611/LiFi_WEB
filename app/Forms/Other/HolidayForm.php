@@ -17,7 +17,7 @@ class HolidayForm extends Form
                 'rules' => 'max:400'
             ])
             ->add('date', Field::DATE, [
-                'attr' => ['readonly class' => 'form-control-plaintext'],
+//                'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required'
             ])
             ->add('is_active', Field::SELECT, [
