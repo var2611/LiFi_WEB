@@ -88,6 +88,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $year
  * @method static Builder|Salary whereMonth($value)
  * @method static Builder|Salary whereYear($value)
+ * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
  */
 class Salary extends Model
 {
@@ -140,4 +141,5 @@ class Salary extends Model
     {
         return $this->hasOne(UserEmployee::class, 'user_id', 'user_id');
     }
+
 }

@@ -656,3 +656,14 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
     }
 
 }
+
+function getFormattedAmountCurrency($amount, $currency_locale = 'en_IN')
+{
+    return NumberFormatter::create($currency_locale, NumberFormatter::CURRENCY)->format($amount);
+}
+
+function getNumberToWord($amount, $locale = 'en_IN')
+{
+    $f = new NumberFormatter($locale, NumberFormatter::SPELLOUT);
+    return $f->format($amount);
+}

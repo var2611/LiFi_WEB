@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -57,8 +58,8 @@ class EmpDepartmentData extends Model
         'deleted_at',
     ];
 
-    public function EmpDepartmentType()
+    public function EmpDepartmentType(): HasOne
     {
-        return $this->belongsTo(EmpDepartmentType::class, 'user_id');
+        return $this->hasOne(EmpDepartmentType::class, 'id', 'emp_department_type_id');
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -68,14 +69,14 @@ class UserEmployee extends Model
         'is_visible',
     ];
 
-    public function User()
+    public function User(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function EmpDepartmentData()
+    public function EmpDepartmentData(): HasOne
     {
-        return $this->belongsTo(EmpDepartmentData::class, 'user_id');
+        return $this->hasOne(EmpDepartmentData::class, 'user_id', 'user_id');
     }
 
     public function UserRole(): BelongsTo
@@ -87,4 +88,11 @@ class UserEmployee extends Model
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
+    public function EmpPfDetail(): HasOne
+    {
+        return $this->hasOne(EmpPfDetail::class, 'user_id', 'user_id');
+    }
+
+
 }

@@ -24,6 +24,7 @@ use Auth;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Nette\Utils\DateTime;
 
 class SalaryController extends Controller
 {
@@ -147,10 +148,11 @@ class SalaryController extends Controller
             $user_id = $employee_contract->user_id;
             $user_name = $employee_contract->name;
             $daily_working_hours = $employee_contract->hours - 3;
-            $salary_basic = $employee_contract->salary_basic;
-            $salary_hra = $employee_contract->salary_hra;
-            $salary_per_day = round($salary_basic / ($working_days ?? 1));
-            $salary_hra_per_day = round($salary_hra / ($working_days ?? 1));
+            $salary_contract_basic = round($employee_contract->salary_basic, 2);
+            $salary_contract_hra = round($employee_contract->salary_hra, 2);
+            $salary_contract_total = round($employee_contract->salary_total, 2);
+            $salary_per_day = round($salary_contract_basic / ($working_days ?? 1), 2);
+            $salary_hra_per_day = round($salary_contract_hra / ($working_days ?? 1), 2);
 
             $attendances = Attendance::whereUserId($user_id)
                 ->selectRaw("count(id) as total_working_days,
@@ -167,8 +169,8 @@ class SalaryController extends Controller
 
             $employee_absent_days = $working_days - $employee_working_days;
 
-            $monthly_basic_salary_amount = round($employee_working_days * $salary_per_day);
-            $monthly_hra_salary_amount = round($employee_working_days * $salary_hra_per_day);
+            $monthly_basic_salary_amount = round($employee_working_days * $salary_per_day, 2);
+            $monthly_hra_salary_amount = round($employee_working_days * $salary_hra_per_day, 2);
             $monthly_salary_amount = $monthly_basic_salary_amount + $monthly_hra_salary_amount;
 
             //PF Calculation
@@ -191,9 +193,9 @@ class SalaryController extends Controller
             $salary->date = getTodayDate();
             $salary->month = $month;
             $salary->year = $year;
-            $salary->salary_contract_basic = $employee_contract->salary_basic;
-            $salary->salary_contract_hra = $employee_contract->salary_hra;
-            $salary->salary_contract_total = $employee_contract->salary_total;
+            $salary->salary_contract_basic = $salary_contract_basic;
+            $salary->salary_contract_hra = $salary_contract_hra;
+            $salary->salary_contract_total = $salary_contract_total;
             $salary->total_days = $working_days;
             $salary->present_days = $employee_working_days;
             $salary->absent_days = $employee_absent_days;
@@ -201,14 +203,14 @@ class SalaryController extends Controller
             $salary->salary_hra = $monthly_hra_salary_amount;
             $salary->salary_total = $monthly_salary_amount;
             $salary->salary_gross_earning = $monthly_salary_amount;
-            $salary->salary_gross_deduction = 0;
+            $salary->salary_gross_deduction = 0.00;
             $salary->overtime_type_id = 1;
             $salary->overtime_description = null;
             $salary->overtime_amount = 0;
 
             $pf_amount = 0;
             if ($emp_pf_details[$search_data]) {
-                $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100);
+                $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100, 2);
                 if ($pf_amount > 0) {
                     $salary->salary_gross_earning = $salary->salary_gross_earning - $pf_amount;
                     $salary->salary_gross_deduction = $salary->salary_gross_deduction + $pf_amount;
@@ -269,12 +271,16 @@ class SalaryController extends Controller
     public function salaryView(string $id): string
     {
         $salary = Salary::whereId($id)
-            ->with(['UserEmployee:id,user_id,emp_code'])->first(['id', 'user_id', 'name', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
+            ->with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])->first(['id', 'user_id', 'name', 'date', 'month', 'year', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
+
+//        echo json_encode($salary->month) . "<br>";
+//        echo json_encode(DateTime::createFromFormat('!m', "$salary->month")->format('F')) . '<br>';
+//        exit();
 
         $data_salary_slip = new DataSalarySlip($salary);
 
 
 //        $la = new AttendanceDetailView($id);
-        return view('layouts.salary-slip', ['salary-slip-data' => $data_salary_slip, 'salary' => true])->render();
+        return view('layouts.salary-slip', ['data_salary_slip' => $data_salary_slip, 'salary' => true])->render();
     }
 }

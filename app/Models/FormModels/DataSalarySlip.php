@@ -4,6 +4,7 @@ namespace App\Models\FormModels;
 
 use App\Models\Salary;
 use App\Models\SalaryDetail;
+use Nette\Utils\DateTime;
 
 /**
  * @property string|null $emp_code
@@ -12,12 +13,18 @@ use App\Models\SalaryDetail;
  * @property string|null $salary_basic
  * @property string|null $salary_hra
  * @property string|null $salary_total
+ * @property string|null $pf_number
  * @property string|null $salary_gross_earning
  * @property string|null $salary_gross_deduction
  * @property int $salary_id
  * @property string|null $salary_net_pay
  * @property string|null $departmentType
  * @property string|null $description
+ * @property string $uan
+ * @property int|null $salary_year
+ * @property string $salary_month
+ * @property string $salary_to_number
+ * @property false|string $salary_net_pay_in_words
  */
 class DataSalarySlip
 {
@@ -40,16 +47,20 @@ class DataSalarySlip
         $this->name = ($this->salary_data->UserEmployee->User->name) . ' ' . ($this->salary_data->UserEmployee->User->name ?? '');
         $this->departmentType = $this->salary_data->UserEmployee->EmpDepartmentData->EmpDepartmentType->name;
         $this->description = $this->salary_data->UserEmployee->EmpDepartmentData->description;
-
-
+        $this->pf_number = $this->salary_data->EmpPfDetail->pf_number ?? ucfirst('nil');
+        $this->uan = $this->salary_data->EmpPfDetail->uan ?? ucfirst('nil');
+        $this->salary_month = DateTime::createFromFormat('!m', (string)$this->salary_data->month)->format('F');
+        $this->salary_year = $this->salary_data->year;
     }
 
     private function serEarningData()
     {
-        $this->salary_total = $this->salary_data->salary_total;
-        $this->salary_gross_earning = $this->salary_data->salary_gross_earning;
-        $this->salary_gross_deduction = $this->salary_data->salary_gross_deduction;
-        $this->salary_net_pay = $this->salary_data->salary_net_pay;
+        $this->salary_total = getFormattedAmountCurrency($this->salary_data->salary_total);
+        $this->salary_gross_earning = getFormattedAmountCurrency($this->salary_data->salary_gross_earning);
+        $this->salary_gross_deduction = getFormattedAmountCurrency($this->salary_data->salary_gross_deduction);
+        $this->salary_net_pay = getFormattedAmountCurrency($this->salary_data->salary_net_pay);
+        $this->salary_net_pay_in_words = getNumberToWord($this->salary_data->salary_net_pay);
+
     }
 
     public function getEarningData()
@@ -58,7 +69,7 @@ class DataSalarySlip
             ->where('type', 'E')->get();
     }
 
-    public function getDeductionData(): array
+    public function getDeductionData()
     {
         return SalaryDetail::whereSalaryId($this->salary_id)
             ->where('type', 'D')->get();
