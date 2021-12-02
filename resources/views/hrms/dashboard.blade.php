@@ -51,7 +51,7 @@
                             <h1>Leave</h1>
                         </div>
                     </a>
-                    <a href="#">
+                    <a href="{{ route('list-salary') }}">
                         <div class="card-hr">
                             <i class="fas fa-envelope fa-2x"></i>
                             <h1>Salary</h1>
