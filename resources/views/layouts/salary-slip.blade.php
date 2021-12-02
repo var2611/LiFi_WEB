@@ -78,7 +78,7 @@
                             @endfor
                             <tr class="border-top">
                                 <th scope="row">Total Earning</th>
-                                <td>{{ getFormattedAmountCurrency($data_salary_slip->salary_total) }}</td>
+                                <td>{{ $data_salary_slip->salary_total }}</td>
                             </tr>
                             </tbody>
 
