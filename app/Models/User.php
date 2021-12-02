@@ -180,10 +180,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @return Company|Builder
+     * @return CompanyHrmsSetting|Builder
      */
-    public function getCompanyData(): ?Company
+    public function getCompanyData(): ?CompanyHrmsSetting
     {
-        return Company::whereId($this->getCompanyId())->first() ?? null;
+        return CompanyHrmsSetting::whereId($this->getCompanyId())->first() ?? null;
     }
 }

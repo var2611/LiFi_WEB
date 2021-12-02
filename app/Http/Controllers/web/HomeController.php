@@ -38,7 +38,7 @@ class HomeController extends Controller
     public function welcome(Request $request)
     {
         if (Auth::user()->isFreeLiFiWiFi()) {
-            return redirect()->route('free-lifi-wifi-file-list');
+            return redirect()->route('list-free-lifi-wifi-file');
         }
         return view('hrms.welcome');
 

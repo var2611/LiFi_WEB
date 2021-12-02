@@ -10,12 +10,12 @@
     <!-- Submenu content -->
     <div id='submenu0' class="collapse sidebar-submenu {{ isset($att) ? 'show' : '' }}">
         @if(Auth::user()->isHR() || Auth::user()->isAdmin())
-            <a href="{{ route('attendance-list-emp') }}"
+            <a href="{{ route('list-emp-attendance') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span>Employee Attendance</span>
             </a>
         @endif
-        <a href="{{ route('attendance-list-my') }}"
+        <a href="{{ route('list-my-attendance') }}"
            class="list-group-item list-group-item-action bg-dark text-white">
             <span>My Attendance</span>
         </a>

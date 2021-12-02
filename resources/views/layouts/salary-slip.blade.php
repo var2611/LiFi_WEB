@@ -1,11 +1,11 @@
 @extends('layouts.main_hr')
 @php
     use App\Models\FormModels\DataSalarySlip;
-    use App\Models\SalaryDetail;
+    use App\Models\SalaryOvertimeDetail;
 
         /* @var $data_salary_slip DataSalarySlip */
-        /* @var $earning_data SalaryDetail*/
-        /* @var $deduction_data SalaryDetail*/
+        /* @var $earning_data SalaryOvertimeDetail*/
+        /* @var $deduction_data SalaryOvertimeDetail*/
         /* @var $row_count int*/
 
     $earning_data = $data_salary_slip->getEarningData();
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <div class="d-flex flex-column mt-2"><span class="font-weight-bold">For Kalyan Jewellers</span>
+                    <div class="d-flex flex-column mt-2"><span class="font-weight-bold">For Paarth Clothing Pvt. Ltd</span>
                         <span class="mt-4">Authorised Signatory</span></div>
                 </div>
             </div>

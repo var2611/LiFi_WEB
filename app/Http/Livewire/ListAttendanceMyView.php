@@ -84,7 +84,7 @@ class ListAttendanceMyView extends TableView
         return [
             // Will redirect to route('user', $user->id)
 //            new AttendanceDetailView(),
-            new RedirectAction('att_view', 'See Attendance Detail', 'eye'),
+            new RedirectAction('view-att-detail', 'See Attendance Detail', 'eye'),
         ];
     }
 

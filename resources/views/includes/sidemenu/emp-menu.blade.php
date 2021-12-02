@@ -10,7 +10,7 @@
         </a>
         <!-- Submenu content -->
         <div id='submenu1' class="collapse sidebar-submenu {{ isset($employee) ? 'show' : '' }}">
-            <a href="{{ route('emp-registration-att-edit') }}"
+            <a href="{{ route('edit-emp-registration-att') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span>Register Employee</span>
             </a>

@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
 /**
  * App\Models\UserAPI
  *
- * @property-read Company $Company
+ * @property-read CompanyHrmsSetting $Company
  * @property-read User $User
  * @property-read UserRole $UserRole
  * @method static Builder|UserApi newModelQuery()
@@ -73,6 +73,6 @@ class UserApi extends Model
 
     public function Company(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->belongsTo(CompanyHrmsSetting::class, 'company_id');
     }
 }

@@ -9,7 +9,7 @@ use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 use LaravelViews\Views\Traits\WithAlerts;
 
-class UserRoleList extends TableView
+class ListUserRole extends TableView
 {
     use WithAlerts;
 
@@ -68,7 +68,7 @@ class UserRoleList extends TableView
     protected function actionsByRow(): array
     {
         return [
-//            new RedirectAction("user-role-edit", 'See user', 'edit'),
+//            new RedirectAction("edit-user-role", 'See user', 'edit'),
         ];
     }
 }

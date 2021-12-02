@@ -29,17 +29,17 @@ class EmployeeContractController extends Controller
 
     public function listEmpContractView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListEmpContractsView::class, 'Employees Contract List', 'contract', route('emp-contract-edit'));
+        return $this->createList($laravelViews, ListEmpContractsView::class, 'Employees Contract List', 'contract', route('edit-emp-contract'));
     }
 
     public function listContractTypeView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListContractsTypeView::class, 'Contract Type List', 'contract', route('contract-type-edit'));
+        return $this->createList($laravelViews, ListContractsTypeView::class, 'Contract Type List', 'contract', route('edit-contract-type'));
     }
 
     public function listEmpContractAmountTypeView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListEmployeeContractAmountType::class, 'Amount Type List', 'contract', route('emp-contract-amount-type-edit'));
+        return $this->createList($laravelViews, ListEmployeeContractAmountType::class, 'Amount Type List', 'contract', route('edit-emp-contract-amount-type'));
     }
 
     /**
@@ -48,7 +48,7 @@ class EmployeeContractController extends Controller
      */
     public function listEmpContractStatusView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListEmployeeContractStatus::class, 'Status List', 'contract', route('emp-contract-status-edit'));
+        return $this->createList($laravelViews, ListEmployeeContractStatus::class, 'Status List', 'contract', route('edit-emp-contract-status'));
     }
 
     /**
@@ -64,13 +64,13 @@ class EmployeeContractController extends Controller
             $model = new EmpContract();
             $model->user_id = $id;
 
-            return $this->createFormData(null, EmployeeContractTypeListForm::class, $model, route('emp-contract-type-list-edit'), 'employee');
+            return $this->createFormData(null, EmployeeContractTypeListForm::class, $model, route('edit-emp-contract-type-list'), 'employee');
         } else {
             $model->isReadOnlyData = true;
             return $this->form(EmployeeContractForm::class, [
                 'method' => 'POST',
                 'model' => $model,
-                'url' => route('emp-contract-store'),
+                'url' => route('store-emp-contract'),
                 'employee' => true,
                 'id' => $id,
             ]);
@@ -82,7 +82,7 @@ class EmployeeContractController extends Controller
      * @param string|null $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empContractFormCreate(string $id = null, string $user_id = null)
+    public function editFormEmpContract(string $id = null, string $user_id = null)
     {
         $empContractType = EmpContractType::whereId($id)->first();
         $model = EmpContract::whereUserId($user_id)->first();
@@ -103,7 +103,7 @@ class EmployeeContractController extends Controller
             $model->salary_total = $empContractType->salary_total;
         }
 
-        $formData = $this->createFormData(null, EmployeeContractForm::class, $model, route('emp-contract-store'), 'employee');
+        $formData = $this->createFormData(null, EmployeeContractForm::class, $model, route('store-emp-contract'), 'employee');
 
         return $this->createFormView($formData, 'layouts.form');
     }
@@ -111,7 +111,7 @@ class EmployeeContractController extends Controller
     /**
      * //     * @return RedirectResponse
      */
-    public function empContractFormStore(): RedirectResponse
+    public function storeFormEmpContract(): RedirectResponse
     {
         $formData = $this->formStoreData(EmployeeContractForm::class);
 
@@ -128,7 +128,7 @@ class EmployeeContractController extends Controller
      * @param string|null $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function contractTypeFormCreate(string $id = null)
+    public function editFormContractType(string $id = null)
     {
         try {
 
@@ -140,7 +140,7 @@ class EmployeeContractController extends Controller
                 $model->company_id = Auth::user()->getCompanyId();
             }
 
-            return $this->createForm(null, EmployeeContractTypeForm::class, $model, route('contract-type-store'), 'contract');
+            return $this->createForm(null, EmployeeContractTypeForm::class, $model, route('store-contract-type'), 'contract');
 
         } catch (Exception $exception) {
             echo $exception->getMessage();
@@ -152,7 +152,7 @@ class EmployeeContractController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function contractTypeFormStore(): RedirectResponse
+    public function storeFormContractType(): RedirectResponse
     {
         $model = new EmpContractType();
 
@@ -163,17 +163,17 @@ class EmployeeContractController extends Controller
      * @param string|null $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empContractStatusFormCreate(string $id = null)
+    public function editFormEmpContractStatus(string $id = null)
     {
         $model = new EmpContractStatus();
 
-        return $this->createForm($id, EmployeeContractStatusForm::class, $model, route('emp-contract-status-store'), 'contract');
+        return $this->createForm($id, EmployeeContractStatusForm::class, $model, route('store-emp-contract-status'), 'contract');
     }
 
     /**
      * @return RedirectResponse
      */
-    public function empContractStatusFormStore(): RedirectResponse
+    public function storeFormEmpContractStatus(): RedirectResponse
     {
         $model = new EmpContractStatus();
 

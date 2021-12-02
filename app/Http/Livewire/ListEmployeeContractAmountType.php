@@ -53,7 +53,7 @@ class ListEmployeeContractAmountType extends TableView
     protected function actionsByRow()
     {
 //        return [
-//            new RedirectAction('emp-contract-amount-type-edit', 'Edit Contract Amount Type', 'edit'),
+//            new RedirectAction('edit-emp-contract-amount-type', 'Edit Contract Amount Type', 'edit'),
 //        ];
     }
 }

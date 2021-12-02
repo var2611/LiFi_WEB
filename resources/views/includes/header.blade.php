@@ -61,7 +61,7 @@
                             <a href="{{route('hr_dashboard')}}">Dashboard</a>
                         </li>
                         <li class="hide-desktop nav-item list-group-item">
-                            <a href="{{ route('attendance-list-emp') }}">Attendance</a>
+                            <a href="{{ route('list-emp-attendance') }}">Attendance</a>
                         </li>
                         <li class="hide-desktop nav-item list-group-item">
                             <a href="{{ route('list-employee') }}">Users</a>

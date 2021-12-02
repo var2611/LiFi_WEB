@@ -49,7 +49,7 @@ use Illuminate\Support\Carbon;
  * @property-read UserRole $UserRole
  * @property int $company_id
  * @method static Builder|UserEmployee whereCompanyId($value)
- * @property-read Company $Company
+ * @property-read CompanyHrmsSetting $Company
  * @property-read \App\Models\EmpDepartmentData $EmpDepartmentData
  * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
  */
@@ -87,7 +87,7 @@ class UserEmployee extends Model
 
     public function Company(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->belongsTo(CompanyHrmsSetting::class, 'company_id');
     }
 
     public function EmpPfDetail(): HasOne

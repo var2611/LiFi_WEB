@@ -27,17 +27,17 @@ class AttendanceController extends Controller
 
     }
 
-    public function empAttendanceListView(LaravelViews $laravelViews): string
+    public function listEmpAttendances(LaravelViews $laravelViews): string
     {
         return $this->createList($laravelViews, ListAttendanceEmployeesView::class, 'Employees Attendance', 'att', null, true);
     }
 
-    public function myAttendanceListView(LaravelViews $laravelViews): string
+    public function listMyAttendances(LaravelViews $laravelViews): string
     {
         return $this->createList($laravelViews, ListAttendanceMyView::class, 'My Attendance', 'att');
     }
 
-    public function att_view(string $id): string
+    public function view_att_detail(string $id): string
     {
         $result = AttendanceData::whereId($id)
             ->first();

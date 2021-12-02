@@ -13,7 +13,7 @@ use App\Forms\Emp\EmployeeRegistrationForm;
 use App\Forms\UserRoleForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListEmployeeView;
-use App\Http\Livewire\UserRoleList;
+use App\Http\Livewire\ListUserRole;
 use App\Models\EmpBankDetail;
 use App\Models\EmpContractAmountType;
 use App\Models\EmpDepartmentData;
@@ -46,10 +46,10 @@ class UserEmployeeController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function empRegistrationForAttFormCreate()
+    public function editFormEmpRegistrationForAtt()
     {
         $model = new UserEmployee();
-        $form = $this->createFormData(null, EmployeeRegistrationForAttForm::class, $model, route('emp-registration-att-store'), 'employee');
+        $form = $this->createFormData(null, EmployeeRegistrationForAttForm::class, $model, route('store-emp-registration-att'), 'employee');
 
         return view('layouts.hrms_forms', compact('form'));
     }
@@ -57,7 +57,7 @@ class UserEmployeeController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function empRegistrationForAttFormStore(): RedirectResponse
+    public function storeFormEmpRegistrationForAtt(): RedirectResponse
     {
         $formData = $this->formStoreData(EmployeeRegistrationForAttForm::class);
         $empRegForAttForm = new EmpRegForData($formData);
@@ -80,9 +80,9 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empRegistrationFormCreate(string $id)
+    public function editFormEmpRegistration(string $id)
     {
-        $form = $this->empRegistrationFormCreateData($id);
+        $form = $this->editFormEmpRegistrationData($id);
         return $this->createFormView($form);
     }
 
@@ -90,7 +90,7 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Form|RedirectResponse
      */
-    private function empRegistrationFormCreateData(string $id)
+    private function editFormEmpRegistrationData(string $id)
     {
         $model = User::where('users.id', $id)
             ->join('user_employees', 'users.id', '=', 'user_employees.user_id')
@@ -114,13 +114,13 @@ class UserEmployeeController extends Controller
                 'user_employees.emp_code',
                 'user_employees.flash_code',
             ]);
-        return $this->createFormData(null, EmployeeRegistrationForm::class, $model, route('emp-registration-store'), 'employee');
+        return $this->createFormData(null, EmployeeRegistrationForm::class, $model, route('store-emp-registration'), 'employee');
     }
 
     /**
      * @return RedirectResponse
      */
-    public function empRegistrationFormStore(): RedirectResponse
+    public function storeFormEmpRegistration(): RedirectResponse
     {
         $formData = $this->formStoreData(EmployeeRegistrationForm::class);
 
@@ -142,9 +142,9 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empPFDetailFormCreate(string $id)
+    public function editFormEmpPFDetail(string $id)
     {
-        $form = $this->empPFDetailFormCreateData($id);
+        $form = $this->editFormEmpPFDetailData($id);
 
         return $this->createFormView($form);
     }
@@ -153,7 +153,7 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Form|void
      */
-    private function empPFDetailFormCreateData(string $id)
+    private function editFormEmpPFDetailData(string $id)
     {
         $model = EmpPfDetail::whereUserId($id)->first();
 
@@ -161,13 +161,13 @@ class UserEmployeeController extends Controller
             $model = new EmpPfDetail();
             $model->user_id = $id;
         }
-        return $this->createFormData(null, EmployeePFDetailForm::class, $model, route('emp-pf-detail-store'), 'employee');
+        return $this->createFormData(null, EmployeePFDetailForm::class, $model, route('store-emp-pf-detail'), 'employee');
     }
 
     /**
      * @return string
      */
-    public function empPFDetailFormStore(): string
+    public function storeFormEmpPFDetail(): string
     {
         $model = new EmpPfDetail();
         return $this->formStore(EmployeePFDetailForm::class, $model, 'list-employee', 'employee', 'PF Detail');
@@ -177,9 +177,9 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empBankDetailFormCreate(string $id)
+    public function editFormEmpBankDetail(string $id)
     {
-        $form = $this->empBankDetailFormCreateData($id);
+        $form = $this->editFormEmpBankDetailData($id);
 
         return $this->createFormView($form);
     }
@@ -188,7 +188,7 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Form|void
      */
-    private function empBankDetailFormCreateData(string $id)
+    private function editFormEmpBankDetailData(string $id)
     {
         $model = EmpBankDetail::whereUserId($id)->first();
 
@@ -196,13 +196,13 @@ class UserEmployeeController extends Controller
             $model = new EmpBankDetail();
         }
 
-        return $this->createFormData(null, EmployeeBankDetailForm::class, $model, route('emp-bank-detail-store'), 'employee');
+        return $this->createFormData(null, EmployeeBankDetailForm::class, $model, route('store-emp-bank-detail'), 'employee');
     }
 
     /**
      * @return RedirectResponse
      */
-    public function empBankDetailFormStore(): RedirectResponse
+    public function storeFormEmpBankDetail(): RedirectResponse
     {
         $formData = $this->formStoreData(EmployeeBankDetailForm::class);
 
@@ -225,17 +225,17 @@ class UserEmployeeController extends Controller
      * @param string|null $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empContractAmountTypeFormCreate(string $id = null)
+    public function editFormEmpContractAmountType(string $id = null)
     {
         $model = new EmpContractAmountType();
 
-        return $this->createForm($id, EmployeeContractAmountTypeForm::class, $model, route('emp-contract-amount-type-store'), 'employee');
+        return $this->createForm($id, EmployeeContractAmountTypeForm::class, $model, route('store-emp-contract-amount-type'), 'employee');
     }
 
     /**
      * @return string
      */
-    public function empContractAmountTypeFormStore(): string
+    public function storeFormEmpContractAmountType(): string
     {
         $model = new EmpContractAmountType();
 
@@ -246,16 +246,16 @@ class UserEmployeeController extends Controller
      * @param string|null $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function userRoleFormCreate(string $id = null)
+    public function editFormUserRole(string $id = null)
     {
         $model = new UserRole();
-        return $this->createForm($id, UserRoleForm::class, $model, route('user-role-store'), 'employee');
+        return $this->createForm($id, UserRoleForm::class, $model, route('store-user-role'), 'employee');
     }
 
     /**
      * @return string
      */
-    public function userRoleFormStore(): string
+    public function storeFormUserRole(): string
     {
         $model = new UserRole();
         return $this->formStore(UserRoleForm::class, $model, 'list-role', 'employee', 'User Role');
@@ -265,16 +265,16 @@ class UserEmployeeController extends Controller
      * @param string $id
      * @return Application|Factory|RedirectResponse|View
      */
-    public function empDepartmentTypeFormCreate(string $id)
+    public function editFormEmpDepartmentType(string $id)
     {
         $model = new EmpDepartmentData();
-        return $this->createForm($id, EmployeeDepartmentTypeForm::class, $model, route('emp-department-type-store'), 'employee');
+        return $this->createForm($id, EmployeeDepartmentTypeForm::class, $model, route('store-emp-department-type'), 'employee');
     }
 
     /**
      * @return string
      */
-    public function empDepartmentTypeFormStore(): string
+    public function storeFormEmpDepartmentType(): string
     {
         $model = new EmpDepartmentData();
         return $this->formStore(EmployeeDepartmentTypeForm::class, $model, 'list-employee', 'employee', 'Employee Department Type');
@@ -287,7 +287,7 @@ class UserEmployeeController extends Controller
      * @param Request $request
      * @return string
      */
-    public function empList(LaravelViews $laravelViews, Request $request): string
+    public function listEmp(LaravelViews $laravelViews, Request $request): string
     {
         return $this->createList($laravelViews, ListEmployeeView::class, 'Employee list', 'employee');
     }
@@ -298,9 +298,9 @@ class UserEmployeeController extends Controller
      * @param LaravelViews $laravelViews
      * @return string
      */
-    public function userRoleList(LaravelViews $laravelViews): string
+    public function listUserRoles(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, UserRoleList::class, 'User Role list', 'employee', route('user-role-edit'));
+        return $this->createList($laravelViews, ListUserRole::class, 'User Role list', 'employee', route('edit-user-role'));
     }
 
     public function editUserProfile(string $id)
@@ -308,12 +308,12 @@ class UserEmployeeController extends Controller
         $user = UserEmployee::whereUserId($id)->first();
         if ($user) {
             $data = array();
-            $data['formUserDetail'] = $this->empRegistrationFormCreateData($id);
-            $data['formOfficeTiming'] = $this->empBankDetailFormCreateData($id);
-            $data['formDepartmentDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
+            $data['formUserDetail'] = $this->editFormEmpRegistrationData($id);
+            $data['formOfficeTiming'] = $this->editFormEmpBankDetailData($id);
+//            $data['formDepartmentDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
             $data['formContractDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
-            $data['formBankDetail'] = $this->empBankDetailFormCreateData($id);
-            $data['formPFDetail'] = $this->empPFDetailFormCreateData($id);
+            $data['formBankDetail'] = $this->editFormEmpBankDetailData($id);
+            $data['formPFDetail'] = $this->editFormEmpPFDetailData($id);
 
             return view('hrms.edit-user-profile', ['data' => $data]);
         } else {

@@ -3,7 +3,7 @@
 namespace App\Models\FormModels;
 
 use App\Models\Salary;
-use App\Models\SalaryDetail;
+use App\Models\SalaryOvertimeDetail;
 use Nette\Utils\DateTime;
 
 /**
@@ -65,13 +65,13 @@ class DataSalarySlip
 
     public function getEarningData()
     {
-        return SalaryDetail::whereSalaryId($this->salary_id)
+        return SalaryOvertimeDetail::whereSalaryId($this->salary_id)
             ->where('type', 'E')->get();
     }
 
     public function getDeductionData()
     {
-        return SalaryDetail::whereSalaryId($this->salary_id)
+        return SalaryOvertimeDetail::whereSalaryId($this->salary_id)
             ->where('type', 'D')->get();
     }
 

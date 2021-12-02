@@ -51,7 +51,7 @@ class ListOverTimeType extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction("overtime-type-edit", 'Edit Overtime Type', 'edit'),
+            new RedirectAction("edit-overtime-type", 'Edit Overtime Type', 'edit'),
         ];
     }
 }

@@ -69,7 +69,7 @@ class ListFreeWifiLifiDataFiles extends TableView
     protected function actionsByRow(): array
     {
         return [
-            // new RedirectAction('leave-type-edit', 'Edit Contract Amount Type', 'download'),
+            // new RedirectAction('edit-leave-type', 'Edit Contract Amount Type', 'download'),
         ];
     }
 

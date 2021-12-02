@@ -18,10 +18,10 @@ use Redirect;
 class HolidayController extends Controller
 {
 
-    public function holidayList(LaravelViews $laravelViews): string
+    public function listHoliday(LaravelViews $laravelViews): string
     {
 
-        return $this->createList($laravelViews, ListHoliday::class, 'Holiday List', 'holiday', 'holiday-edit');
+        return $this->createList($laravelViews, ListHoliday::class, 'Holiday List', 'holiday', 'edit-holiday');
 
     }
 
@@ -29,7 +29,7 @@ class HolidayController extends Controller
      * @param string|null $id
      * @return Application|Factory|View|RedirectResponse
      */
-    public function holidayFormCreate(string $id = null)
+    public function editFormHoliday(string $id = null)
     {
         try {
             $model = Holiday::whereId($id)->first();
@@ -39,7 +39,7 @@ class HolidayController extends Controller
                 $model->company_id = Auth::user()->getCompanyId();
             }
 
-            return $this->createForm(null, HolidayForm::class, $model, route('holiday-store'), 'contract');
+            return $this->createForm(null, HolidayForm::class, $model, route('store-holiday'), 'contract');
 
         } catch (Exception $exception) {
             echo $exception->getMessage();
@@ -51,7 +51,7 @@ class HolidayController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function holidayFormStore(): RedirectResponse
+    public function storeFormHoliday(): RedirectResponse
     {
         $model = new Holiday();
 

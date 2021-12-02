@@ -51,7 +51,7 @@ class ListSalaryAllowanceType extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction("salary-allowance-type-edit", 'Edit Salary Allowance Type', 'edit'),
+            new RedirectAction("edit-salary-allowance-type", 'Edit Salary Allowance Type', 'edit'),
         ];
     }
 }

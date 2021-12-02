@@ -54,7 +54,7 @@ class ListEmployeeContractStatus extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction('emp-contract-status-edit', 'Edit Contract Status', 'edit'),
+            new RedirectAction('edit-emp-contract-status', 'Edit Contract Status', 'edit'),
         ];
     }
 }

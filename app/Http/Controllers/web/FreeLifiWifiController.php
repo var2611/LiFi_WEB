@@ -34,7 +34,7 @@ class FreeLifiWifiController extends Controller
         $addButtonRoute = null;
         if (Auth::user()->isAdmin()) {
 
-            $addButtonRoute = 'free-lifi-wifi-file-edit';
+            $addButtonRoute = 'edit-free-lifi-wifi-file';
 
         }
 
@@ -73,7 +73,7 @@ from import_public_wifi_season_data;");
     public function freeLiFiWiFiFileCreate(string $id = null)
     {
         $model = new ImportLifiFreeWifiDataFile();
-        return $this->createForm(null, UploadFreeLifiWifiFileForm::class, $model, route('free-lifi-wifi-file-store'), 'salary', 'layouts.hrms_forms_no_side_menu');
+        return $this->createForm(null, UploadFreeLifiWifiFileForm::class, $model, route('store-free-lifi-wifi-file'), 'salary', 'layouts.hrms_forms_no_side_menu');
     }
 
     public function freeLiFiWiFiFileStore()
@@ -100,7 +100,7 @@ from import_public_wifi_season_data;");
 //                $model->save();
 //                if ($model) {
 //                    $this->notifyMessage(true, 'File uploaded successfully');
-//                    return redirect()->route('free-lifi-wifi-file-list');
+//                    return redirect()->route('list-free-lifi-wifi-file');
 //                } else {
 //                    $this->notifyMessage(false, 'File could not be uploaded');
 //                }

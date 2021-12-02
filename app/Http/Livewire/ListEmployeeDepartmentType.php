@@ -54,7 +54,7 @@ class ListEmployeeDepartmentType extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction('emp-department-type-edit', 'Edit Department Type', 'edit'),
+            new RedirectAction('edit-emp-department-type', 'Edit Department Type', 'edit'),
         ];
     }
 }

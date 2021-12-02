@@ -18,7 +18,7 @@ use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
-use App\Models\SalaryDetail;
+use App\Models\SalaryOvertimeDetail;
 use App\Models\SalaryPfDetail;
 use Auth;
 use Illuminate\Support\Facades\Request;
@@ -28,25 +28,25 @@ use Nette\Utils\DateTime;
 
 class SalaryController extends Controller
 {
-    public function overTimeTypeCreate(string $id = null)
+    public function editFormOvertimeType(string $id = null)
     {
         $model = new OvertimeType();
-        return $this->createForm($id, OverTimeTypeForm::class, $model, route('overtime-type-store'), 'salary');
+        return $this->createForm($id, OverTimeTypeForm::class, $model, route('store-overtime-type'), 'salary');
     }
 
-    public function overTimeTypeStore(): string
+    public function storeFormOvertimeType(): string
     {
         $model = new OvertimeType();
         return $this->formStore(OverTimeTypeForm::class, $model, 'list-overtime-type', 'salary', 'Over Time Type');
     }
 
-    public function salaryAllowanceTypeCreate(string $id = null)
+    public function editFormsalaryAllowanceType(string $id = null)
     {
         $model = new SalaryAllowanceType();
-        return $this->createForm($id, SalaryAllowanceTypeForm::class, $model, route('salary-allowance-type-store'), 'salary');
+        return $this->createForm($id, SalaryAllowanceTypeForm::class, $model, route('store-salary-allowance-type'), 'salary');
     }
 
-    public function salaryAllowanceTypeStore(): string
+    public function storeFormSalaryAllowanceType(): string
     {
         $model = new SalaryAllowanceType();
         return $this->formStore(SalaryAllowanceTypeForm::class, $model, 'list-salary-allowance-type', 'salary', 'Salary Allowance Type');
@@ -54,7 +54,7 @@ class SalaryController extends Controller
 
     public function salaryAllowanceTypeList(LaravelViews $laravelViews, Request $request): string
     {
-        return $this->createList($laravelViews, ListSalaryAllowanceType::class, 'Salary Allowance Type List', 'salary', route('salary-allowance-type-edit'));
+        return $this->createList($laravelViews, ListSalaryAllowanceType::class, 'Salary Allowance Type List', 'salary', route('edit-salary-allowance-type'));
     }
 
     public function salaryList(LaravelViews $laravelViews, Request $request): string
@@ -64,19 +64,19 @@ class SalaryController extends Controller
 
     public function overtimeTypeList(LaravelViews $laravelViews, Request $request): string
     {
-        return $this->createList($laravelViews, ListOverTimeType::class, 'Overtime Type List', 'salary', route('overtime-type-edit'));
+        return $this->createList($laravelViews, ListOverTimeType::class, 'Overtime Type List', 'salary', route('edit-overtime-type'));
     }
 
     public function salaryCreate(string $id = null)
     {
         $model = new Salary();
-        return $this->createForm($id, SalaryForm::class, $model, route('overtime-type-store'), 'salary');
+        return $this->createForm($id, SalaryForm::class, $model, route('store-overtime-type'), 'salary');
     }
 
     public function importSalaryCreate()
     {
         $model = new ImportPublicWifiSeasonData();
-        $form = $this->createFormData(null, ImportSalary::class, $model, route('import-salary-store'), 'salary');
+        $form = $this->createFormData(null, ImportSalary::class, $model, route('store-import-salary'), 'salary');
 
         return $this->createFormView($form);
     }
@@ -251,12 +251,12 @@ class SalaryController extends Controller
 
     private function addSalaryDetail(int $salary_id, string $amount, string $amount_type_name, string $amount_type, string $percentage)
     {
-        $salary_detail = SalaryDetail::whereSalaryId($salary_id)
+        $salary_detail = SalaryOvertimeDetail::whereSalaryId($salary_id)
             ->whereName($amount_type_name)
             ->where('type', $amount_type)->first();
 
         if (!$salary_detail) {
-            $salary_detail = new SalaryDetail();
+            $salary_detail = new SalaryOvertimeDetail();
             $salary_detail->created_by = Auth::id();
         }
         $salary_detail->salary_id = $salary_id;
@@ -272,10 +272,6 @@ class SalaryController extends Controller
     {
         $salary = Salary::whereId($id)
             ->with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])->first(['id', 'user_id', 'name', 'date', 'month', 'year', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
-
-//        echo json_encode($salary->month) . "<br>";
-//        echo json_encode(DateTime::createFromFormat('!m', "$salary->month")->format('F')) . '<br>';
-//        exit();
 
         $data_salary_slip = new DataSalarySlip($salary);
 

@@ -30,9 +30,9 @@
 
     <div class="card-list">
         @if(Auth::user()->isHR() || Auth::user()->isAdmin())
-            <a href="{{ route('attendance-list-emp') }}">
+            <a href="{{ route('list-emp-attendance') }}">
                 @else
-                    <a href="{{ route('attendance-list-my') }}">
+                    <a href="{{ route('list-my-attendance') }}">
                         @endif
                         <div class="card-hr">
                             <i class="fas fa-users fa-2x"></i>

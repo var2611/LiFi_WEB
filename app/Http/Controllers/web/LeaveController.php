@@ -29,14 +29,14 @@ class LeaveController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function applyLeaveFormCreate()
+    public function editFormApplyLeave()
     {
         $model = new ApplyLeave(null);
         $model->user_id = Auth::id();
         $form = $this->form(ApplyLeaveForm::class, [
             'method' => 'POST',
             'model' => $model,
-            'url' => route('leave-store')
+            'url' => route('store-leave')
         ]);
 
         return view('layouts.hrms_forms', compact('form'));
@@ -45,7 +45,7 @@ class LeaveController extends Controller
     /**
      * @return string
      */
-    public function applyLeaveFormStore(): string
+    public function storeFormApplyLeave(): string
     {
         $form = $this->form(ApplyLeaveForm::class);
 
@@ -71,16 +71,16 @@ class LeaveController extends Controller
      * @param string|null $id
      * @return Application|Factory|View|RedirectResponse
      */
-    public function leaveTypeCreate(string $id = null)
+    public function editFormLeaveType(string $id = null)
     {
         $model = new LeaveType();
-        return $this->createForm($id, EditLeaveTypeForm::class, $model, route('leave-type-store'), 'leave');
+        return $this->createForm($id, EditLeaveTypeForm::class, $model, route('store-leave-type'), 'leave');
     }
 
     /**
      * @return RedirectResponse
      */
-    public function leaveTypeStore(): RedirectResponse
+    public function storeFormLeaveType(): RedirectResponse
     {
         $model = new LeaveType();
 
@@ -111,7 +111,7 @@ class LeaveController extends Controller
      */
     public function listLeaveTypeView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListLeaveType::class, 'Leave Type List', 'leave', route('leave-type-edit'));
+        return $this->createList($laravelViews, ListLeaveType::class, 'Leave Type List', 'leave', route('edit-leave-type'));
     }
 
     public function generate_pdf()
@@ -121,7 +121,7 @@ class LeaveController extends Controller
         $form = $this->form(UserRoleForm::class, [
             'method' => 'POST',
             'model' => $model,
-            'url' => route('leave-type-store')
+            'url' => route('store-leave-type')
         ]);
 
         $data = [
