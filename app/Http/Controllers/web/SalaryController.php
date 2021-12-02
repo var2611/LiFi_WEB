@@ -18,13 +18,12 @@ use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
-use App\Models\SalaryOvertimeDetail;
+use App\Models\SalaryDetail;
 use App\Models\SalaryPfDetail;
 use Auth;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
 use Maatwebsite\Excel\Validators\ValidationException;
-use Nette\Utils\DateTime;
 
 class SalaryController extends Controller
 {
@@ -251,12 +250,12 @@ class SalaryController extends Controller
 
     private function addSalaryDetail(int $salary_id, string $amount, string $amount_type_name, string $amount_type, string $percentage)
     {
-        $salary_detail = SalaryOvertimeDetail::whereSalaryId($salary_id)
+        $salary_detail = SalaryDetail::whereSalaryId($salary_id)
             ->whereName($amount_type_name)
             ->where('type', $amount_type)->first();
 
         if (!$salary_detail) {
-            $salary_detail = new SalaryOvertimeDetail();
+            $salary_detail = new SalaryDetail();
             $salary_detail->created_by = Auth::id();
         }
         $salary_detail->salary_id = $salary_id;

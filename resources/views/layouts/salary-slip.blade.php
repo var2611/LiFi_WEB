@@ -1,11 +1,11 @@
 @extends('layouts.main_hr')
 @php
     use App\Models\FormModels\DataSalarySlip;
-    use App\Models\SalaryOvertimeDetail;
+    use App\Models\SalaryDetail;
 
         /* @var $data_salary_slip DataSalarySlip */
-        /* @var $earning_data SalaryOvertimeDetail*/
-        /* @var $deduction_data SalaryOvertimeDetail*/
+        /* @var $earning_data SalaryDetail*/
+        /* @var $deduction_data SalaryDetail*/
         /* @var $row_count int*/
 
     $earning_data = $data_salary_slip->getEarningData();
