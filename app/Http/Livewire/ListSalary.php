@@ -11,7 +11,7 @@ use LaravelViews\Views\TableView;
 class ListSalary extends TableView
 {
     public $searchBy = ['UserEmployee.emp_code', 'emp_code'];
-    protected $paginate = 20;
+    protected $paginate = 100;
 
     /**
      * Sets a initial query with the data to fill the table
@@ -23,7 +23,7 @@ class ListSalary extends TableView
         return Salary::query()
 //            ->select(['id', 'month', 'year', 'present_days', 'absent_days', 'total_days', 'salary_basic', 'salary_hra', 'salary_gross_deduction', 'salary_gross_earning', 'salary_net_pay'])
             ->whereIsVisible(0)
-            ->with(['User', 'UserEmployee']);
+            ->with(['User', 'UserEmployee'])->orderByDesc('id');
     }
 
     /**
