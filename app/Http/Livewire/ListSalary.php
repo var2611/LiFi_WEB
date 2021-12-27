@@ -76,7 +76,7 @@ class ListSalary extends TableView
     {
         return [
             new RedirectAction('salary-slip', 'See Attendance Detail', 'eye'),
-            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
+//            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
         ];
     }
 }
