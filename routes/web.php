@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\EmployeeContractController;
+use App\Http\Controllers\web\EmployeeWorkShiftController;
 use App\Http\Controllers\web\FreeLifiWifiController;
 use App\Http\Controllers\web\HolidayController;
 use App\Http\Controllers\web\HomeController;
@@ -30,7 +31,6 @@ Route::view('/demo_table', '/demo_table')->name('demo_table');
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
 Route::get('/demoA', [SalaryController::class, 'calculateSalary'])->name('demoA');
 Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
-
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -139,6 +139,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/list-salary', [SalaryController::class, 'salaryList'])->name('list-salary');
     Route::get('/list-salary-allowance-type', [SalaryController::class, 'salaryAllowanceTypeList'])->name('list-salary-allowance-type');
     Route::get('/list-overtime-type', [SalaryController::class, 'overtimeTypeList'])->name('list-overtime-type');
+    Route::get('/list-emp-work-shift', [EmployeeWorkShiftController::class, 'listEmpWorkShiftView'])->name('list-emp-work-shift');
 
     /*HRMS List --End------------------------------------------------------------------*/
 

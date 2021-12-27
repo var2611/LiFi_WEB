@@ -96,16 +96,16 @@ class EmpContractType extends Model
 
     public function EmpContractStatus(): BelongsTo
     {
-        return $this->belongsTo(EmpContractStatus::class, 'id');
+        return $this->belongsTo(EmpContractStatus::class, 'emp_contract_status_id', 'id');
     }
 
     public function EmpContractAmountType(): BelongsTo
     {
-        return $this->belongsTo(EmpContractAmountType::class, 'id');
+        return $this->belongsTo(EmpContractAmountType::class, 'emp_contract_amount_type_id', 'id');
     }
 
     public function EmpWorkShift(): BelongsTo
     {
-        return $this->belongsTo(EmpWorkShift::class, 'id');
+        return $this->belongsTo(EmpWorkShift::class, 'emp_work_shift_id', 'id');
     }
 }

@@ -20,7 +20,10 @@ class ListSalary extends TableView
      */
     public function repository(): Builder
     {
-        return Salary::query()->whereIsVisible(0)->with(['User', 'UserEmployee']);
+        return Salary::query()
+//            ->select(['id', 'month', 'year', 'present_days', 'absent_days', 'total_days', 'salary_basic', 'salary_hra', 'salary_gross_deduction', 'salary_gross_earning', 'salary_net_pay'])
+            ->whereIsVisible(0)
+            ->with(['User', 'UserEmployee']);
     }
 
     /**
@@ -31,8 +34,9 @@ class ListSalary extends TableView
     public function headers(): array
     {
         return [
-            Header::title('No')->sortBy('id'),
-            Header::title('Employee Code')->sortBy('UserEmployee.emp_code'),
+//            Header::title('No')->sortBy('id'),
+            Header::title('Emp Code')->sortBy('UserEmployee.emp_code'),
+            Header::title('Month'),
             Header::title('Name')->sortBy('User.name'),
             Header::title('Present'),
             Header::title('Absent'),
@@ -53,8 +57,9 @@ class ListSalary extends TableView
     public function row(Salary $model): array
     {
         return [
-            $model->id,
+//            $model->id,
             $model->UserEmployee->emp_code,
+            getMonthNameFromMonthNumber($model->month) . ' ' . $model->year,
             $model->UserEmployee->User->name,
             $model->present_days,
             $model->absent_days,
@@ -71,7 +76,7 @@ class ListSalary extends TableView
     {
         return [
             new RedirectAction('salary-slip', 'See Attendance Detail', 'eye'),
-//            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
+            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
         ];
     }
 }

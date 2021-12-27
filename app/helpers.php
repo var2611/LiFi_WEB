@@ -10,6 +10,7 @@ use App\Models\EmpDepartmentType;
 use App\Models\EmpPfDetail;
 use App\Models\EmpShiftData;
 use App\Models\EmpWorkShift;
+use App\Models\Holiday;
 use App\Models\LeaveType;
 use App\Models\User;
 use App\Models\UserEmployee;
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Exception;
+use Nette\Utils\DateTime;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 function sendSMS($mobile, $message)
@@ -243,6 +245,12 @@ function getDateTimeFromStringAsFormat(string $from_format, string $to_format, s
     $time = strtotime(date($from_format, strtotime($time)));
     return date($to_format, $time);
 }
+
+function getMonthNameFromMonthNumber($month_number): string
+{
+    return DateTime::createFromFormat('!m', (string)$month_number)->format('F');
+}
+
 
 function getDBDateFrom3FormatString(string $time = null)
 {
@@ -667,4 +675,12 @@ function getNumberToWord($amount, $locale = 'en_IN')
 {
     $f = new NumberFormatter($locale, NumberFormatter::SPELLOUT);
     return $f->format($amount);
+}
+
+function getHolidayDateOfCompanyByMonth(string $company_id, string $month, string $year)
+{
+    return Holiday::whereCompanyId($company_id)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->get('date')->pluck('date')->toArray();
 }

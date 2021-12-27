@@ -33,11 +33,11 @@ class Kernel extends ConsoleKernel
             ->at("01:00")
             ->runInBackground();
 
-        $schedule->call(function () {
-            (new FreeLifiWifiController())->fetchPublicWiFiData();
-        })->timezone('Asia/Kolkata')
-            ->at("08:00")
-            ->runInBackground();
+//        $schedule->call(function () {
+//            (new FreeLifiWifiController())->fetchPublicWiFiData();
+//        })->timezone('Asia/Kolkata')
+//            ->at("08:00")
+//            ->runInBackground();
     }
 
     /**

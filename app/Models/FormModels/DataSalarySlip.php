@@ -49,7 +49,7 @@ class DataSalarySlip
         $this->description = $this->salary_data->UserEmployee->EmpDepartmentData->description;
         $this->pf_number = $this->salary_data->EmpPfDetail->pf_number ?? ucfirst('nil');
         $this->uan = $this->salary_data->EmpPfDetail->uan ?? ucfirst('nil');
-        $this->salary_month = DateTime::createFromFormat('!m', (string)$this->salary_data->month)->format('F');
+        $this->salary_month = getMonthNameFromMonthNumber($this->salary_data->month);
         $this->salary_year = $this->salary_data->year;
     }
 

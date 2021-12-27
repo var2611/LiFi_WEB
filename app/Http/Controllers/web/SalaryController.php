@@ -10,10 +10,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListOverTimeType;
 use App\Http\Livewire\ListSalary;
 use App\Http\Livewire\ListSalaryAllowanceType;
+use App\Imports\ImportPaarthAttendanceAdd;
 use App\Models\Attendance;
 use App\Models\EmpContract;
 use App\Models\EmpPfDetail;
 use App\Models\FormModels\DataSalarySlip;
+use App\Models\Holiday;
 use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
@@ -23,6 +25,7 @@ use App\Models\SalaryPfDetail;
 use Auth;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
+use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class SalaryController extends Controller
@@ -93,7 +96,7 @@ class SalaryController extends Controller
             try {
                 $file = $form->getRequest()->file('salary_sheet');
 //                $import = Excel::import(new ImportPaarthAttendanceCreateUser(10, 2021, 4), $file);
-//                $import = Excel::import(new ImportPaarthAttendanceAdd(10, 2021), $file);
+                $import = Excel::import(new ImportPaarthAttendanceAdd(11, 2021), $file);
 //                $import = Excel::import(new ImportParthSalarySheet(3, 4), $file);
 
 //                (new ImportParthSalarySheet)->toCollection($file);
@@ -117,15 +120,19 @@ class SalaryController extends Controller
 
     public function calculateSalary()
     {
-        $month = 10;
+        $month = 11;
         $year = 2021;
         $company_id = 4;
-        $holidays = ['2021-10-02', '2021-10-15'];
+        $pf_percentage = 12;
+        $emp_allowed_hours = 3;
+
+        $holidays = getHolidayDateOfCompanyByMonth($company_id, $month, $year);
+
+//        $holidays = ['2021-10-02', '2021-10-15'];
         $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $sundays = getSundays($month, $year, $days_in_month);
         $monthly_off = array_unique(array_merge($holidays, $sundays));
         $working_days = $days_in_month - count($sundays);
-        $pf_percentage = 12;
 
         $emp_contract_list = EmpContract::join('user_employees', 'emp_contracts.user_id', '=', 'user_employees.user_id')
 //            ->with(['User:id,name,last_name', 'EmpPfDetail'])
@@ -146,7 +153,7 @@ class SalaryController extends Controller
 //            if ($employee_contract->user_id == 224) {
             $user_id = $employee_contract->user_id;
             $user_name = $employee_contract->name;
-            $daily_working_hours = $employee_contract->hours - 3;
+            $daily_working_hours = $employee_contract->hours - $emp_allowed_hours;
             $salary_contract_basic = round($employee_contract->salary_basic, 2);
             $salary_contract_hra = round($employee_contract->salary_hra, 2);
             $salary_contract_total = round($employee_contract->salary_total, 2);

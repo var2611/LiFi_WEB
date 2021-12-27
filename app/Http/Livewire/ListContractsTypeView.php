@@ -19,7 +19,7 @@ class ListContractsTypeView extends TableView
      */
     public function repository(): Builder
     {
-        return EmpContractType::query();
+        return EmpContractType::query()->with(['EmpContractStatus', 'EmpWorkShift']);
     }
 
     /**

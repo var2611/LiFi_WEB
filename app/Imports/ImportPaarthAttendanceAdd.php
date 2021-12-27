@@ -53,6 +53,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
         $row = $row->toArray();
 
         if ($rowIndex == self::$total_row_count) {
+//        if ($rowIndex == 14) {
 
 //            try {
             $i = 0;
@@ -62,7 +63,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
                 foreach ($days as $day) {
 
 
-                    if ((isset($day['in_time']) && $day['in_time'] > 0) || (isset($day['out_time']) && $day['out_time'] > 0)) {
+                    if ( (isset($day['in_time']) && $day['in_time'] > 0) || (isset($day['out_time']) && $day['out_time'] > 0)) {
 
                         $in_time = $day['in_time'] > 0 ? getDateTimeFromStringAsFormat("Y-m-d H.i", getDBDateAndTimeFormat(), $day['date'] . ' ' . format_number($day['in_time'], 2)) : null;
 
@@ -94,10 +95,10 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
 
             echo Attendance::upsert($attendances, ['user_id', 'date'], ['name', 'in_time', 'out_time', 'hours_worked', 'status', 'updated_by']);
 
-//            echo json_encode(count($attendances)) . '<br>';
+            echo json_encode(count($attendances)) . '<br>';
 //            echo json_encode($this->day_data) . '<br>';
-//            echo json_encode($attendances) . '<br>';
-//            echo json_encode($i);
+            echo json_encode($attendances) . '<br>';
+            echo json_encode($i);
 //            } catch (\Exception $ex) {
 //                echo $ex->getMessage() . '<br>';
 //                echo json_encode($days);
