@@ -35,7 +35,7 @@ class ExportController extends Controller
         $year = date('Y', $date);
 
         try {
-            return Excel::download(new SalaryExport($year, $month), 'salary.xlsx');
+            return Excel::download(new SalaryExport($year, $month), "$selected_month_year.xlsx");
         } catch (Exception|\PhpOffice\PhpSpreadsheet\Exception $e) {
             dd($e);
         }

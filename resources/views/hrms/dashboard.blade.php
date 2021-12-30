@@ -57,7 +57,12 @@
                             <h1>Salary</h1>
                         </div>
                     </a>
-                    <a href="{{ route('list-contract-type') }}">
+                    <a href="{{ route('report-export-download') }}">
+                        <div class="card-hr">
+                            <i class="fas fa-envelope fa-2x"></i>
+                            <h1>Export / Download</h1>
+                        </div>
+                    </a><a href="{{ route('list-contract-type') }}">
                         <div class="card-hr">
                             <i class="fas fa-envelope fa-2x"></i>
                             <h1>Contracts</h1>
