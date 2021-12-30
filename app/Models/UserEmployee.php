@@ -50,8 +50,8 @@ use Illuminate\Support\Carbon;
  * @property int $company_id
  * @method static Builder|UserEmployee whereCompanyId($value)
  * @property-read CompanyHrmsSetting $Company
- * @property-read \App\Models\EmpDepartmentData $EmpDepartmentData
- * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
+ * @property-read EmpDepartmentData $EmpDepartmentData
+ * @property-read EmpPfDetail|null $EmpPfDetail
  */
 class UserEmployee extends Model
 {

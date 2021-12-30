@@ -3,6 +3,7 @@
 namespace App\Forms\Emp;
 
 use App\Models\EmpContractType;
+use Auth;
 use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
@@ -11,7 +12,7 @@ class EmployeeContractTypeListForm extends Form
 {
     public function buildForm()
     {
-        $contractTypes = EmpContractType::get(['id', 'name'])->toArray();
+        $contractTypes = EmpContractType::whereCompanyId(Auth::user()->getCompanyId())->get(['id', 'name'])->toArray();
 
         $this
             ->add('emp_contract_type_id', Field::SELECT, [

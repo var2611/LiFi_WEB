@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Salary;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
@@ -10,7 +11,7 @@ use LaravelViews\Views\TableView;
 
 class ListSalary extends TableView
 {
-    public $searchBy = ['UserEmployee.emp_code', 'emp_code'];
+    public $searchBy = ['UserEmployee.emp_code', 'User.name', 'user_id'];
     protected $paginate = 100;
 
     /**
@@ -20,10 +21,20 @@ class ListSalary extends TableView
      */
     public function repository(): Builder
     {
-        return Salary::query()
+        $company_id = Auth::user()->getCompanyId();
+
+        $data = Salary::query()
 //            ->select(['id', 'month', 'year', 'present_days', 'absent_days', 'total_days', 'salary_basic', 'salary_hra', 'salary_gross_deduction', 'salary_gross_earning', 'salary_net_pay'])
             ->whereIsVisible(0)
             ->with(['User', 'UserEmployee'])->orderByDesc('id');
+
+        if ($company_id != 1) {
+            $data->whereHas('UserEmployee', function ($q) use ($company_id) {
+                $q->where('company_id', '=', $company_id);
+//                $q->where('user_id', '=', 'users.id');
+            });
+        }
+        return $data;
     }
 
     /**
@@ -76,7 +87,7 @@ class ListSalary extends TableView
     {
         return [
             new RedirectAction('salary-slip', 'See Attendance Detail', 'eye'),
-//            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
+            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
         ];
     }
 }

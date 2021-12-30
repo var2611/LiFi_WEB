@@ -3,6 +3,7 @@
 use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\EmployeeContractController;
 use App\Http\Controllers\web\EmployeeWorkShiftController;
+use App\Http\Controllers\web\ExportController;
 use App\Http\Controllers\web\FreeLifiWifiController;
 use App\Http\Controllers\web\HolidayController;
 use App\Http\Controllers\web\HomeController;
@@ -44,6 +45,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/salary-slip/{id}', [SalaryController::class, 'salaryView'])->name('salary-slip');
 
     /*HRMS Forms --Start------------------------------------------------------------------*/
+
+    Route::get('/report-export-download', [ExportController::class, 'index'])->name('report-export-download');
+    Route::post('/generate-export-download', [ExportController::class, 'exportData'])->name('generate-export-download');
 
     Route::get('/edit-leave-type/{id?}', [LeaveController::class, 'editFormLeaveType'])->name('edit-leave-type');
     Route::post('/store-leave-type', [LeaveController::class, 'storeFormLeaveType'])->name('store-leave-type');

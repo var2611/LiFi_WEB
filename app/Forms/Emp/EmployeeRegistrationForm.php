@@ -35,7 +35,7 @@ class EmployeeRegistrationForm extends Form
                 'rules' => 'required'
             ])
             ->add('email', Field::EMAIL, [
-                'rules' => 'required',
+                'rules' => '',
             ])
 //            ->add('password', 'repeated', [
 //                'type' => 'password',

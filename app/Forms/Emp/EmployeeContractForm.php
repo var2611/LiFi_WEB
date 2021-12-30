@@ -28,7 +28,6 @@ class EmployeeContractForm extends Form
                 'rules' => 'max:200'
             ])
             ->add('description', Field::TEXT, [
-                'attr' => $attr,
                 'rules' => 'max:400'
             ])
             ->add('date', Field::DATE, [
@@ -36,12 +35,12 @@ class EmployeeContractForm extends Form
                 'rules' => 'required'
             ])
             ->add('start_date', Field::DATE, [
-                'attr' => ['readonly class' => 'form-control-plaintext'],
+                'attr' => $attr,
                 'id' => 'start_date',
                 'rules' => 'required'
             ])
             ->add('end_date', Field::DATE, [
-                'attr' => ['readonly class' => 'form-control-plaintext'],
+                'attr' => $attr,
                 'id' => 'end_date',
                 'rules' => 'required'
             ])
@@ -51,7 +50,6 @@ class EmployeeContractForm extends Form
                 'rules' => 'required|numeric|gt:0'
             ])
             ->add('emp_work_shift_data_id', Field::SELECT, [
-                'attr' => $attr,
                 'choices' => Arr::pluck($empWorkShift, 'name', 'id'),
                 'empty_value' => '=== Select Shift ===',
                 'rules' => 'required',
@@ -76,7 +74,6 @@ class EmployeeContractForm extends Form
                 'rules' => 'numeric|gt:0'
             ])
             ->add('is_active', Field::SELECT, [
-                'attr' => $attr,
                 'choices' => ['0' => 'YES', '1' => 'NO'],
                 'selected' => '0',
                 'empty_value' => '=== Select Type ==='

@@ -14,8 +14,9 @@ class SalaryForm extends Form
             ->add('name', Field::TEXT, [
                 'rules' => 'required|max:25',
             ])
-            ->add('contract_amount', Field::TEXT, [
+            ->add('salary_contract_total', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
+                'name' => 'contract_amount',
                 'rules' => 'required|max:25',
             ])
             ->add('total_days', Field::TEXT, [
@@ -30,16 +31,16 @@ class SalaryForm extends Form
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
             ])
-            ->add('basic', Field::TEXT, [
+            ->add('salary_basic', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
             ])
-            ->add('hra', Field::TEXT, [
+            ->add('salary_hra', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
                 'label' => 'HRA',
             ])
-            ->add('salary_amount', Field::TEXT, [
+            ->add('salary_total', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required|max:25',
             ])
