@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\DetailAttendanceView;
 use App\Http\Livewire\ListAttendanceEmployeesView;
 use App\Http\Livewire\ListAttendanceMyView;
 use App\Models\AttendanceData;
@@ -42,7 +43,7 @@ class AttendanceController extends Controller
         $result = AttendanceData::whereId($id)
             ->first();
 //        $la = new AttendanceDetailView($id);
-        return view('main_detail', ['model' => $result, 'att' => true])->render();
+        return view('main_detail', ['class' => DetailAttendanceView::getName(),'model' => $result, 'att' => true])->render();
     }
 
 }

@@ -12,6 +12,7 @@ use App\Models\EmpShiftData;
 use App\Models\EmpWorkShift;
 use App\Models\Holiday;
 use App\Models\LeaveType;
+use App\Models\Salary;
 use App\Models\User;
 use App\Models\UserEmployee;
 use Carbon\Carbon;
@@ -311,6 +312,22 @@ function getSundays($month, $year, $days_in_month)
     }
 
     return $sundays;
+}
+
+/**
+ * @param Salary $model
+ * @return array
+ */
+function getMonthlyOffDatesByCompany(Salary $model): array
+{
+    $month = $model->month;
+    $year = $model->year;
+    $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    $sundays = getSundays($month, $year, $days_in_month);
+    $holidays = getHolidayDateOfCompanyByMonth(\Auth::user()->getCompanyId(), $month, $year);
+    $monthly_off_dates = array_unique(array_merge($holidays, $sundays));
+
+    return $monthly_off_dates;
 }
 
 function format_number($number, $dec = 0, $trim = false)
@@ -680,7 +697,7 @@ function getNumberToWord($amount, $locale = 'en_IN')
 function getHolidayDateOfCompanyByMonth(string $company_id, string $month, string $year)
 {
     return Holiday::whereCompanyId($company_id)
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->get('date')->pluck('date')->toArray();
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->get('date')->pluck('date')->toArray();
 }

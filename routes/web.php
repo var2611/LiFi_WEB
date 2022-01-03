@@ -28,9 +28,9 @@ Route::redirect('/', '/login');
 Auth::routes();
 
 Route::view('/dashboard', '/dashboard')->name('dashboard');
-Route::view('/demo_table', '/demo_table')->name('demo_table');
+Route::view('/demo_table', '/hrms.component.salary.detail-salary')->name('demo_table');
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
-Route::get('/demoA', [SalaryController::class, 'calculateSalary'])->name('demoA');
+Route::get('/demoA/{id?}', [SalaryController::class, 'editSalary'])->name('demoA');
 Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
 
 

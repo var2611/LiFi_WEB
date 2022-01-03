@@ -186,4 +186,9 @@ class User extends Authenticatable
     {
         return CompanyHrmsSetting::whereId($this->getCompanyId())->first() ?? null;
     }
+
+    public function getFullName(): string
+    {
+        return $this->name . ' '. ($this->middle_name ? $this->middle_name . ' ' : '') . $this->last_name;
+    }
 }

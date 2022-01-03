@@ -7,6 +7,7 @@ use App\Forms\Salary\OverTimeTypeForm;
 use App\Forms\Salary\SalaryAllowanceTypeForm;
 use App\Forms\Salary\SalaryForm;
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\DetailListSalaryView;
 use App\Http\Livewire\ListOverTimeType;
 use App\Http\Livewire\ListSalary;
 use App\Http\Livewire\ListSalaryAllowanceType;
@@ -73,6 +74,12 @@ class SalaryController extends Controller
     {
         $model = new Salary();
         return $this->createForm($id, SalaryForm::class, $model, route('store-overtime-type'), 'salary');
+    }
+
+    public function editSalary(string $id, LaravelViews $laravelViews){
+        $salary = Salary::whereId($id)->first();
+//        dd(DetailListSalaryView::getName());
+        return view('main_detail', ['class' => DetailListSalaryView::getName(), 'model' => $salary, 'att' => true])->render();
     }
 
     public function importSalaryCreate()
