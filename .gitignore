@@ -21,3 +21,4 @@ yarn-error.log
 /tests/
 /lifi.zip
 /.idea/
+/package-lock.json
