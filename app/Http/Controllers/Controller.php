@@ -208,7 +208,7 @@ class Controller extends BaseController
      * @param string $view
      * @return Application|Factory|RedirectResponse|View
      */
-    function createForm(string $id = null, string $formClassName, Model $model, string $route, string $sidemenuName, string $view = 'layouts.hrms_forms')
+    function createForm(string $id = null, string $formClassName, Model $model = null, string $route, string $sidemenuName, string $view = 'layouts.hrms_forms')
     {
         try {
             $form = $this->createFormData($id, $formClassName, $model, $route, $sidemenuName);

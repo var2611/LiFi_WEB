@@ -2,19 +2,19 @@
 
 namespace App\Http\Livewire;
 
+use App\Actions\Bulk\SalaryAttendanceOvertimeModification;
 use App\Models\Attendance;
 use App\Models\Salary;
+use App\Models\SalaryDetail;
 use LaravelViews\Views\DetailView;
 
 class DetailListSalaryView extends DetailView
 {
-    public $title = "Salary Details";
-    public $subtitle = "Edit and Update salary data by monthly attendance";
     protected $detailComponent = 'hrms.component.salary.detail-salary';
 
-    public function heading(Salary $model)
+    public function heading(Salary $model): array
     {
-        return [$model->name , getMonthNameFromMonthNumber($model->month) . ' ' . $model->year. ' salary details'];
+        return [$model->name . '(' . $model->UserEmployee->emp_code . ')' , getMonthNameFromMonthNumber($model->month) . ' ' . $model->year. ' salary details'];
     }
 
     /**
@@ -23,13 +23,11 @@ class DetailListSalaryView extends DetailView
      */
     public function detail($model): array
     {
-        $monthly_off_dates = getMonthlyOffDatesByCompany($model);
-
-        $attendances = Attendance::whereUserId($model->user_id)->whereMonth('date', $model->month)->whereYear('date', $model->year)->whereIn('date', $monthly_off_dates)->get();
 
         return [
             'salary' => $model,
-            'attendances' => $attendances,
+            'salary_detail_class' => ListSalaryDetailCustomView::getName(),
+            'attendance_overtime_class' => ListAttendanceOvertimeCustomView::getName(),
         ];
     }
 }

@@ -22,9 +22,9 @@
                 .colors(['#46b246', '#4299E1'])
                 .responsive()
                 .beginAtZero()
-                .legend({ position: 'bottom' })
+                .legend({position: 'bottom'})
                 .title('This is a Attendance chart of users!')
-                // .datasets([{ type: 'line', fill: true }, 'bar']),
+            // .datasets([{ type: 'line', fill: true }, 'bar']),
         });
     </script>
 
@@ -57,12 +57,19 @@
                             <h1>Salary</h1>
                         </div>
                     </a>
+                    <a href="{{ route('sheet-import-upload') }}">
+                        <div class="card-hr">
+                            <i class="fas fa-envelope fa-2x"></i>
+                            <h1>Import / Upload</h1>
+                        </div>
+                    </a>
                     <a href="{{ route('report-export-download') }}">
                         <div class="card-hr">
                             <i class="fas fa-envelope fa-2x"></i>
                             <h1>Export / Download</h1>
                         </div>
-                    </a><a href="{{ route('list-contract-type') }}">
+                    </a>
+                    <a href="{{ route('list-contract-type') }}">
                         <div class="card-hr">
                             <i class="fas fa-envelope fa-2x"></i>
                             <h1>Contracts</h1>

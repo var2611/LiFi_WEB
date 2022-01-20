@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Forms\Salary\ImportSalary;
+use App\Forms\Import\ImportEmployeesContractDataFromSalarySheet;
+use App\Forms\Salary\GenerateSalary;
 use App\Forms\Salary\OverTimeTypeForm;
 use App\Forms\Salary\SalaryAllowanceTypeForm;
 use App\Forms\Salary\SalaryForm;
@@ -13,10 +14,10 @@ use App\Http\Livewire\ListSalary;
 use App\Http\Livewire\ListSalaryAllowanceType;
 use App\Imports\ImportPaarthAttendanceAdd;
 use App\Models\Attendance;
+use App\Models\CompanyHrmsSetting;
 use App\Models\EmpContract;
 use App\Models\EmpPfDetail;
 use App\Models\FormModels\DataSalarySlip;
-use App\Models\Holiday;
 use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
@@ -43,7 +44,7 @@ class SalaryController extends Controller
         return $this->formStore(OverTimeTypeForm::class, $model, 'list-overtime-type', 'salary', 'Over Time Type');
     }
 
-    public function editFormsalaryAllowanceType(string $id = null)
+    public function editFormSalaryAllowanceType(string $id = null)
     {
         $model = new SalaryAllowanceType();
         return $this->createForm($id, SalaryAllowanceTypeForm::class, $model, route('store-salary-allowance-type'), 'salary');
@@ -76,25 +77,26 @@ class SalaryController extends Controller
         return $this->createForm($id, SalaryForm::class, $model, route('store-overtime-type'), 'salary');
     }
 
-    public function editSalary(string $id, LaravelViews $laravelViews){
+    public function editSalary(string $id, LaravelViews $laravelViews)
+    {
         $salary = Salary::whereId($id)->first();
-//        dd(DetailListSalaryView::getName());
-        return view('main_detail', ['class' => DetailListSalaryView::getName(), 'model' => $salary, 'att' => true])->render();
+
+        return view('main_detail', [
+            'class' => DetailListSalaryView::getName(),
+            'model' => $salary,
+        ])->render();
     }
 
-    public function importSalaryCreate()
+    public function viewGenerateSalary()
     {
-        $model = new ImportPublicWifiSeasonData();
-        $form = $this->createFormData(null, ImportSalary::class, $model, route('store-import-salary'), 'salary');
-
-        return $this->createFormView($form);
+        return $this->createForm(null, GenerateSalary::class, null, route('calculate-salary'), 'salary');
     }
 
     public function importSalaryStore()
     {
         $model = new ImportPublicWifiSeasonData();
 //        $form = $this->formStoreData(ImportSalary::class);
-        $form = $this->form(ImportSalary::class);
+        $form = $this->form(GenerateSalary::class);
         $form->redirectIfNotValid();
 
 //        print_r($form->getFieldValues());
@@ -127,30 +129,45 @@ class SalaryController extends Controller
 
     public function calculateSalary()
     {
-        $month = 11;
-        $year = 2021;
-        $company_id = 4;
-        $pf_percentage = 12;
-        $emp_allowed_hours = 3;
+        $form = $this->form(GenerateSalary::class);
+        $form->redirectIfNotValid();
+
+        $formData = $this->formStoreData(GenerateSalary::class);
+        $month = $formData['salary_month'];
+        $year = $formData['salary_year'];
+
+        $company_id = Auth::user()->getCompanyId();
+
+        $company_setting_data = CompanyHrmsSetting::whereCompanyId($company_id)->first();
+        $pf_percentage = $company_setting_data->pf_percentage;
+        $emp_allowed_hours = $company_setting_data->description;
 
         $holidays = getHolidayDateOfCompanyByMonth($company_id, $month, $year);
 
-//        $holidays = ['2021-10-02', '2021-10-15'];
+        $date_today = getTodayDate();
+
+        if (!validateSalaryGenerate($month, $year, $this)){
+            return redirect()->back();
+        }
+
         $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $sundays = getSundays($month, $year, $days_in_month);
         $monthly_off = array_unique(array_merge($holidays, $sundays));
         $working_days = $days_in_month - count($sundays);
 
-        $emp_contract_list = EmpContract::join('user_employees', 'emp_contracts.user_id', '=', 'user_employees.user_id')
-//            ->with(['User:id,name,last_name', 'EmpPfDetail'])
-            ->where('user_employees.company_id', $company_id)
-            ->get(['emp_contracts.id', 'emp_contracts.user_id', 'emp_contracts.name', 'emp_contracts.hours', 'emp_contracts.salary_basic', 'emp_contracts.salary_hra', 'emp_contracts.salary_total']);
+        $emp_contract_list = EmpContract::with(['UserEmployee:id,user_id,company_id'])
+            ->whereHas('UserEmployee', function ($q) use ($company_id) {
+                $q->where('company_id', '=', $company_id);
+            })
+            ->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total']);
 
 //        echo json_encode(($emp_contract_list)) . '<br>';
 //        exit();
 
-        $emp_pf_details = EmpPfDetail::join('user_employees', 'emp_pf_details.user_id', '=', 'user_employees.user_id')
-            ->where('user_employees.company_id', $company_id)->get(['emp_pf_details.id', 'emp_pf_details.user_id', 'emp_pf_details.pf_number', 'emp_pf_details.uan', 'emp_pf_details.bank_name', 'emp_pf_details.description', 'emp_pf_details.status', 'emp_pf_details.is_visible', 'emp_pf_details.is_active'])->toArray();
+        $emp_pf_details = EmpPfDetail::with(['UserEmployee:id,user_id,company_id'])
+            ->whereHas('UserEmployee', function ($q) use ($company_id) {
+                $q->where('company_id', '=', $company_id);
+            })->get(['id', 'user_id', 'pf_number', 'uan', 'bank_name', 'description', 'status', 'is_visible', 'is_active'])->toArray();
 
         $i = 0;
         $batch_salary_data = array();
@@ -188,7 +205,7 @@ class SalaryController extends Controller
 
             //PF Calculation
             $pf_amount = 0;
-            $search_data = array_search($user_id, array_column($emp_pf_details, 'user_id'));
+            $pf_search_data = array_search($user_id, array_column($emp_pf_details, 'user_id'));
 
             $salary = Salary::whereUserId($user_id)
                 ->where('month', $month)
@@ -203,7 +220,7 @@ class SalaryController extends Controller
             $salary->user_id = $user_id;
             $salary->emp_contract_id = $employee_contract->id;
             $salary->name = $user_name;
-            $salary->date = getTodayDate();
+            $salary->date = $date_today;
             $salary->month = $month;
             $salary->year = $year;
             $salary->salary_contract_basic = $salary_contract_basic;
@@ -222,7 +239,7 @@ class SalaryController extends Controller
             $salary->overtime_amount = 0;
 
             $pf_amount = 0;
-            if ($emp_pf_details[$search_data]) {
+            if ($pf_search_data !== false) {
                 $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100, 2);
                 if ($pf_amount > 0) {
                     $salary->salary_gross_earning = $salary->salary_gross_earning - $pf_amount;

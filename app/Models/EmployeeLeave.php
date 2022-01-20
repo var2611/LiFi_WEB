@@ -61,20 +61,23 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmployeeLeave whereUserId($value)
  * @mixin Eloquent
  * @property-read UserEmployee $userEmployee
+ * @property-read \App\Models\LeaveType|null $LeaveType
+ * @property-read \App\Models\User $User
+ * @property-read \App\Models\UserEmployee $UserEmployee
  */
 class EmployeeLeave extends Model
 {
-    public function leaveType(): HasOne
+    public function LeaveType(): HasOne
     {
         return $this->hasOne('App\Models\LeaveType', 'id', 'leave_type_id');
     }
 
-    public function user(): BelongsTo
+    public function User(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function userEmployee(): BelongsTo
+    public function UserEmployee(): BelongsTo
     {
         return $this->belongsTo(UserEmployee::class, 'user_id', 'user_id');
     }

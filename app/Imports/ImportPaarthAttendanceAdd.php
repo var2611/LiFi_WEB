@@ -62,34 +62,40 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
 
                 foreach ($days as $day) {
 
+                    try {
 
-                    if ( (isset($day['in_time']) && $day['in_time'] > 0) || (isset($day['out_time']) && $day['out_time'] > 0)) {
+                        if (((isset($day['in_time']) && $day['in_time'] > 0) || (isset($day['out_time']) && $day['out_time'] > 0)) && (isset($day['user_id']) && $day['user_id'])) {
 
-                        $in_time = $day['in_time'] > 0 ? getDateTimeFromStringAsFormat("Y-m-d H.i", getDBDateAndTimeFormat(), $day['date'] . ' ' . format_number($day['in_time'], 2)) : null;
+                            $in_time = $day['in_time'] > 0 ? getDateTimeFromStringAsFormat("Y-m-d H.i", getDBDateAndTimeFormat(), $day['date'] . ' ' . format_number($day['in_time'], 2)) : null;
 
-                        if (!empty($day['out_time']))
-                            $out_time = $day['out_time'] > 0 ? getDateTimeFromStringAsFormat("Y-m-d H.i", getDBDateAndTimeFormat(), $day['date'] . ' ' . format_number($day['out_time'], 2)) : null;
+                            if (!empty($day['out_time']))
+                                $out_time = $day['out_time'] > 0 ? getDateTimeFromStringAsFormat("Y-m-d H.i", getDBDateAndTimeFormat(), $day['date'] . ' ' . format_number($day['out_time'], 2)) : null;
 
-                        $attendances[$i]['user_id'] = $day['user_id'];
-                        $attendances[$i]['name'] = $day['name'];
-                        $attendances[$i]['flash_code'] = '0';
-                        $attendances[$i]['date'] = $day['date'];
-                        $attendances[$i]['in_time'] = $in_time;
-                        $attendances[$i]['out_time'] = $out_time ?? null;
+                            $attendances[$i]['user_id'] = $day['user_id'];
+                            $attendances[$i]['name'] = $day['name'];
+                            $attendances[$i]['flash_code'] = '0';
+                            $attendances[$i]['date'] = $day['date'];
+                            $attendances[$i]['in_time'] = $in_time;
+                            $attendances[$i]['out_time'] = $out_time ?? null;
 
-                        if ($day['in_time'] > 0 && $day['out_time'] > 0) {
-                            $hours_worked = (strtotime($attendances[$i]['out_time']) - strtotime($attendances[$i]['in_time'])) / 3600;
-                        } else {
-                            $hours_worked = 0;
+                            if ($day['in_time'] > 0 && $day['out_time'] > 0) {
+                                $hours_worked = (strtotime($attendances[$i]['out_time']) - strtotime($attendances[$i]['in_time'])) / 3600;
+                            } else {
+                                $hours_worked = 0;
+                            }
+
+                            $attendances[$i]['hours_worked'] = ($hours_worked ?? 0);
+
+                            $attendances[$i]['status'] = 1;
+                            $attendances[$i]['created_by'] = Auth::user()->id;
+                            $attendances[$i]['updated_by'] = Auth::user()->id;
+                            $i++;
                         }
-
-                        $attendances[$i]['hours_worked'] = ($hours_worked ?? 0);
-
-                        $attendances[$i]['status'] = 1;
-                        $attendances[$i]['created_by'] = Auth::user()->id;
-                        $attendances[$i]['updated_by'] = Auth::user()->id;
-                        $i++;
+                    } catch (Exception $e) {
+                        echo $e->getMessage() . '<br>';
+                        echo json_encode($day) . '<br>';
                     }
+
                 }
             }
 
@@ -97,7 +103,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
 
             echo json_encode(count($attendances)) . '<br>';
 //            echo json_encode($this->day_data) . '<br>';
-            echo json_encode($attendances) . '<br>';
+//            echo json_encode($attendances) . '<br>';
             echo json_encode($i);
 //            } catch (\Exception $ex) {
 //                echo $ex->getMessage() . '<br>';
@@ -133,8 +139,10 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
 
                 $search_data = array_search($adhar_number, array_column($this->userDB, 'adhar_number'));
 
-                $this->user_data['user_id'] = $this->userDB[$search_data]['id'];
-                $this->user_data['name'] = $this->userDB[$search_data]['name'] . ' ' . $this->userDB[$search_data]['last_name'];
+                if ($search_data !== false) {
+                    $this->user_data['user_id'] = $this->userDB[$search_data]['id'];
+                    $this->user_data['name'] = $this->userDB[$search_data]['name'] . ' ' . $this->userDB[$search_data]['last_name'];
+                }
 
                 $this->previous_user_index = $rowIndex;
             }

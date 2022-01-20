@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Actions\LeaveApproveAction;
 use App\Actions\LeaveRejectAction;
+use App\Filters\FilterDate;
 use App\Models\EmployeeLeave;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use LaravelViews\Facades\Header;
 use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
@@ -23,9 +25,18 @@ class ListLeaveEmployeesView extends TableView
      */
     public function repository(): Builder
     {
+        $company_id = Auth::user()->getCompanyId();
         $data = EmployeeLeave::query();
 
-        $data = $data->with(['user', 'leaveType']);
+        $data = $data->with(['User', 'UserEmployee', 'LeaveType']);
+
+        if ($company_id != 4) {
+            $data->whereHas('UserEmployee', function ($q) use ($company_id) {
+                $q->where('company_id', '=', $company_id);
+//                $q->where('user_id', '=', 'users.id');
+            });
+//            $data = $data->whereCompanyId($company_id);
+        }
 
         return $data;
     }
@@ -74,10 +85,17 @@ class ListLeaveEmployeesView extends TableView
         ];
     }
 
+    protected function filters()
+    {
+        return [
+            new FilterDate('date'),
+        ];
+    }
+
     protected function actionsByRow(): array
     {
         return [
-            new LeaveRejectAction(),
+            new LeaveRejectAction,
             new LeaveApproveAction,
         ];
     }

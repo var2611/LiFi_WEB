@@ -22,8 +22,7 @@ class ListEmployeeView extends TableView
      */
     public function repository(): Builder
     {
-        $user = Auth::user();
-        $company_id = UserEmployee::whereUserId($user->id)->first()->company_id;
+        $company_id = Auth::user()->getCompanyId();
 
         $data = User::query()
             ->with(['UserEmployee', 'UserEmployee.UserRole:id,name']);

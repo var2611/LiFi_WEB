@@ -110,6 +110,11 @@ class EmpContract extends Model
         return $this->belongsTo(User::class, 'id');
     }
 
+    public function UserEmployee(): HasOne
+    {
+        return $this->hasOne(UserEmployee::class, 'user_id', 'user_id');
+    }
+
     public function EmpContractType(): BelongsTo
     {
         return $this->belongsTo(EmpContractType::class, 'id');

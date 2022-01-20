@@ -86,8 +86,8 @@ class ListSalary extends TableView
     protected function actionsByRow(): array
     {
         return [
-            new RedirectAction('salary-slip', 'See Attendance Detail', 'eye'),
-            new RedirectAction('salary-edit', 'See Attendance Detail', 'edit'),
+            new RedirectAction('salary-slip', 'Salary Slip', 'eye'),
+            new RedirectAction('edit-salary', 'Modify Salary', 'edit'),
         ];
     }
 }

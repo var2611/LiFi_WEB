@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Http\Livewire\ListLeaveEmployeesView;
 use App\Models\EmployeeLeave;
 use LaravelViews\Actions\Action;
 use LaravelViews\Actions\Confirmable;
@@ -37,8 +38,4 @@ class LeaveApproveAction extends Action
         $this->success();
     }
 
-    public function getConfirmationMessage($item = null)
-    {
-        return "Are you sure?";
-    }
 }

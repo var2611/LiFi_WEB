@@ -52,9 +52,7 @@ $salary = Salary::first();
                 HRA
             </div>
             <div class="px-2 md:px-4">
-        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-500">
-          {{ ucfirst($salary->salary_contract_hra) }}
-        </span>
+                {{ ucfirst($salary->salary_contract_hra) }}
             </div>
         </div>
         <div class="flex-1 py-2 md:py-0">
@@ -62,9 +60,7 @@ $salary = Salary::first();
                 Total
             </div>
             <div class="px-2 md:px-4">
-        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-500">
-          {{ ucfirst($salary->salary_contract_total) }}
-        </span>
+                {{ ucfirst($salary->salary_contract_total) }}
             </div>
         </div>
 
@@ -77,66 +73,39 @@ $salary = Salary::first();
     <div class="flex flex-row md:items-center md:flex-row border-b border-gray-200">
         <div class="flex-1 border-b border-gray-200 md:border-none py-2">
             <div class="text-gray-500 font-medium px-2 md:px-4">
-                Basic
+                Total Earning
             </div>
             <div class="px-2 md:px-4">
-                {{ $salary->salary_basic }}
+                {{ $salary->salary_total }}
             </div>
         </div>
         <div class="flex-1 py-2 md:py-0">
             <div class="text-gray-500 font-medium px-2 md:px-4">
-                HRA
+                Total Deduction
             </div>
             <div class="px-2 md:px-4">
-        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-500">
-          {{ ucfirst($salary->salary_hra) }}
-        </span>
+                {{ ucfirst($salary->salary_gross_deduction) }}
             </div>
         </div>
         <div class="flex-1 py-2 md:py-0">
             <div class="text-gray-500 font-medium px-2 md:px-4">
-                Total
+                Gross Earning
             </div>
             <div class="px-2 md:px-4">
-        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-500">
-          {{ ucfirst($salary->salary_total) }}
-        </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="font-semibold text-1xl text-gray-900">
-        Deduction Detail
-    </div>
-
-    <div class="flex flex-row md:items-center md:flex-row border-b border-gray-200">
-        <div class="flex-1 border-b border-gray-200 md:border-none py-2">
-            <div class="text-gray-500 font-medium px-2 md:px-4">
-                Deduction
-            </div>
-            <div class="px-2 md:px-4">
-                {{ $salary->salary_gross_deduction }}
-            </div>
-        </div>
-        <div class="flex-1 py-2 md:py-0">
-            <div class="text-gray-500 font-medium px-2 md:px-4">
-                HRA
-            </div>
-            <div class="px-2 md:px-4">
-        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-500">
-          {{ ucfirst($salary->salary_gross_earning) }}
-        </span>
-            </div>
-        </div>
-        <div class="flex-1 py-2 md:py-0">
-            <div class="text-gray-500 font-medium px-2 md:px-4">
-                Total
-            </div>
-            <div class="px-2 md:px-4">
-        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-500">
-          {{ ucfirst($salary->salary_total) }}
-        </span>
+                {{ ucfirst($salary->salary_gross_earning) }}
             </div>
         </div>
     </div>
 </div>
+
+<div class="font-semibold text-1xl text-gray-900">
+    Salary Earning in Detail {{--List--}}
+</div>
+
+@livewire("$salary_detail_class", ['salary_id'=>$salary->id])
+
+<div class="font-semibold text-1xl text-gray-900">
+    Overtime Attendance Detail
+</div>
+
+@livewire("$attendance_overtime_class", ['salary'=>$salary])

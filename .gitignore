@@ -1,6 +1,4 @@
 /node_modules
-/public/hot
-/public/storage
 /public/uploads
 /public/images
 /storage/*.key
@@ -15,3 +13,11 @@ npm-debug.log
 yarn-error.log
 /_ide_helper.php
 /composer.lock
+/resources/views/vendor/
+/public/css/app.css
+/public/js/app.js
+/public/vendor/
+/storage/
+/tests/
+/lifi.zip
+/.idea/

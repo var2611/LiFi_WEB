@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Http\Livewire\ListLeaveEmployeesView;
 use App\Models\EmployeeLeave;
 use LaravelViews\Actions\Action;
 use LaravelViews\Actions\Confirmable;
@@ -27,7 +28,7 @@ class LeaveRejectAction extends Action
      * Execute the action when the user clicked on the button
      *
      * @param $model EmployeeLeave object of the list where the user has clicked
-     * @param $view Current view where the action was executed from
+//     * @param $view Current view where the action was executed from
      */
     public function handle($model, View $view)
     {

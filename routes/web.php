@@ -7,6 +7,7 @@ use App\Http\Controllers\web\ExportController;
 use App\Http\Controllers\web\FreeLifiWifiController;
 use App\Http\Controllers\web\HolidayController;
 use App\Http\Controllers\web\HomeController;
+use App\Http\Controllers\web\ImportController;
 use App\Http\Controllers\web\LeaveController;
 use App\Http\Controllers\web\SalaryController;
 use App\Http\Controllers\web\UserEmployeeController;
@@ -28,7 +29,7 @@ Route::redirect('/', '/login');
 Auth::routes();
 
 Route::view('/dashboard', '/dashboard')->name('dashboard');
-Route::view('/demo_table', '/hrms.component.salary.detail-salary')->name('demo_table');
+Route::view('/demo_table', '/hrms.component.salary.data-attendance-overtime')->name('demo_table');
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
 Route::get('/demoA/{id?}', [SalaryController::class, 'editSalary'])->name('demoA');
 Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
@@ -42,9 +43,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
 
     Route::get('/view-att-detail/{id}', [AttendanceController::class, 'view_att_detail'])->name('view-att-detail');
+
+    Route::get('/generate-salary/', [SalaryController::class, 'viewGenerateSalary'])->name('generate-salary');
+    Route::post('/calculate-salary/', [SalaryController::class, 'calculateSalary'])->name('calculate-salary');
     Route::get('/salary-slip/{id}', [SalaryController::class, 'salaryView'])->name('salary-slip');
 
     /*HRMS Forms --Start------------------------------------------------------------------*/
+
+    Route::get('import-status', [ImportController::class, 'status']);
+
+    Route::get('/sheet-import-upload', [ImportController::class, 'index'])->name('sheet-import-upload');
+    Route::get('/sheet-import-emp-contracts', [ImportController::class, 'importEmployeesContractForm'])->name('sheet-import-emp-contracts');
+
+    Route::post('generate-emp-attendances', [ImportController::class, 'generateEmpAndAttendanceFromAttendanceSheet'])->name('generate-emp-attendances');
+    Route::post('generate-emp-contracts', [ImportController::class, 'generateEmpContractsFromSalarySheet'])->name('generate-emp-contracts');
 
     Route::get('/report-export-download', [ExportController::class, 'index'])->name('report-export-download');
     Route::post('/generate-export-download', [ExportController::class, 'exportData'])->name('generate-export-download');
@@ -102,19 +114,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-overtime-type', [SalaryController::class, 'storeFormOvertimeType'])->name('store-overtime-type');
 
     /*Salary Allowance Type Forms*/
-    Route::get('/edit-salary-allowance-type/{id?}', [SalaryController::class, 'editFormsalaryAllowanceType'])->name('edit-salary-allowance-type');
+    Route::get('/edit-salary-allowance-type/{id?}', [SalaryController::class, 'editFormSalaryAllowanceType'])->name('edit-salary-allowance-type');
     Route::post('/store-salary-allowance-type', [SalaryController::class, 'storeFormSalaryAllowanceType'])->name('store-salary-allowance-type');
 
     /*Salary Forms*/
-    Route::get('/salary-edit/{id?}', [SalaryController::class, 'salaryCreate'])->name('salary-edit');
+    Route::get('/edit-salary/{id?}', [SalaryController::class, 'editSalary'])->name('edit-salary');
 
     /*Salary Forms*/
     Route::get('/edit-free-lifi-wifi-file', [FreeLifiWifiController::class, 'freeLiFiWiFiFileCreate'])->name('edit-free-lifi-wifi-file');
     Route::post('/store-free-lifi-wifi-file', [FreeLifiWifiController::class, 'freeLiFiWiFiFileStore'])->name('store-free-lifi-wifi-file');
-
-    /*Import Salary Forms*/
-    Route::get('/edit-import-salary', [SalaryController::class, 'importSalaryCreate'])->name('edit-import-salary');
-    Route::post('/store-import-salary', [SalaryController::class, 'importSalaryStore'])->name('store-import-salary');
 
     /*Import Salary Forms*/
     Route::get('/edit-holiday', [HolidayController::class, 'editFormHoliday'])->name('edit-holiday');

@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
@@ -140,6 +141,16 @@ class Salary extends Model
     public function UserEmployee(): HasOne
     {
         return $this->hasOne(UserEmployee::class, 'user_id', 'user_id');
+    }
+
+    public function SalaryDetail(): HasMany
+    {
+        return $this->hasMany(SalaryDetail::class, 'salary_id', 'id');
+    }
+
+    public function SalaryPfDetail(): HasOne
+    {
+        return $this->hasOne(SalaryPfDetail::class, 'salary_id', 'id');
     }
 
 }
