@@ -23,8 +23,14 @@ class WorkShiftForm extends Form
 //                'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required'
             ])->add('mon', Field::CHECKBOX, [
+                'value' => 0,
+                'checked' => $this->getModel()->mon ? 1 : null,
 //                'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required'
+            ])
+            ->add('sun', Field::CHECKBOX, [
+                'value' => 0,
+                'checked' => $this->getModel()->sun ?? null,
+//                'attr' => ['readonly class' => 'form-control-plaintext'],
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],

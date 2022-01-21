@@ -90,6 +90,7 @@
             "@php artisan vendor:publish --force --tag=livewire:assets --ansi",
             "php artisan vendor:publish --tag=public --provider='LaravelViews\\LaravelViewsServiceProvider' --force",
             "php artisan vendor:publish --tag=views --provider='LaravelViews\\LaravelViewsServiceProvider'",
+            "php artisan vendor:publish --provider=\"Mckenziearts\\Notify\\LaravelNotifyServiceProvider\"",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta",
             "php artisan view:clear"

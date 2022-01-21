@@ -32,8 +32,8 @@ class EmployeeWorkShiftController extends Controller
             if (!$model) {
                 $model = new EmpWorkShift();
             }
-
-            return $this->createForm(null, WorkShiftForm::class, $model, route('store-work-shift'), 'contract');
+            
+            return $this->createForm($id, WorkShiftForm::class, $model, route('store-work-shift'), 'contract');
 
         } catch (Exception $exception) {
             echo $exception->getMessage();
@@ -48,6 +48,9 @@ class EmployeeWorkShiftController extends Controller
     public function storeFormWorkShift(): RedirectResponse
     {
         $model = new EmpWorkShift();
+
+        $formData = $this->formStoreData(WorkShiftForm::class);
+        dd($formData);
 
         return $this->formStore(WorkShiftForm::class, $model, 'list-holiday', 'holiday', 'Holiday');
     }

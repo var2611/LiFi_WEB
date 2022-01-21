@@ -64,6 +64,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/edit-leave-type/{id?}', [LeaveController::class, 'editFormLeaveType'])->name('edit-leave-type');
     Route::post('/store-leave-type', [LeaveController::class, 'storeFormLeaveType'])->name('store-leave-type');
 
+    /*Work Shift Form*/
+    Route::get('/edit-work-shift/{id?}', [EmployeeWorkShiftController::class, 'editFormWorkShift'])->name('edit-work-shift');
+    Route::post('/store-work-shift', [EmployeeWorkShiftController::class, 'storeFormWorkShift'])->name('store-work-shift');
+
     /*Leave Form*/
     Route::get('/edit-leave-apply', [LeaveController::class, 'editFormApplyLeave'])->name('edit-leave-apply');
     Route::post('/store-leave', [LeaveController::class, 'storeFormApplyLeave'])->name('store-leave');
