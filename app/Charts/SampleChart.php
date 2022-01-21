@@ -20,8 +20,19 @@ class SampleChart extends BaseChart
      */
     public function handler(Request $request): Chartisan
     {
-        $data = Attendance::selectRaw('date, count(date) as count')->groupBy('date')->join('user_employees', 'attendances.user_id', '=', 'user_employees.id')
-            ->where('user_employees.company_id', Auth::user()->getCompanyId())->limit(30)->orderByDesc('date')->get()->reverse();
+        $company_id = Auth::user()->getCompanyId();
+
+        $data = Attendance::selectRaw('date, count(date) as count')
+            ->with(['User.UserEmployee:id,user_id,company_id'])
+            ->whereHas('User.UserEmployee', function ($q) use ($company_id) {
+                $q->where('company_id', '=', $company_id);
+//                $q->where('user_id', '=', 'users.id');
+            })
+            ->groupBy('date')
+            ->limit(30)
+            ->orderByDesc('date')
+            ->get()
+            ->reverse();
 
         return Chartisan::build()
             ->labels(Arr::pluck($data, 'date'))
