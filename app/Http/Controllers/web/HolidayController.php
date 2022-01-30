@@ -39,7 +39,11 @@ class HolidayController extends Controller
                 $model->company_id = Auth::user()->getCompanyId();
             }
 
-            return $this->createForm(null, HolidayForm::class, $model, route('store-holiday'), 'contract');
+            return $this->createForm(
+                HolidayForm::class,
+                route('store-holiday'),
+                'contract',
+                $model);
 
         } catch (Exception $exception) {
             echo $exception->getMessage();

@@ -12,15 +12,19 @@
         <div id='submenu1' class="collapse sidebar-submenu {{ isset($employee) ? 'show' : '' }}">
             <a href="{{ route('edit-emp-registration-att') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
-                <span>Register Employee</span>
+                <span>New Register</span>
             </a>
             <a href="{{ route('list-employee') }}"
                class="list-group-item list-group-item-action bg-dark text-white">
                 <span>Employee List</span>
             </a>
+            <a href="{{ route('list-emp-work-shift') }}" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Shift Type</span>
+            </a>
             <a href="{{ route('list-role') }}" class="list-group-item list-group-item-action bg-dark text-white">
                 <span class="menu-collapsed">Role Types</span>
             </a>
+
         </div>
     @endif
 @endsection

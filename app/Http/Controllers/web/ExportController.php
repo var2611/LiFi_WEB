@@ -5,6 +5,10 @@ namespace App\Http\Controllers\web;
 use App\Exports\SalaryExport;
 use App\Forms\Export\ExportDownloadForm;
 use App\Http\Controllers\Controller;
+use App\Models\FormModels\DataSalarySlip;
+use App\Models\Salary;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
@@ -43,5 +47,55 @@ class ExportController extends Controller
         dd($month . '  ' . $year);
 
 //        return redirect()->route('report-export-download');
+    }
+
+    public function exportSalarySlipPDF()
+    {
+        $salary = Salary::with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])->limit(2)->get(['id', 'user_id', 'name', 'date', 'month', 'year', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
+
+//        foreach ($salary as $sal) {
+        $data_salary_slips = array();
+
+        foreach ($salary as $sal) {
+            $data_salary_slips[] = new DataSalarySlip($sal);
+
+        }
+//        $pdf = PDF::getPdf();
+//        $mpdf = $pdf->getMpdf();
+        // get instance
+//        $pdf->stream();
+//        $view = 'layouts.salary-slip';
+        $view = 'layouts.salary-slip-demo';
+        $data = View::make($view, ['data_salary_slips' => $data_salary_slips])->render();
+
+
+        try {
+
+//            $pdf = new LaravelMpdf();
+//            $pdf->getMpdf()->WriteHTML($data);
+
+            $dpdf = Pdf::loadView($view, ['data_salary_slips' => $data_salary_slips]);
+//            $dpdf = Pdf::loadHTML($data);
+//            $dpdf->render();
+//
+//            $dpdf->getDomPDF()
+//                ->getOptions()
+//                ->setIsRemoteEnabled(true);
+//            $pdf = PDF::loadView($view, ['data_salary_slips' => $data_salary_slips]);
+//            $pdf->getMpdf()->WriteHTML($stylesheet1, HTMLParserMode::HEADER_CSS);
+//            $pdf->getMpdf()->WriteHTML($stylesheet2, HTMLParserMode::HEADER_CSS);
+//            $pdf->getMpdf()->WriteHTML($data, HTMLParserMode::DEFAULT_MODE);
+
+            return $dpdf->download();
+//        return $data;
+        } catch (\Exception $e) {
+            echo $e;
+        }
+
+
+//        }
+
+//        return $pdf->download('document.pdf');
+
     }
 }

@@ -20,7 +20,7 @@
         "ext-curl": "*",
         "ext-intl": "^7.4",
         "ext-json": "*",
-        "carlos-meneses/laravel-mpdf": "^2.1",
+        "barryvdh/laravel-dompdf": "^v1.0.0-beta2",
         "consoletvs/charts": "7.*",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.3",

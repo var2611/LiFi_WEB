@@ -5,12 +5,14 @@ use App\Models\AttBreak;
 use App\Models\Attendance;
 use App\Models\Device;
 use App\Models\EmpContract;
+use App\Models\EmpContractAmountType;
 use App\Models\EmpContractType;
 use App\Models\EmpDepartmentData;
 use App\Models\EmpDepartmentType;
 use App\Models\EmpPfDetail;
 use App\Models\EmpShiftData;
 use App\Models\EmpWorkShift;
+use App\Models\FormModels\DataEmpContract;
 use App\Models\Holiday;
 use App\Models\LeaveType;
 use App\Models\Salary;
@@ -311,19 +313,25 @@ function getDBDateFrom3FormatString(string $time = null)
     if (!$time)
         return null;
 
-    $time = str_replace('/', '-', $time);
-    $format_initials = ['/', '.', '-'];
-    foreach ($format_initials as $format_initial) {
-        //if (strstr($string, $url)) { // mine version
-        if (strpos($time, $format_initial) !== FALSE) { // Yoshi version
-            $format = 'd' . $format_initial . 'm' . $format_initial . 'Y';
+    try {
+        $time = str_replace('/', '-', $time);
+        $format_initials = ['/', '.', '-'];
+        foreach ($format_initials as $format_initial) {
+            //if (strstr($string, $url)) { // mine version
+            if (strpos($time, $format_initial) !== FALSE) { // Yoshi version
+                $format = 'd' . $format_initial . 'm' . $format_initial . 'Y';
 //            echo $format . ' ' . $time . ' ';
-            return getDateTimeFromStringAsFormat($format, getDBDateFormat(), $time);
-        } else {
+                return getDateTimeFromStringAsFormat($format, getDBDateFormat(), $time);
+            } else {
 //            echo $format_initial . ' ' . $time . ' ';
 //            return null;
+            }
         }
+    } catch (\Exception $e) {
+        echo $e . "<br>";
+        exit();
     }
+
     return null;
 }
 
@@ -641,6 +649,7 @@ function import_create_user_employee_batch_data($batch_user_data, $company_id): 
             $batch_user_emp_data[$i]['user_role_id'] = 2;
             $batch_user_emp_data[$i]['company_id'] = $company_id;
             $batch_user_emp_data[$i]['emp_code'] = $user['adhar_number'];
+            $batch_user_emp_data[$i]['gender'] = $user['gender'] ?? null;
             $batch_user_emp_data[$i]['flash_code'] = '0';
             $batch_user_emp_data[$i]['created_by'] = Auth::user()->id;
             $batch_user_emp_data[$i]['updated_by'] = Auth::user()->id;
@@ -666,6 +675,7 @@ function import_employee_hr_data($data): array
     $batch_employee_hr_data['emp_code'] = $data['emp_code'];
     $batch_employee_hr_data['department'] = $data['department'];
     $batch_employee_hr_data['description'] = $data['category'];
+    $batch_employee_hr_data['per_day_wages'] = $data['per_day_wages'];
     $batch_employee_hr_data['basic_salary'] = $data['basic_salary'];
     $batch_employee_hr_data['salary_hra'] = $data['hra'];
     $batch_employee_hr_data['date_of_join'] = $data['date_of_join'];
@@ -675,11 +685,18 @@ function import_employee_hr_data($data): array
     return $batch_employee_hr_data;
 }
 
-function import_emp_contract_pf_department_batch_entry($employee_contract_data, $company_id)
+function import_emp_contract_pf_department_batch_entry($employee_contract_data, $company_id, DataEmpContract $dataEmpContract)
 {
+    $emp_contract_types = EmpContractType::whereCompanyId($company_id)->get()->toArray();
 
+    $hourly = 'hourly';
+    $daily = 'daily';
+    $monthly = 'monthly';
+    $other = 'other';
 
-    $other_contract = EmpContractType::whereName('Other')->whereCompanyId($company_id)->first(['id']);
+    $hourly_contract_amount_id = EmpContractAmountType::where('name', 'LIKE', '%' . $hourly . '%')->first(['id'])->id;
+    $daily_contract_amount_id = EmpContractAmountType::where('name', 'LIKE', '%' . $daily . '%')->first(['id'])->id;
+    $monthly_contract_amount_id = EmpContractAmountType::where('name', 'LIKE', '%' . $monthly . '%')->first(['id'])->id;
 
     $userDB = User::whereNotNull('adhar_number')->get(['id', 'name', 'middle_name', 'last_name', 'adhar_number'])->toArray();
     $department_types = EmpDepartmentType::whereNotNull('name')->get(['id', 'name'])->toArray();
@@ -687,13 +704,43 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
     $i = 0;
     $j = 0;
 
+    $start_date = $dataEmpContract->start_date;
+    $end_date = $dataEmpContract->end_date;
+    $hours = $dataEmpContract->hours;
+    $days = $dataEmpContract->days;
+    $cap_amount_for_hra = $dataEmpContract->cap_amount_for_hra;
+
     $batch_employee_contract_data = array();
     $batch_employee_department_data = array();
     $batch_employee_pf_data = array();
-    $user_not_found = array();
+    $employee_not_found = array();
+    $employee_contract_not_found = array();
+    $employee_salary_not_found = array();
 
     try {
         foreach ($employee_contract_data as $employee_contract) {
+
+            if (!isset($employee_contract['per_day_wages'])) {
+                if (!isset($employee_contract['basic_salary'])) {
+                    $employee_salary_not_found[] = $employee_contract;
+                    continue;
+                }
+            }
+
+            $searched_user = null;
+            $searched_department_type = null;
+            $logged_in_user_id = null;
+            $department_type_id = null;
+            $user_id = null;
+            $user_name = null;
+            $description = null;
+
+            $emp_contract_type_id = null;
+            $salary_basic = 0;
+            $salary_hra = 0;
+
+//            dd($employee_contract);
+
             $searched_user = array_search($employee_contract['adhar_number'], array_column($userDB, 'adhar_number'));
             $searched_department_type = array_search(trim(strtolower($employee_contract['department'])), array_column($department_types, 'name'));
 
@@ -708,19 +755,65 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                 } else {
                     $department_type_id = 2;
                 }
+
+                //Contract Amount type selection
+                if ($employee_contract['per_day_wages']) {
+                    $searched_contract = array_search($daily_contract_amount_id, array_column($emp_contract_types, 'emp_contract_amount_type_id'));
+
+                    if ($searched_contract !== false) {
+                        $emp_contract_type_id = $emp_contract_types[$searched_contract]['id'];
+                    } else {
+                        $employee_contract_not_found[] = $employee_contract;
+                        continue;
+                    }
+                    $per_day_wages = 0;
+                    $per_day_hra = 0;
+                    $per_day_wages = round($employee_contract['per_day_wages'], 2);
+                    $monthly_salary_hra = 0;
+
+                    $full_month_salary = round($per_day_wages * 26, 2);
+                    if ($full_month_salary >= $cap_amount_for_hra) {
+                        $monthly_salary_hra = $full_month_salary - $cap_amount_for_hra;
+                        $full_month_salary = $full_month_salary - $monthly_salary_hra;
+
+                        $per_day_wages = round($full_month_salary / 26, 2);
+                        $per_day_hra = round($monthly_salary_hra / 26, 2);
+                    }
+
+                    $salary_basic = $per_day_wages;
+                    $salary_hra = $per_day_hra;
+                    $salary_basic_total = $per_day_wages + $per_day_hra;
+
+                } else if ($employee_contract['basic_salary']) {
+                    $searched_contract = array_search($monthly_contract_amount_id, array_column($emp_contract_types, 'emp_contract_amount_type_id'));
+
+                    if ($searched_contract !== false) {
+                        $emp_contract_type_id = $emp_contract_types[$searched_contract]['id'];
+                    } else {
+                        $employee_contract_not_found[] = $employee_contract;
+                        continue;
+                    }
+
+                    $salary_basic = $employee_contract['basic_salary'];
+                    $salary_basic_total = $salary_basic;
+                    $salary_hra = $employee_contract['salary_hra'];
+                }
+
                 $description = $employee_contract['description'];
 
                 $batch_employee_contract_data[$i]['user_id'] = $user_id;
                 $batch_employee_contract_data[$i]['name'] = $user_name;
                 $batch_employee_contract_data[$i]['date'] = getTodayDate();
-                $batch_employee_contract_data[$i]['start_date'] = getDBDateFrom3FormatString($employee_contract['date_of_join']);
-                $batch_employee_contract_data[$i]['emp_contract_type_id'] = $other_contract->id;
+                $batch_employee_contract_data[$i]['date_of_join'] = getDBDateFrom3FormatString($employee_contract['date_of_join']);
+                $batch_employee_contract_data[$i]['start_date'] = $start_date;
+                $batch_employee_contract_data[$i]['end_date'] = $end_date;
+                $batch_employee_contract_data[$i]['emp_contract_type_id'] = $emp_contract_type_id;
                 $batch_employee_contract_data[$i]['emp_contract_status_id'] = 1;
-                $batch_employee_contract_data[$i]['hours'] = 8;
-                $batch_employee_contract_data[$i]['days'] = 364;
-                $batch_employee_contract_data[$i]['salary_basic'] = $employee_contract['basic_salary'] ?? 0;
-                $batch_employee_contract_data[$i]['salary_hra'] = $employee_contract['salary_hra'] ?? 0;
-                $batch_employee_contract_data[$i]['salary_total'] = ($employee_contract['basic_salary'] ?? 0) + ($employee_contract['salary_hra'] ?? 0);
+                $batch_employee_contract_data[$i]['hours'] = $hours;
+                $batch_employee_contract_data[$i]['days'] = $days;
+                $batch_employee_contract_data[$i]['salary_basic'] = $salary_basic ?? 0;
+                $batch_employee_contract_data[$i]['salary_hra'] = $salary_hra ?? 0;
+                $batch_employee_contract_data[$i]['salary_total'] = ($salary_basic_total ?? 0);
                 $batch_employee_contract_data[$i]['created_by'] = $logged_in_user_id;
                 $batch_employee_contract_data[$i]['updated_by'] = $logged_in_user_id;
 
@@ -744,7 +837,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
 
                 $i++;
             } else {
-                $user_not_found[] = $employee_contract;
+                $employee_not_found[] = $employee_contract;
             }
         }
 
@@ -754,7 +847,9 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
 
         echo 'Employee Contract Created/Updated : ' . EmpContract::upsert($batch_employee_contract_data, ['user_id', 'start_date'], ['name', 'description', 'date', 'end_date', 'start_time', 'hours', 'days', 'emp_contract_type_id', 'emp_contract_status_id', 'salary_basic', 'salary_hra', 'salary_total', 'emp_shift_data_id', 'updated_by']) . '<br>';
 
-        echo 'Not Found User in DataBase : ' . json_encode($user_not_found) . '<br>';
+        echo 'Not Found User in DataBase : ' . json_encode($employee_not_found) . '<br>';
+        echo 'Not Found Contract in DataBase : ' . json_encode($employee_contract_not_found) . '<br>';
+        echo 'Not Found Employee Salary in Uploaded File : ' . json_encode($employee_salary_not_found) . '<br>';
     } catch (\Exception $ex) {
         echo $ex . '<br>';
         echo $i . '<br>';

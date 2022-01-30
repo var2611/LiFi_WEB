@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListLeaveEmployeesView;
 use App\Http\Livewire\ListLeaveMyView;
 use App\Http\Livewire\ListLeaveType;
-use App\Models\FormModels\ApplyLeave;
+use App\Models\FormModels\DataApplyLeave;
 use App\Models\LeaveType;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -31,7 +31,7 @@ class LeaveController extends Controller
      */
     public function editFormApplyLeave()
     {
-        $model = new ApplyLeave(null);
+        $model = new DataApplyLeave(null);
         $model->user_id = Auth::id();
         $form = $this->form(ApplyLeaveForm::class, [
             'method' => 'POST',
@@ -54,7 +54,7 @@ class LeaveController extends Controller
         // Do saving and other things...
         $formData = $form->getFieldValues();
 
-        $applyLeaveForm = new ApplyLeave($formData);
+        $applyLeaveForm = new DataApplyLeave($formData);
 
         $employee_leave = $applyLeaveForm->createEmployeeLeaveModel($applyLeaveForm);
         if ($applyLeaveForm->created_by == null) {
@@ -74,7 +74,13 @@ class LeaveController extends Controller
     public function editFormLeaveType(string $id = null)
     {
         $model = new LeaveType();
-        return $this->createForm($id, EditLeaveTypeForm::class, $model, route('store-leave-type'), 'leave');
+        return $this->createForm(
+            EditLeaveTypeForm::class,
+            route('store-leave-type'),
+            'leave',
+            $model,
+            $id
+        );
     }
 
     /**
@@ -116,7 +122,7 @@ class LeaveController extends Controller
 
     public function generate_pdf()
     {
-        $model = new ApplyLeave(null);
+        $model = new DataApplyLeave(null);
         $model->user_id = Auth::id();
         $form = $this->form(UserRoleForm::class, [
             'method' => 'POST',

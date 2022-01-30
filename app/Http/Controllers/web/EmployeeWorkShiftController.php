@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Forms\Other\HolidayForm;
+use App\Forms\WorkShift\EmployeeWorkShiftForm;
 use App\Forms\WorkShift\WorkShiftForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListEmpWorkShift;
-use App\Models\EmpWorkShift;
-use App\Models\Holiday;
+use App\Models\EmpShiftData;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use LaravelViews\LaravelViews;
 use Redirect;
 
@@ -27,13 +25,18 @@ class EmployeeWorkShiftController extends Controller
     public function editFormWorkShift(string $id = null)
     {
         try {
-            $model = EmpWorkShift::whereId($id)->first();
+            $model = EmpShiftData::whereUserId($id)->with('EmpWorkShift')->first();
 
-            if (!$model) {
-                $model = new EmpWorkShift();
+            if (empty($model)) {
+                $model = new EmpShiftData();
             }
-            
-            return $this->createForm($id, WorkShiftForm::class, $model, route('store-work-shift'), 'contract');
+            return $this->createFormData(
+                EmployeeWorkShiftForm::class,
+                route('store-work-shift', ['id' => $id]),
+                'contract',
+                $model,
+                $id
+            );
 
         } catch (Exception $exception) {
             echo $exception->getMessage();
@@ -47,9 +50,9 @@ class EmployeeWorkShiftController extends Controller
      */
     public function storeFormWorkShift(): RedirectResponse
     {
-        $model = new EmpWorkShift();
+        $model = new EmpShiftData();
 
-        $formData = $this->formStoreData(WorkShiftForm::class);
+        $formData = $this->formStoreData(EmployeeWorkShiftForm::class);
         dd($formData);
 
         return $this->formStore(WorkShiftForm::class, $model, 'list-holiday', 'holiday', 'Holiday');
@@ -57,6 +60,6 @@ class EmployeeWorkShiftController extends Controller
 
     public function listEmpWorkShiftView(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListEmpWorkShift::class, 'Employees Work Shift List', 'salary');
+        return $this->createList($laravelViews, ListEmpWorkShift::class, 'Employees Work Shift List', 'employee');
     }
 }

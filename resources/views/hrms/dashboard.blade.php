@@ -57,7 +57,7 @@
                             <h1>Salary</h1>
                         </div>
                     </a>
-                    <a href="{{ route('sheet-import-upload') }}">
+                    <a href="{{ route('sheet-import-emp-attendance-upload') }}">
                         <div class="card-hr">
                             <i class="fas fa-envelope fa-2x"></i>
                             <h1>Import / Upload</h1>

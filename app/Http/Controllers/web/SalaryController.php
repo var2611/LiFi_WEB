@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Forms\Import\ImportEmployeesContractDataFromSalarySheet;
 use App\Forms\Salary\GenerateSalary;
 use App\Forms\Salary\OverTimeTypeForm;
 use App\Forms\Salary\SalaryAllowanceTypeForm;
@@ -16,6 +15,7 @@ use App\Imports\ImportPaarthAttendanceAdd;
 use App\Models\Attendance;
 use App\Models\CompanyHrmsSetting;
 use App\Models\EmpContract;
+use App\Models\EmpContractAmountType;
 use App\Models\EmpPfDetail;
 use App\Models\FormModels\DataSalarySlip;
 use App\Models\ImportPublicWifiSeasonData;
@@ -35,7 +35,13 @@ class SalaryController extends Controller
     public function editFormOvertimeType(string $id = null)
     {
         $model = new OvertimeType();
-        return $this->createForm($id, OverTimeTypeForm::class, $model, route('store-overtime-type'), 'salary');
+        return $this->createForm(
+            OverTimeTypeForm::class,
+            route('store-overtime-type'),
+            'salary',
+            $model,
+            $id
+        );
     }
 
     public function storeFormOvertimeType(): string
@@ -47,7 +53,13 @@ class SalaryController extends Controller
     public function editFormSalaryAllowanceType(string $id = null)
     {
         $model = new SalaryAllowanceType();
-        return $this->createForm($id, SalaryAllowanceTypeForm::class, $model, route('store-salary-allowance-type'), 'salary');
+        return $this->createForm(
+            SalaryAllowanceTypeForm::class,
+            route('store-salary-allowance-type'),
+            'salary',
+            $model,
+            $id
+        );
     }
 
     public function storeFormSalaryAllowanceType(): string
@@ -74,7 +86,13 @@ class SalaryController extends Controller
     public function salaryCreate(string $id = null)
     {
         $model = new Salary();
-        return $this->createForm($id, SalaryForm::class, $model, route('store-overtime-type'), 'salary');
+        return $this->createForm(
+            SalaryForm::class,
+            route('store-overtime-type'),
+            'salary',
+            $model,
+            $id
+        );
     }
 
     public function editSalary(string $id, LaravelViews $laravelViews)
@@ -89,7 +107,11 @@ class SalaryController extends Controller
 
     public function viewGenerateSalary()
     {
-        return $this->createForm(null, GenerateSalary::class, null, route('calculate-salary'), 'salary');
+        return $this->createForm(
+            GenerateSalary::class,
+            route('calculate-salary'),
+            'salary'
+        );
     }
 
     public function importSalaryStore()
@@ -146,7 +168,7 @@ class SalaryController extends Controller
 
         $date_today = getTodayDate();
 
-        if (!validateSalaryGenerate($month, $year, $this)){
+        if (!validateSalaryGenerate($month, $year, $this)) {
             return redirect()->back();
         }
 
@@ -155,14 +177,41 @@ class SalaryController extends Controller
         $monthly_off = array_unique(array_merge($holidays, $sundays));
         $working_days = $days_in_month - count($sundays);
 
-        $emp_contract_list = EmpContract::with(['UserEmployee:id,user_id,company_id'])
+        $emp_contract_list = EmpContract::with(['UserEmployee:id,user_id,company_id', 'EmpContractType:id,name,emp_contract_amount_type_id'])
             ->whereHas('UserEmployee', function ($q) use ($company_id) {
                 $q->where('company_id', '=', $company_id);
             })
-            ->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total']);
+            ->whereYear('start_date', '=', $year)
+            ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month");
+
+//            ->orWhereMonth('end_date', '>=', $month)
+//            ->whereYear('end_date', '>=', $year)
+//            ->toSql();
+
+        $emp_contract_count = $emp_contract_list->count('id');
+
+        if ($emp_contract_count == 0) {
+            $attendance_fail_message = 'There is no Employee Contract available for  Selected Month ' . getMonthNameFromMonthNumber($month) . ' ' . $year;
+
+            $this->notifyMessage(false, $attendance_fail_message);
+            return redirect()->back();
+        }
+
+        $emp_contract_list = $emp_contract_list->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total', 'emp_contract_type_id']);
 
 //        echo json_encode(($emp_contract_list)) . '<br>';
+//        dd($emp_contract_list);
 //        exit();
+
+
+        $hourly = 'hourly';
+        $daily = 'daily';
+        $monthly = 'monthly';
+        $other = 'other';
+
+        $hourly_contract_amount_id = EmpContractAmountType::where('name', 'LIKE', '%' . $hourly . '%')->first(['id'])->id;
+        $daily_contract_amount_id = EmpContractAmountType::where('name', 'LIKE', '%' . $daily . '%')->first(['id'])->id;
+        $monthly_contract_amount_id = EmpContractAmountType::where('name', 'LIKE', '%' . $monthly . '%')->first(['id'])->id;
 
         $emp_pf_details = EmpPfDetail::with(['UserEmployee:id,user_id,company_id'])
             ->whereHas('UserEmployee', function ($q) use ($company_id) {
@@ -174,22 +223,47 @@ class SalaryController extends Controller
 
         /* @var $employee_contract EmpContract */
         foreach ($emp_contract_list as $employee_contract) {
-//            if ($employee_contract->user_id == 224) {
+//            if ($employee_contract->user_id == 238) {
+
+            $monthly_basic_salary_amount = 0;
+            $monthly_hra_salary_amount = 0;
+            $monthly_salary_amount = 0;
+            $salary_contract_hra = 0;
+            $salary_contract_basic = 0;
+            $salary_per_day = 0;
+            $salary_hra_per_day = 0;
+
             $user_id = $employee_contract->user_id;
             $user_name = $employee_contract->name;
             $daily_working_hours = $employee_contract->hours - $emp_allowed_hours;
-            $salary_contract_basic = round($employee_contract->salary_basic, 2);
-            $salary_contract_hra = round($employee_contract->salary_hra, 2);
-            $salary_contract_total = round($employee_contract->salary_total, 2);
-            $salary_per_day = round($salary_contract_basic / ($working_days ?? 1), 2);
-            $salary_hra_per_day = round($salary_contract_hra / ($working_days ?? 1), 2);
+
+            //Contract Amount type wise Calculation
+            if ($employee_contract->EmpContractType->emp_contract_amount_type_id == $daily_contract_amount_id) {
+                $salary_contract_basic = round($employee_contract->salary_basic, 2) * $working_days;
+                $salary_per_day = round($employee_contract->salary_basic, 2);
+                $salary_hra_per_day = round($employee_contract->salary_hra, 2);
+
+                $salary_contract_hra = $salary_hra_per_day * 26;
+
+            } elseif ($employee_contract->EmpContractType->emp_contract_amount_type_id == $monthly_contract_amount_id) {
+                $salary_contract_basic = round($employee_contract->salary_basic, 2);
+                $salary_per_day = round($salary_contract_basic / ($working_days ?? 1), 2);
+                $salary_hra_per_day = round($employee_contract->salary_hra / ($working_days ?? 1), 2);
+
+                $salary_contract_hra = round($employee_contract->salary_hra, 2);
+            }
+
+            $salary_contract_total = round(($salary_contract_hra + $salary_contract_basic), 2);
 
             $attendances = Attendance::whereUserId($user_id)
                 ->selectRaw("count(id) as total_working_days,
-                    count(CASE WHEN hours_worked < $daily_working_hours THEN 1 else null end)/2  as half_working_days, count(CASE WHEN hours_worked >= $daily_working_hours THEN 1 else null end)  as full_working_days")
+                    count(CASE WHEN out_time is not null and hours_worked < $daily_working_hours THEN 1 else null end)/2  as half_working_days,
+                    count(CASE WHEN out_time is null or hours_worked >= $daily_working_hours THEN 1 else null end)  as full_working_days")
                 ->whereMonth('date', '=', $month)
                 ->whereNotIn('date', $monthly_off)
                 ->first();
+
+//            dd($attendances);
 
             $full_working_days = $attendances['full_working_days'];
             $half_working_days = $attendances['half_working_days'];
@@ -204,7 +278,6 @@ class SalaryController extends Controller
             $monthly_salary_amount = $monthly_basic_salary_amount + $monthly_hra_salary_amount;
 
             //PF Calculation
-            $pf_amount = 0;
             $pf_search_data = array_search($user_id, array_column($emp_pf_details, 'user_id'));
 
             $salary = Salary::whereUserId($user_id)

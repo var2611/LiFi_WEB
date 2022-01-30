@@ -9,6 +9,12 @@ $('[data-toggle=sidebar-colapse]').click(function () {
     SidebarCollapse();
 });
 
+// $('#contract_start_month').datepicker( {
+//     format: "mm-yyyy",
+//     viewMode: "months",
+//     minViewMode: "months"
+// });
+
 function SidebarCollapse() {
     $('.menu-collapsed').toggleClass('d-none');
     $('.sidebar-submenu').toggleClass('d-none');

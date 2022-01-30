@@ -64,7 +64,13 @@ class EmployeeContractController extends Controller
             $model = new EmpContract();
             $model->user_id = $id;
 
-            return $this->createFormData(null, EmployeeContractTypeListForm::class, $model, route('edit-emp-contract-type-list'), 'employee');
+            return $this->createFormData(
+                EmployeeContractTypeListForm::class,
+                route('edit-emp-contract-type-list'),
+                'employee',
+                $model,
+                null
+            );
         } else {
             $model->isReadOnlyData = true;
             return $this->form(EmployeeContractForm::class, [
@@ -103,7 +109,13 @@ class EmployeeContractController extends Controller
             $model->salary_total = $empContractType->salary_total;
         }
 
-        $formData = $this->createFormData(null, EmployeeContractForm::class, $model, route('store-emp-contract'), 'employee');
+        $formData = $this->createFormData(
+            EmployeeContractForm::class,
+            route('store-emp-contract'),
+            'employee',
+            $model,
+            null
+        );
 
         return $this->createFormView($formData, 'layouts.form');
     }
@@ -140,7 +152,12 @@ class EmployeeContractController extends Controller
                 $model->company_id = Auth::user()->getCompanyId();
             }
 
-            return $this->createForm(null, EmployeeContractTypeForm::class, $model, route('store-contract-type'), 'contract');
+            return $this->createForm(
+                EmployeeContractTypeForm::class,
+                route('store-contract-type'),
+                'contract',
+                $model
+            );
 
         } catch (Exception $exception) {
             echo $exception->getMessage();
@@ -167,7 +184,13 @@ class EmployeeContractController extends Controller
     {
         $model = new EmpContractStatus();
 
-        return $this->createForm($id, EmployeeContractStatusForm::class, $model, route('store-emp-contract-status'), 'contract');
+        return $this->createForm(
+            EmployeeContractStatusForm::class,
+            route('store-emp-contract-status'),
+            'contract',
+            $model,
+            $id
+        );
     }
 
     /**

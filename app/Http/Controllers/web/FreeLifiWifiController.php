@@ -73,7 +73,15 @@ from import_public_wifi_season_data;");
     public function freeLiFiWiFiFileCreate(string $id = null)
     {
         $model = new ImportLifiFreeWifiDataFile();
-        return $this->createForm(null, UploadFreeLifiWifiFileForm::class, $model, route('store-free-lifi-wifi-file'), 'salary', 'layouts.hrms_forms_no_side_menu');
+        return $this->createForm(
+            UploadFreeLifiWifiFileForm::class,
+            route('store-free-lifi-wifi-file'),
+            'salary',
+            $model,
+            null,
+            null,
+            'layouts.hrms_forms_no_side_menu'
+        );
     }
 
     public function freeLiFiWiFiFileStore()

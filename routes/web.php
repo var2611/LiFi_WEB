@@ -38,6 +38,7 @@ Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/demo', [HomeController::class, 'demo'])->name('demo');
+    Route::get('/demoPDF', [ExportController::class, 'exportSalarySlipPDF'])->name('demoPDF');
 
     Route::view('/dashboard', '/hrms.dashboard')->name('hr_dashboard');
     Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
@@ -51,11 +52,14 @@ Route::group(['middleware' => 'auth'], function () {
     /*HRMS Forms --Start------------------------------------------------------------------*/
 
     Route::get('import-status', [ImportController::class, 'status']);
+    Route::get('import-helper-view', [ImportController::class, 'importHelperForm']);
+    Route::post('import-helper-data', [ImportController::class, 'importHelperData'])->name('import-helper-data');
 
-    Route::get('/sheet-import-upload', [ImportController::class, 'index'])->name('sheet-import-upload');
-    Route::get('/sheet-import-emp-contracts', [ImportController::class, 'importEmployeesContractForm'])->name('sheet-import-emp-contracts');
 
+    Route::get('/sheet-import-emp-attendance-upload', [ImportController::class, 'importEmployeesAttendanceForm'])->name('sheet-import-emp-attendance-upload');
     Route::post('generate-emp-attendances', [ImportController::class, 'generateEmpAndAttendanceFromAttendanceSheet'])->name('generate-emp-attendances');
+
+    Route::get('/sheet-import-emp-contracts', [ImportController::class, 'importEmployeesContractForm'])->name('sheet-import-emp-contracts');
     Route::post('generate-emp-contracts', [ImportController::class, 'generateEmpContractsFromSalarySheet'])->name('generate-emp-contracts');
 
     Route::get('/report-export-download', [ExportController::class, 'index'])->name('report-export-download');
@@ -65,7 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-leave-type', [LeaveController::class, 'storeFormLeaveType'])->name('store-leave-type');
 
     /*Work Shift Form*/
-    Route::get('/edit-work-shift/{id?}', [EmployeeWorkShiftController::class, 'editFormWorkShift'])->name('edit-work-shift');
+    Route::get('/edit-work-shift/{id}', [EmployeeWorkShiftController::class, 'editFormWorkShift'])->name('edit-work-shift');
     Route::post('/store-work-shift', [EmployeeWorkShiftController::class, 'storeFormWorkShift'])->name('store-work-shift');
 
     /*Leave Form*/

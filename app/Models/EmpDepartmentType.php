@@ -35,12 +35,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpDepartmentData whereUpdatedAt($value)
  * @method static Builder|EmpDepartmentData whereUpdatedBy($value)
  * @mixin Eloquent
+ * @property int|null $company_id
+ * @method static Builder|EmpDepartmentType whereCompanyId($value)
  */
 class EmpDepartmentType extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'name',
         'is_active',
         'is_visible',

@@ -75,6 +75,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpContract whereSalaryHra($value)
  * @method static Builder|EmpContract whereSalaryTotal($value)
  * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
+ * @property-read \App\Models\UserEmployee|null $UserEmployee
+ * @property string|null $date_of_join
+ * @method static Builder|EmpContract whereDateOfJoin($value)
  */
 class EmpContract extends Model
 {
@@ -84,6 +87,7 @@ class EmpContract extends Model
         'user_id',
         'name',
         'description',
+        'date_of_join',
         'date',
         'start_date',
         'end_date',
@@ -107,7 +111,7 @@ class EmpContract extends Model
 
     public function User(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function UserEmployee(): HasOne
@@ -117,17 +121,17 @@ class EmpContract extends Model
 
     public function EmpContractType(): BelongsTo
     {
-        return $this->belongsTo(EmpContractType::class, 'id');
+        return $this->belongsTo(EmpContractType::class,'emp_contract_type_id');
     }
 
     public function EmpContractStatus(): BelongsTo
     {
-        return $this->belongsTo(EmpContractStatus::class, 'id');
+        return $this->belongsTo(EmpContractStatus::class, 'emp_contract_status_id');
     }
 
     public function EmpShiftData(): BelongsTo
     {
-        return $this->belongsTo(EmpShiftData::class, 'id');
+        return $this->belongsTo(EmpShiftData::class, 'emp_shift_data_id');
     }
 
     public function EmpPfDetail(): HasOne

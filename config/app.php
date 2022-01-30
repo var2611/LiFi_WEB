@@ -171,7 +171,7 @@ return [
         LaravelViews\LaravelViewsServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
-        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+//        Barryvdh\DomPDF\ServiceProvider::class,
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
@@ -240,7 +240,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
 
-        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
+//        'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\EmpContractType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
@@ -19,7 +20,11 @@ class ListContractsTypeView extends TableView
      */
     public function repository(): Builder
     {
-        return EmpContractType::query()->with(['EmpContractStatus', 'EmpWorkShift']);
+        $company_id = Auth::user()->getCompanyId();
+
+        return EmpContractType::query()
+            ->with(['EmpContractStatus', 'EmpWorkShift'])
+            ->whereCompanyId($company_id);
     }
 
     /**
@@ -30,7 +35,7 @@ class ListContractsTypeView extends TableView
     public function headers(): array
     {
         return [
-            Header::title('No'),
+//            Header::title('No'),
             Header::title('Name')->sortBy('name'),
             Header::title('Description'),
             Header::title('Date'),
@@ -51,7 +56,7 @@ class ListContractsTypeView extends TableView
     public function row(EmpContractType $model): array
     {
         return [
-            $model->id,
+//            $model->id,
             $model->name,
             $model->description,
             $model->date,

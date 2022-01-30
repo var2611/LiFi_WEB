@@ -19,7 +19,7 @@ use Auth;
  * @property mixed|null $user_role_id
  * @property int|null $company_id
  */
-class EmpRegForData
+class DataEmpRegFor
 {
     private $formData;
 
@@ -31,7 +31,7 @@ class EmpRegForData
         $this->formData = $formData;
     }
 
-    public function attData(): EmpRegForData
+    public function attData(): DataEmpRegFor
     {
         $this->emp_code = $this->formData['emp_code'] ?? null;
         $this->name = $this->formData['name'] ?? null;
@@ -41,7 +41,7 @@ class EmpRegForData
         return $this;
     }
 
-    public function userData(): EmpRegForData
+    public function userData(): DataEmpRegFor
     {
         $this->id = $this->formData['id'] ?? null;
         $this->name = $this->formData['name'] ?? null;
@@ -55,7 +55,7 @@ class EmpRegForData
         return $this;
     }
 
-    public function userEmpData(): EmpRegForData
+    public function userEmpData(): DataEmpRegFor
     {
         $this->user_id = $this->formData['id'] ?? null;
         $this->user_role_id = $this->formData['user_role_id'] ?? null;

@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -53,6 +54,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpShiftData whereUpdatedBy($value)
  * @method static Builder|EmpShiftData whereUserId($value)
  * @mixin Eloquent
+ * @property-read \App\Models\EmpWorkShift|null $EmpWorkShift
+ * @property-read \App\Models\User|null $User
  */
 class EmpShiftData extends Model
 {
@@ -76,4 +79,14 @@ class EmpShiftData extends Model
         'end_time',
         'created_by',
     ];
+
+    public function EmpWorkShift(): BelongsTo
+    {
+        return $this->belongsTo(EmpWorkShift::class, 'emp_work_shift_id', 'id');
+    }
+
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

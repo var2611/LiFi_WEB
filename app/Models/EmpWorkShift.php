@@ -57,12 +57,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpWorkShift whereUpdatedBy($value)
  * @method static Builder|EmpWorkShift whereWed($value)
  * @mixin Eloquent
+ * @property int|null $company_id
+ * @method static Builder|EmpWorkShift whereCompanyId($value)
  */
 class EmpWorkShift extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'name',
         'description',
         'start_time',

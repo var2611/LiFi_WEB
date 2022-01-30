@@ -49,13 +49,12 @@ class ListSalary extends TableView
             Header::title('Emp Code')->sortBy('UserEmployee.emp_code'),
             Header::title('Month'),
             Header::title('Name')->sortBy('User.name'),
-            Header::title('Present'),
-            Header::title('Absent'),
-            Header::title('Total Days'),
+            Header::title('P | A | Tt'),
+            Header::title('Contract Salary'),
             Header::title('Basic'),
             Header::title('HRA'),
             Header::title('Gross Deduction'),
-            Header::title('Gross Earning'),
+            Header::title('Salary Total'),
             Header::title('Net Pay'),
         ];
     }
@@ -72,13 +71,12 @@ class ListSalary extends TableView
             $model->UserEmployee->emp_code,
             getMonthNameFromMonthNumber($model->month) . ' ' . $model->year,
             $model->UserEmployee->User->name,
-            $model->present_days,
-            $model->absent_days,
-            $model->total_days,
+            $model->present_days . ' | ' . $model->absent_days . ' | ' . $model->total_days,
+            $model->salary_contract_total,
             $model->salary_basic,
             $model->salary_hra,
             $model->salary_gross_deduction,
-            $model->salary_gross_earning,
+            $model->salary_total,
             $model->salary_net_pay,
         ];
     }

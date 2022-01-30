@@ -35,12 +35,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OvertimeType whereUpdatedAt($value)
  * @method static Builder|OvertimeType whereUpdatedBy($value)
  * @mixin Eloquent
+ * @property int|null $company_id
+ * @method static Builder|OvertimeType whereCompanyId($value)
  */
 class OvertimeType extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'name',
         'is_active',
         'is_visible',

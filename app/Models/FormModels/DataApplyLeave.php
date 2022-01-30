@@ -17,12 +17,9 @@ use App\Models\EmployeeLeave;
  * @property string|null $created_by
  * @property string|null $updated_by
  */
-class ApplyLeave
+class DataApplyLeave
 {
 
-    /**
-     *
-     */
     public function __construct($formData)
     {
         $this->user_id = $formData['user_id'] ?? null;
@@ -38,10 +35,10 @@ class ApplyLeave
     }
 
     /**
-     * @param ApplyLeave $applyLeaveForm
+     * @param DataApplyLeave $applyLeaveForm
      * @return EmployeeLeave
      */
-    public function createEmployeeLeaveModel(ApplyLeave $applyLeaveForm): EmployeeLeave
+    public function createEmployeeLeaveModel(DataApplyLeave $applyLeaveForm): EmployeeLeave
     {
         $employee_leave = new EmployeeLeave();
         $employee_leave->user_id = $applyLeaveForm->user_id;

@@ -35,12 +35,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|SalaryAllowanceType whereUpdatedAt($value)
  * @method static Builder|SalaryAllowanceType whereUpdatedBy($value)
  * @mixin Eloquent
+ * @property int|null $company_id
+ * @method static Builder|SalaryAllowanceType whereCompanyId($value)
  */
 class SalaryAllowanceType extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'name',
         'is_active',
         'is_visible',

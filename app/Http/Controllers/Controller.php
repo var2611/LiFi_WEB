@@ -208,10 +208,10 @@ class Controller extends BaseController
      * @param string $view
      * @return Application|Factory|RedirectResponse|View
      */
-    function createForm(string $id = null, string $formClassName, Model $model = null, string $route, string $sidemenuName, string $view = 'layouts.hrms_forms')
+    function createForm(string $formClassName, string $route, string $sidemenuName, Model $model = null, string $id = null, array $data = null, string $view = 'layouts.hrms_forms')
     {
         try {
-            $form = $this->createFormData($id, $formClassName, $model, $route, $sidemenuName);
+            $form = $this->createFormData($formClassName, $route, $sidemenuName, $model, $id, $data);
             return $this->createFormView($form, $view);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
@@ -228,16 +228,18 @@ class Controller extends BaseController
      * @param string $sidemenuName
      * @return Form|RedirectResponse
      */
-    function createFormData(string $id = null, string $className, Model $model = null, string $route, string $sidemenuName)
+    function createFormData(string $formClassName, string $route, string $sidemenuName, Model $model = null, string $id = null, string $data = null)
     {
         try {
-            if (!empty($model) && $id) {
+            if (empty($model) && $id) {
                 $model = $model->whereId($id)->first();
             }
 
-            return $this->form($className, [
+            return $this->form(
+                $formClassName, [
                 'method' => 'POST',
                 'model' => $model,
+                'data' => $data,
                 'url' => $route,
                 $sidemenuName => true,
                 'id' => $id,

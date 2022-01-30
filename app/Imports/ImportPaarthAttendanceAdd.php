@@ -9,11 +9,12 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Row;
 
-class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
+class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents//, WithChunkReading
 {
     use RegistersEventListeners;
 
@@ -52,7 +53,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
 
-        if ($rowIndex == self::$total_row_count) {
+        if ($rowIndex == self::$total_row_count /*&& false*/) {
 //        if ($rowIndex == 14) {
 
 //            try {
@@ -61,6 +62,9 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
             foreach ($this->day_data as $days) {
 
                 foreach ($days as $day) {
+                    $out_time =null;
+                    $in_time =null;
+                    $hours_worked =null;
 
                     try {
 
@@ -99,7 +103,9 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
                 }
             }
 
-            echo Attendance::upsert($attendances, ['user_id', 'date'], ['name', 'in_time', 'out_time', 'hours_worked', 'status', 'updated_by']);
+            foreach (array_chunk($attendances, 1000) as $chunk_attendances) {
+                echo Attendance::upsert($chunk_attendances, ['user_id', 'date'], ['name', 'in_time', 'out_time', 'hours_worked', 'status', 'updated_by']);
+            }
 
             echo json_encode(count($attendances)) . '<br>';
 //            echo json_encode($this->day_data) . '<br>';
@@ -113,6 +119,7 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
         }
 
         if (((string)$rowIndex)[-1] == 5) {
+//        if (($rowIndex) == 1475) {
             $data['department'] = $row[0];
             $data['emp_code'] = $row[2];
             $data['name'] = $row[6];
@@ -148,60 +155,66 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents
             }
         }
 
+//        if ($rowIndex == 1484){
+//            echo json_encode($this->day_data) . '<br>';
+//
+//        }
 
-        try {
-            if ($this->previous_user_index > 0) {
+//        if (($rowIndex) >= 1475 && $rowIndex < 1484) {
+            try {
+                if ($this->previous_user_index > 0) {
 
-                if (($rowIndex - $this->previous_user_index) == 2 /*&& strtolower($row[0]) == 'arr time'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['in_time'] = $row[$i];
-                        $this->day_data[$this->j][$i]['date'] = "$this->year-$this->month-$i";
+                    if (($rowIndex - $this->previous_user_index) == 2 /*&& strtolower($row[0]) == 'arr time'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['in_time'] = $row[$i];
+                            $this->day_data[$this->j][$i]['date'] = "$this->year-$this->month-$i";
+                        }
                     }
-                }
-                if (($rowIndex - $this->previous_user_index) == 3 /*&& strtolower($row[0]) == 'dep time'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['out_time'] = $row[$i];
+                    if (($rowIndex - $this->previous_user_index) == 3 /*&& strtolower($row[0]) == 'dep time'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['out_time'] = $row[$i] ?? null;
+                        }
                     }
-                }
-                if (($rowIndex - $this->previous_user_index) == 4 /*&& strtolower($row[0]) == 'working hrs'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['hours_worked'] = $row[$i];
+                    if (($rowIndex - $this->previous_user_index) == 4 /*&& strtolower($row[0]) == 'working hrs'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['hours_worked'] = $row[$i];
+                        }
                     }
-                }
-                if (($rowIndex - $this->previous_user_index) == 5 /*&& strtolower($row[0]) == 'over time'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['over_time'] = $row[$i];
+                    if (($rowIndex - $this->previous_user_index) == 5 /*&& strtolower($row[0]) == 'over time'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['over_time'] = $row[$i];
+                        }
                     }
-                }
-                if (($rowIndex - $this->previous_user_index) == 6 /*&& strtolower($row[0]) == 'absent'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['absent'] = $row[$i];
+                    if (($rowIndex - $this->previous_user_index) == 6 /*&& strtolower($row[0]) == 'absent'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['absent'] = $row[$i];
+                        }
                     }
-                }
-                if (($rowIndex - $this->previous_user_index) == 7 /*&& strtolower($row[0]) == 'break'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['break'] = $row[$i];
+                    if (($rowIndex - $this->previous_user_index) == 7 /*&& strtolower($row[0]) == 'break'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['break'] = $row[$i];
+                        }
                     }
-                }
-                if (($rowIndex - $this->previous_user_index) == 8 /*&& strtolower($row[0]) == 'status'*/) {
-                    for ($i = 1; $i <= $this->days_in_month; $i++) {
-                        $this->day_data[$this->j][$i]['status'] = $row[$i];
-                        $this->day_data[$this->j][$i]['emp_code'] = $this->user_data['adhar_number'];
-                        $this->day_data[$this->j][$i]['user_id'] = $this->user_data['user_id'];
-                        $this->day_data[$this->j][$i]['name'] = $this->user_data['name'];
-                    }
+                    if (($rowIndex - $this->previous_user_index) == 8 /*&& strtolower($row[0]) == 'status'*/) {
+                        for ($i = 1; $i <= $this->days_in_month; $i++) {
+                            $this->day_data[$this->j][$i]['status'] = $row[$i];
+                            $this->day_data[$this->j][$i]['emp_code'] = $this->user_data['adhar_number'];
+                            $this->day_data[$this->j][$i]['user_id'] = $this->user_data['user_id'];
+                            $this->day_data[$this->j][$i]['name'] = $this->user_data['name'];
+                        }
 
-                    $this->user_data = null;
-                    $this->previous_user_index = 0;
-                    $this->j++;
+                        $this->user_data = null;
+                        $this->previous_user_index = 0;
+                        $this->j++;
+                    }
                 }
+
+
+            } catch (Exception $exception) {
+                echo $exception->getMessage() . '<br>';
+                echo json_encode($this->user_data);
+                echo json_encode($this->previous_user_index);
             }
-        } catch (Exception $exception) {
-            echo $exception->getMessage() . '<br>';
-            echo json_encode($this->user_data);
-            echo json_encode($this->previous_user_index);
-        }
-
-
+//        }
     }
 }

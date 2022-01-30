@@ -90,6 +90,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Salary whereMonth($value)
  * @method static Builder|Salary whereYear($value)
  * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SalaryDetail[] $SalaryDetail
+ * @property-read int|null $salary_detail_count
+ * @property-read \App\Models\SalaryPfDetail|null $SalaryPfDetail
  */
 class Salary extends Model
 {

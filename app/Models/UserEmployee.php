@@ -52,6 +52,8 @@ use Illuminate\Support\Carbon;
  * @property-read CompanyHrmsSetting $Company
  * @property-read EmpDepartmentData $EmpDepartmentData
  * @property-read EmpPfDetail|null $EmpPfDetail
+ * @property string|null $gender
+ * @method static Builder|UserEmployee whereGender($value)
  */
 class UserEmployee extends Model
 {
@@ -61,6 +63,7 @@ class UserEmployee extends Model
         'user_id',
         'user_role_id',
         'emp_code',
+        'gender',
         'flash_code',
         'created_by',
         'updated_by',
