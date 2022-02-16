@@ -181,8 +181,10 @@ class SalaryController extends Controller
             ->whereHas('UserEmployee', function ($q) use ($company_id) {
                 $q->where('company_id', '=', $company_id);
             })
+            ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month")
             ->whereYear('start_date', '=', $year)
-            ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month");
+            ->orWhereYear('end_date', '=', $year)
+        ;
 
 //            ->orWhereMonth('end_date', '>=', $month)
 //            ->whereYear('end_date', '>=', $year)
@@ -196,6 +198,8 @@ class SalaryController extends Controller
             $this->notifyMessage(false, $attendance_fail_message);
             return redirect()->back();
         }
+
+//        dd($emp_contract_count);
 
         $emp_contract_list = $emp_contract_list->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total', 'emp_contract_type_id']);
 
