@@ -51,7 +51,10 @@ class ExportController extends Controller
 
     public function exportSalarySlipPDF()
     {
-        $salary = Salary::with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])->limit(2)->get(['id', 'user_id', 'name', 'date', 'month', 'year', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
+        $salary = Salary::with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])
+            ->where('month', 12)
+            ->where('year', 2021)
+            ->get(['id', 'user_id', 'name', 'date', 'month', 'year', 'total_days', 'present_days', 'absent_days', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
 
 //        foreach ($salary as $sal) {
         $data_salary_slips = array();
@@ -66,7 +69,7 @@ class ExportController extends Controller
 //        $pdf->stream();
 //        $view = 'layouts.salary-slip';
         $view = 'layouts.salary-slip-demo';
-        $data = View::make($view, ['data_salary_slips' => $data_salary_slips])->render();
+//        $data = View::make($view, ['data_salary_slips' => $data_salary_slips])->render();
 
 
         try {

@@ -885,11 +885,19 @@ function validateSalaryGenerate($month, $year, Controller $controller): bool
 
     $attendance_fail_message = 'You Have No Attendance In Selected Month ' . getMonthNameFromMonthNumber($month) . ' ' . $year;
 
-    if ($year >= getTodayYearNumber() || $month < getTodayMonthNumber()) {
+    if (($year == getTodayYearNumber() ? $month <! getTodayMonthNumber() : $year > getTodayYearNumber())) {
         $is_salary_available = false;
         $controller->notifyMessage(false, $month_fail_message);
         return $is_salary_available;
     }
+
+//    echo $month . '<br>';
+//    echo $year . '<br>';
+//    echo getTodayMonthNumber() . '<br>';
+//    echo getTodayYearNumber() . '<br>';
+//    echo $is_salary_available ? 'true' : 'false' . '<br>';
+//
+//    dd();
 
     $company_id = Auth::user()->getCompanyId();
 

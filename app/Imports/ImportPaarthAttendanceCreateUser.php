@@ -28,7 +28,7 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
     private $user_employee = null;
 
     private $company_id;
-//    private $season_id;
+    private $season_id;
     private $batch_user_data = array();
     private $j = 0;
     private $userDB;
@@ -36,7 +36,7 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
     public function __construct(string $company_id, $season_id)
     {
         $this->company_id = $company_id;
-//        $this->season_id = $season_id;
+        $this->season_id = $season_id;
     }
 
     public static function beforeImport(BeforeImport $event)
@@ -52,7 +52,7 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
     {
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
-//        cache()->forever("current_row_{$this->season_id}", $rowIndex);
+        cache()->forever("current_row_{$this->season_id}", $rowIndex);
 
         if ($rowIndex == self::$total_row_count) {
 //            echo json_encode($this->batch_user_data) . '<br>';
@@ -82,25 +82,25 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
         }
     }
 
-//    public function registerEvents(): array
-//    {
-//        return [
-//            BeforeImport::class => function (BeforeImport $event) {
-//                $totalRows = $event->getReader()->getTotalRows();
-//
-//                if (filled($totalRows)) {
-//                    cache()->forever("total_rows_{$this->season_id}", array_values($totalRows)[0]);
-//                    cache()->forever("start_date_{$this->season_id}", now()->unix());
-//                }
-//            },
-//            AfterImport::class => function (AfterImport $event) {
-//                cache(["end_date_{$this->season_id}" => now()], now()->addMinute());
-//                cache()->forget("total_rows_{$this->season_id}");
-//                cache()->forget("start_date_{$this->season_id}");
-//                cache()->forget("current_row_{$this->season_id}");
-//            },
-//        ];
-//    }
+    public function registerEvents(): array
+    {
+        return [
+            BeforeImport::class => function (BeforeImport $event) {
+                $totalRows = $event->getReader()->getTotalRows();
+
+                if (filled($totalRows)) {
+                    cache()->forever("total_rows_{$this->season_id}", array_values($totalRows)[0]);
+                    cache()->forever("start_date_{$this->season_id}", now()->unix());
+                }
+            },
+            AfterImport::class => function (AfterImport $event) {
+                cache(["end_date_{$this->season_id}" => now()], now()->addMinute());
+                cache()->forget("total_rows_{$this->season_id}");
+                cache()->forget("start_date_{$this->season_id}");
+                cache()->forget("current_row_{$this->season_id}");
+            },
+        ];
+    }
 
 //    public function chunkSize(): int
 //    {

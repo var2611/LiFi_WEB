@@ -79,7 +79,7 @@ class ImportController extends Controller
 
                 $importAddAttendance = Excel::import(new ImportPaarthAttendanceAdd($attendance_month, $attendance_year), $file);
 
-//                return redirect()->back();
+                return redirect()->back();
             } catch (ValidationException $e) {
                 $failures = $e->failures();
 

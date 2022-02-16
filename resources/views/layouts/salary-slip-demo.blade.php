@@ -194,6 +194,26 @@
                     </thead>
                 </table>
             </div>
+
+            <div class="table attendance">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="font-color" style="width: 50%">Working Day</th>
+                        <th class="font-color" style="width: 50%">Absent Day</th>
+                        <th class="font-color" style="width: 50%">Present Day</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="width: 50%">{{ $data_salary_slip->total_days }}</td>
+                        <td style="width: 50%">{{ $data_salary_slip->present_days }}</td>
+                        <td style="width: 50%">{{ $data_salary_slip->absent_days }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <div class="table address">
                 <table>
                     <thead>

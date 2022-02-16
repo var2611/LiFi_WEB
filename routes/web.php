@@ -33,6 +33,7 @@ Route::view('/demo_table', '/hrms.component.salary.data-attendance-overtime')->n
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
 Route::get('/demoA/{id?}', [SalaryController::class, 'editSalary'])->name('demoA');
 Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
+Route::view('/main-test', '/layouts.main_test')->name('main-test');
 
 
 Route::group(['middleware' => 'auth'], function () {

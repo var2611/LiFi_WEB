@@ -1,7 +1,21 @@
+$navbar-top-background: $white;
+$border-color: rgba(162, 162, 162, 0.2);
+
 // Body
 $body-bg: #f8fafc;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
 $line-height-base: 1.6;
+$font-family: 'Montserrat', sans-serif;
+$font-size-base: 14px;
+$font-color: #3A3A3A;
+
+// Buttons
+$btn-primary: $white;
+$btn-primary-bg: #0041FF;
+$btn-danger-bg: red;
+
+/* link colors */
+$link-color: #4D7EA8;
+$light-link-color: #28557B;

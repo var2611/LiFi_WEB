@@ -5,12 +5,13 @@
  */
 
 require('./bootstrap');
-import React from "react";
+import Vue from 'vue';
+// import React from "react";
 // import Antd from 'ant-design-vue';
 // import App from './App';
-import 'ant-design-vue/dist/antd.css'
-window.Vue = require('vue').default;
-Vue.config.productionTip = false;
+// import 'ant-design-vue/dist/antd.css'
+// window.Vue = require('vue').default;
+// Vue.config.productionTip = false;
 // Vue.use(Antd);
 
 
@@ -25,8 +26,9 @@ Vue.config.productionTip = false;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Vue.component('progressbar-component', require('./components/progressbar.vue').default);
+Vue.component('nav-slide-button', require('./components/sidemenu/nav-slide-button').default);
 
 // vite.config.js
 /**

@@ -25,6 +25,9 @@ use Nette\Utils\DateTime;
  * @property string $salary_month
  * @property string $salary_to_number
  * @property false|string $salary_net_pay_in_words
+ * @property string|null $total_days
+ * @property string|null $present_days
+ * @property string|null $absent_days
  */
 class DataSalarySlip
 {
@@ -51,6 +54,9 @@ class DataSalarySlip
         $this->uan = $this->salary_data->EmpPfDetail->uan ?? ucfirst('nil');
         $this->salary_month = getMonthNameFromMonthNumber($this->salary_data->month);
         $this->salary_year = $this->salary_data->year;
+        $this->total_days = $this->salary_data->total_days;
+        $this->present_days = $this->salary_data->present_days;
+        $this->absent_days = $this->salary_data->absent_days;
     }
 
     private function serEarningData()
