@@ -81,7 +81,7 @@ class SalaryPfDetail extends Model
 
     public function EmpPfDetail(): BelongsTo
     {
-        return $this->belongsTo(EmpPfDetail::class, 'id');
+        return $this->belongsTo(EmpPfDetail::class, 'emp_pf_detail_id', 'id');
     }
 
 

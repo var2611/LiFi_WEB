@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -81,18 +82,17 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Salary whereSalaryGrossEarning($value)
  * @method static Builder|Salary whereSalaryHra($value)
  * @method static Builder|Salary whereSalaryNetPay($value)
- * @property-read \App\Models\EmpContract $EmpContract
- * @property-read \App\Models\OvertimeType $OvertimeType
- * @property-read \App\Models\User $User
- * @property-read \App\Models\UserEmployee|null $UserEmployee
+ * @property-read EmpContract $EmpContract
+ * @property-read OvertimeType $OvertimeType
+ * @property-read User $User
+ * @property-read UserEmployee|null $UserEmployee
  * @property int|null $month
  * @property int|null $year
  * @method static Builder|Salary whereMonth($value)
  * @method static Builder|Salary whereYear($value)
- * @property-read \App\Models\EmpPfDetail|null $EmpPfDetail
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SalaryDetail[] $SalaryDetail
+ * @property-read Collection|SalaryDetail[] $SalaryDetail
  * @property-read int|null $salary_detail_count
- * @property-read \App\Models\SalaryPfDetail|null $SalaryPfDetail
+ * @property-read SalaryPfDetail|null $SalaryPfDetail
  */
 class Salary extends Model
 {

@@ -226,6 +226,7 @@ class SalaryController extends Controller
         $batch_salary_data = array();
 
         /* @var $employee_contract EmpContract */
+        /* @var $pf_search_data EmpPfDetail */
         foreach ($emp_contract_list as $employee_contract) {
 //            if ($employee_contract->user_id == 238) {
 
@@ -337,6 +338,8 @@ class SalaryController extends Controller
                             $salary_pf_detail = new SalaryPfDetail();
                             $salary_pf_detail->created_by = Auth::id();
                         }
+//                        dd($pf_search_data);
+                        $salary_pf_detail->emp_pf_detail_id = $emp_pf_details[$pf_search_data]['id'];
                         $salary_pf_detail->salary_id = $salary->id;
                         $salary_pf_detail->name = $user_name;
                         $salary_pf_detail->pension_amount = $pf_amount;
