@@ -136,6 +136,7 @@ class SalaryController extends Controller
 
 
 //                echo json_encode($heading, JSON_PRETTY_PRINT);
+                return redirect()->back();
             } catch (ValidationException $e) {
                 $failures = $e->failures();
 
@@ -183,8 +184,7 @@ class SalaryController extends Controller
             })
             ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month")
             ->whereYear('start_date', '=', $year)
-            ->orWhereYear('end_date', '=', $year)
-        ;
+            ->orWhereYear('end_date', '=', $year);
 
 //            ->orWhereMonth('end_date', '>=', $month)
 //            ->whereYear('end_date', '>=', $year)
@@ -220,7 +220,7 @@ class SalaryController extends Controller
         $emp_pf_details = EmpPfDetail::with(['UserEmployee:id,user_id,company_id'])
             ->whereHas('UserEmployee', function ($q) use ($company_id) {
                 $q->where('company_id', '=', $company_id);
-            })->get(['id', 'user_id', 'pf_number', 'uan', 'bank_name', 'description', 'status', 'is_visible', 'is_active'])->toArray();
+            })->get(['id', 'user_id', 'pf_number', 'uan', 'bank_name', 'description', 'status', 'abry_eligible', 'is_visible', 'is_active'])->toArray();
 
         $i = 0;
         $batch_salary_data = array();
@@ -317,7 +317,7 @@ class SalaryController extends Controller
             $salary->overtime_amount = 0;
 
             $pf_amount = 0;
-            if ($pf_search_data !== false) {
+            if ($pf_search_data !== false && $emp_pf_details[$pf_search_data]['abry_eligible'] != 1) {
                 $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100, 2);
                 if ($pf_amount > 0) {
                     $salary->salary_gross_earning = $salary->salary_gross_earning - $pf_amount;
@@ -338,7 +338,6 @@ class SalaryController extends Controller
                             $salary_pf_detail = new SalaryPfDetail();
                             $salary_pf_detail->created_by = Auth::id();
                         }
-//                        dd($pf_search_data);
                         $salary_pf_detail->emp_pf_detail_id = $emp_pf_details[$pf_search_data]['id'];
                         $salary_pf_detail->salary_id = $salary->id;
                         $salary_pf_detail->name = $user_name;

@@ -682,6 +682,7 @@ function import_employee_hr_data($data): array
     $batch_employee_hr_data['date_of_join'] = $data['date_of_join'];
     $batch_employee_hr_data['uan'] = $data['uan'];
     $batch_employee_hr_data['pf_number'] = $data['pf_number'];
+    $batch_employee_hr_data['abry_eligible'] = $data['abry_eligible'];
 
     return $batch_employee_hr_data;
 }
@@ -843,6 +844,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                     $batch_employee_pf_data[$j]['pf_number'] = $employee_contract['pf_number'];
                     $batch_employee_pf_data[$j]['uan'] = $employee_contract['uan'];
                     $batch_employee_pf_data[$j]['status'] = 1;
+                    $batch_employee_pf_data[$j]['abry_eligible'] = strtolower($employee_contract['abry_eligible']) === 'abry' ? 1 : 0;
                     $batch_employee_pf_data[$j]['created_by'] = $logged_in_user_id;
                     $batch_employee_pf_data[$j]['updated_by'] = $logged_in_user_id;
 

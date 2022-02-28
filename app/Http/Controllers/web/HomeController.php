@@ -50,14 +50,8 @@ class HomeController extends Controller
 //        echo bcrypt('gil@wifi#lifi');
 //        echo  getTodayDateTime();
 
-        $employee_contract['per_day_wages'] = null;
-        $employee_contract['basic_salary'] = 100;
+        $employee_contract['abry_eligible'] = 'ABaRY';
 
-        if (!isset($employee_contract['per_day_wages'])) {
-
-            echo 'passs' ."<br>";
-        } else {
-            echo 'Fail' ."<br>";
-        }
+        echo strtolower($employee_contract['abry_eligible']) === 'abry' ? 1 : 0;
     }
 }

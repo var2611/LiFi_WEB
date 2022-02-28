@@ -49,8 +49,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EmpPfDetail whereUan($value)
  * @property string|null $pf_number
  * @method static Builder|EmpPfDetail wherePfNumber($value)
- * @property-read \App\Models\User $User
- * @property-read \App\Models\UserEmployee|null $UserEmployee
+ * @property-read User $User
+ * @property-read UserEmployee|null $UserEmployee
+ * @property int|null $abry_eligible
+ * @method static Builder|EmpPfDetail whereAbryEligible($value)
  */
 class EmpPfDetail extends Model
 {
@@ -63,6 +65,7 @@ class EmpPfDetail extends Model
         'bank_name',
         'description',
         'status',
+        'abry_eligible',
         'is_visible',
         'is_active',
         'updated_by',

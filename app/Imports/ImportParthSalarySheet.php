@@ -117,6 +117,7 @@ class ImportParthSalarySheet implements OnEachRow, WithEvents
             $data['hra'] = $row[12] ?? null;
             $data['uan'] = $row[14] ?? null;
             $data['pf_number'] = $row[15] ?? null;
+            $data['abry_eligible'] = $row[16] ?? null;
 //
 ////            dd($data);
 
