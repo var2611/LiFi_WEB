@@ -46,6 +46,7 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             $salary->salary_gross_deduction, //N
             $salary->salary_gross_earning, //O
             Date::dateTimeToExcel($salary->created_at), //P
+            $salary->UserEmployee->EmpPfDetail->abry_eligible == 1 ? 'ABRY' : null, //Q
         ];
     }
 
@@ -84,7 +85,7 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             'M' => NumberFormat::FORMAT_NUMBER,
             'N' => NumberFormat::FORMAT_NUMBER,
             'O' => NumberFormat::FORMAT_NUMBER,
-            'P' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'P' => NumberFormat::FORMAT_DATE_DDMMYYYY
         ];
     }
 

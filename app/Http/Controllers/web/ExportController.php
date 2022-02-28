@@ -111,7 +111,7 @@ class ExportController extends Controller
 //            $pdf->getMpdf()->WriteHTML($stylesheet2, HTMLParserMode::HEADER_CSS);
 //            $pdf->getMpdf()->WriteHTML($data, HTMLParserMode::DEFAULT_MODE);
 
-            return $dpdf->download();
+            return $dpdf->download("$selected_month_year.pdf");
 //        return $data;
         } catch (\Exception $e) {
             echo $e;
