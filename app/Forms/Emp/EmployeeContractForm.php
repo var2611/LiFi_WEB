@@ -52,7 +52,7 @@ class EmployeeContractForm extends Form
             ->add('emp_work_shift_data_id', Field::SELECT, [
                 'choices' => Arr::pluck($empWorkShift, 'name', 'id'),
                 'empty_value' => '=== Select Shift ===',
-                'rules' => 'required',
+//                'rules' => 'required',
                 'label' => 'Emp work shift data',
             ])
             ->add('emp_contract_status_id', Field::SELECT, [

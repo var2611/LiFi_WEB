@@ -4,3 +4,5 @@
 @extends('includes.sidemenu.leave-menu')
 @extends('includes.sidemenu.salary-menu')
 @extends('includes.sidemenu.emp-contract-menu')
+@extends('includes.sidemenu.import-upload-menu')
+@extends('includes.sidemenu.export-download-menu')

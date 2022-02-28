@@ -677,6 +677,7 @@ function import_employee_hr_data($data): array
     $batch_employee_hr_data['description'] = $data['category'];
     $batch_employee_hr_data['per_day_wages'] = $data['per_day_wages'];
     $batch_employee_hr_data['basic_salary'] = $data['basic_salary'];
+    $batch_employee_hr_data['gross_salary'] = $data['gross_salary'];
     $batch_employee_hr_data['salary_hra'] = $data['hra'];
     $batch_employee_hr_data['date_of_join'] = $data['date_of_join'];
     $batch_employee_hr_data['uan'] = $data['uan'];
@@ -721,7 +722,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
         foreach ($employee_contract_data as $employee_contract) {
 
             if (!isset($employee_contract['per_day_wages'])) {
-                if (!isset($employee_contract['basic_salary'])) {
+                if (!isset($employee_contract['basic_salary']) && !isset($employee_contract['gross_salary'])) {
                     $employee_salary_not_found[] = $employee_contract;
                     continue;
                 }
@@ -795,6 +796,19 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                     }
 
                     $salary_basic = $employee_contract['basic_salary'];
+                    $salary_basic_total = $salary_basic;
+                    $salary_hra = $employee_contract['salary_hra'];
+                } else if ($employee_contract['gross_salary']) {
+                    $searched_contract = array_search($monthly_contract_amount_id, array_column($emp_contract_types, 'emp_contract_amount_type_id'));
+
+                    if ($searched_contract !== false) {
+                        $emp_contract_type_id = $emp_contract_types[$searched_contract]['id'];
+                    } else {
+                        $employee_contract_not_found[] = $employee_contract;
+                        continue;
+                    }
+
+                    $salary_basic = $employee_contract['gross_salary'];
                     $salary_basic_total = $salary_basic;
                     $salary_hra = $employee_contract['salary_hra'];
                 }

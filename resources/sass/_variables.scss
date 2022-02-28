@@ -1,21 +1,32 @@
-$navbar-top-background: $white;
+$body-background: $white;
+$background-color: #f8f9fa;
 $border-color: rgba(162, 162, 162, 0.2);
+$navbar-top-background: $white;
 
-// Body
-$body-bg: #f8fafc;
-
-// Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$line-height-base: 1.6;
-$font-family: 'Montserrat', sans-serif;
-$font-size-base: 14px;
-$font-color: #3A3A3A;
+// Accordion
+$accordian-header: #fbfbfb;
 
 // Buttons
 $btn-primary: $white;
 $btn-primary-bg: #0041FF;
 $btn-danger-bg: red;
 
-/* link colors */
-$link-color: #4D7EA8;
-$light-link-color: #28557B;
+// Cards
+$card-title: #a2a2a2;
+$card-background: $white;
+
+// Dashboard
+$dashboard-stats-data: #0041ff;
+
+// Typography
+$font-family: 'Montserrat', sans-serif;
+$font-size-base: 14px;
+$font-color: #3A3A3A;
+
+$link-color: #a2a2a2;
+$link-active-color: #a2a2a2;
+$control-border-color: #C7C7C7;
+
+$white-color: #ffffff;
+$black-color: #000000;
+$black-color-shade : #000311;

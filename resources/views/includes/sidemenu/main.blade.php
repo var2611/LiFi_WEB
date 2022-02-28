@@ -37,23 +37,10 @@
 
             @yield('emp-contract-menu')
 
+            @yield('import-upload-menu')
 
-            <a href="{{ route('sheet-import-emp-attendance-upload') }}"
-               class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-start align-items-center">
-                    <span class="fa fa-tree fa-fw mr-3"></span>
-                    <span class="menu-collapsed">Import / Upload</span>
-                    {{--                            <span class="submenu-icon ml-auto"></span>--}}
-                </div>
-            </a>
-            <a href="{{ route('report-export-download') }}"
-               class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-start align-items-center">
-                    <span class="fa fa-tree fa-fw mr-3"></span>
-                    <span class="menu-collapsed">Export / Download</span>
-                    {{--                            <span class="submenu-icon ml-auto"></span>--}}
-                </div>
-            </a>
+            @yield('export-download-menu')
+
             <a href="{{ route('list-holiday') }}"
                    class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">

@@ -63,7 +63,7 @@
                             <h1>Import / Upload</h1>
                         </div>
                     </a>
-                    <a href="{{ route('report-export-download') }}">
+                    <a href="{{ route('sheet-export-salary-form') }}">
                         <div class="card-hr">
                             <i class="fas fa-envelope fa-2x"></i>
                             <h1>Export / Download</h1>

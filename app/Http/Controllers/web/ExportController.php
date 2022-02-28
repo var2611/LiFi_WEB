@@ -14,17 +14,17 @@ use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
 class ExportController extends Controller
 {
-    public function index()
+    public function sheetExportSalaryForm()
     {
         $form = $this->form(ExportDownloadForm::class, [
             'method' => 'POST',
-            'url' => route('generate-export-download')
+            'url' => route('sheet-export-salary-download')
         ]);
 
-        return view('layouts.hrms_forms', compact('form'));
+        return view('layouts.hrms_forms', compact('form'), ['export' => true]);
     }
 
-    public function exportData()
+    public function sheetExportSalaryDownload()
     {
         $form = $this->form(ExportDownloadForm::class);
 
@@ -49,11 +49,33 @@ class ExportController extends Controller
 //        return redirect()->route('report-export-download');
     }
 
-    public function exportSalarySlipPDF()
+    public function pdfExportSalarySlipForm()
     {
+        $form = $this->form(ExportDownloadForm::class, [
+            'method' => 'POST',
+            'url' => route('pdf-export-salary-slip-download')
+        ]);
+
+        return view('layouts.hrms_forms', compact('form'), ['export' => true]);
+    }
+
+    public function pdfExportSalarySlipDownload()
+    {
+        $form = $this->form(ExportDownloadForm::class);
+
+        $form->redirectIfNotValid();
+
+        // Do saving and other things...
+        $formData = $form->getFieldValues();
+
+        $selected_month_year = $formData['selected_month'];
+        $date = strtotime($selected_month_year);
+        $month = date('m', $date);
+        $year = date('Y', $date);
+
         $salary = Salary::with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])
-            ->where('month', 12)
-            ->where('year', 2021)
+            ->where('month', $month)
+            ->where('year', $year)
             ->get(['id', 'user_id', 'name', 'date', 'month', 'year', 'total_days', 'present_days', 'absent_days', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
 
 //        foreach ($salary as $sal) {
