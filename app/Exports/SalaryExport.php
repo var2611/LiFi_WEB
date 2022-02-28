@@ -45,8 +45,11 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             $salary->salary_total, //M
             $salary->salary_gross_deduction, //N
             $salary->salary_gross_earning, //O
-            Date::dateTimeToExcel($salary->created_at), //P
-            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->abry_eligible ? 'ABRY' : null : null, //Q
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->uan ?? null : null, //P
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->pf_number ?? null : null, //Q
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->abry_eligible ? 'ABRY' : null : null, //R
+            Date::dateTimeToExcel($salary->created_at), //S
+
         ];
     }
 
@@ -96,21 +99,25 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
     public function headings(): array
     {
         return [
-            'EMP_CODE',
-            'DEPARTMENT',
-            'EMPLOYEE_NAME',
-            'CATEGORY',
-            ['ACTUAL_SALARY', 'BASIC'],
-            'HRA',
-            'GROSS',
-            'TOTAL_WRK_DAY',
-            'P_TOTAL',
-            'A_DAY',
-            ['SALARY_PAYABLE', 'BASIC'],
-            'HRA',
-            'GROSS',
-            'PF',
-            'NET_PAYABLE',
+            'EMP_CODE', //A
+            'DEPARTMENT',//B
+            'EMPLOYEE_NAME',//C
+            'CATEGORY',//D
+            ['ACTUAL_SALARY', 'BASIC'],//E
+            'HRA',//F
+            'GROSS',//G
+            'TOTAL_WRK_DAY',//H
+            'P_TOTAL',//I
+            'A_DAY',//J
+            ['SALARY_PAYABLE', 'BASIC'],//K
+            'HRA',//L
+            'GROSS',//M
+            'PF',//N
+            'NET_PAYABLE',//O
+            'UAN',//P
+            'PF Number',//Q
+            'ABRY',//R
+            '',//S
         ];
     }
 }
