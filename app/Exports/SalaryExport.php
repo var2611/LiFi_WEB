@@ -46,7 +46,7 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             $salary->salary_gross_deduction, //N
             $salary->salary_gross_earning, //O
             Date::dateTimeToExcel($salary->created_at), //P
-            $salary->UserEmployee->EmpPfDetail->abry_eligible == 1 ? 'ABRY' : null, //Q
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->abry_eligible ? 'ABRY' : null : null, //Q
         ];
     }
 
