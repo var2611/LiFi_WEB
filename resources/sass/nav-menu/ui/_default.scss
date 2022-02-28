@@ -7,7 +7,7 @@ body {
     position: static;
     height: 100%;
     width: 100%;
-    background-color: $body-bg;
+    background-color: $body-background;
 }
 
 ::-webkit-scrollbar {
@@ -44,6 +44,10 @@ body {
 
         .brand-logo {
             padding: 10px;
+            a img {
+                width: 130px;
+            }
+
         }
     }
 
@@ -85,6 +89,7 @@ body {
                 display: block;
                 text-align: left;
             }
+
             .role {
                 font-size: 14px;
                 color: #8e8e8e;
@@ -98,7 +103,6 @@ body {
         }
     }
 }
-
 
 .navbar-left {
     position: relative;
@@ -138,24 +142,6 @@ body {
     }
 }
 
-%menu-properties {
-    width: 48px;
-    height: 48px;
-    display: inline-block;
-    background-size: cover;
-}
-
-
-.icon {
-    display: inline-block;
-    background-size: cover
-}
-
-.dashboard-icon {
-    @extend %menu-properties;
-    background-image: url("../../images/Icon-Dashboard.svg");
-}
-
 .content-container {
     padding-left: 90px;
     position: absolute;
@@ -177,7 +163,7 @@ body {
         top: 60px;
         bottom: 0;
         border-right: 1px solid $border-color;
-        background-color: $body-bg;
+        background-color: $background-color;
         padding-top: 10px;
         padding-bottom: 10px;
         z-index: 4;
@@ -209,7 +195,7 @@ body {
     .content-wrapper {
         padding: 25px 25px 25px 15px;
         margin-left: 280px;
-        margin-top:1px;
+        margin-top: 1px;
         background-color: $white;
     }
 
@@ -277,6 +263,119 @@ body {
         .page-content {
             width: 100%;
             display: inline-block;
+        }
+    }
+}
+
+.control-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 750px;
+
+    .control {
+        background: $white;
+        border: 2px solid #c7c7c7;
+        @include border-radius(3px);
+        width: 150px;
+        height: 36px;
+        display: inline-block;
+        vertical-align: middle;
+        transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0px 10px;
+        font-size: 15px;
+
+        &:focus {
+            border-color: #0041ff;
+        }
+    }
+
+    .icon:hover {
+        cursor: pointer;
+    }
+
+    .control-group::last-child {
+        margin-right: 0px;
+    }
+}
+
+.boolean-control-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 750px;
+
+    .control-group {
+        width: 200px;
+    }
+}
+
+.control-group {
+    label {
+        width: 70%;
+
+        .locale {
+            float: right;
+            color: #8e8e8e;
+        }
+    }
+
+    .mce-tinymce {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+}
+
+.ticket-list {
+    .control-group {
+        &.date {
+            &::after {
+                left: unset;
+                right: 10px;
+                top: 34px;
+            }
+        }
+
+        &.has-error {
+            &.date {
+                &::after {
+                    top: 47px;
+                }
+            }
+        }
+    }
+}
+
+.variant-image {
+    .image-item {
+        height: 100px !important;
+        width: 100px !important;
+        background-size: 100px 100px !important;
+    }
+
+    .trash-icon {
+        position: absolute;
+        cursor: pointer;
+        margin-top: 25%;
+    }
+}
+
+.btn.add-image {
+    display: inline-block;
+    width: auto;
+}
+
+.rtl {
+    .ticket-list {
+        .control-group {
+            &.has-error {
+                &.date {
+                    &::after {
+                        top: 47px;
+                        right: 100% !important;
+                    }
+                }
+            }
         }
     }
 }

@@ -22,3 +22,5 @@ yarn-error.log
 /lifi.zip
 /.idea/
 /package-lock.json
+/public/assets/
+/resources/assets/

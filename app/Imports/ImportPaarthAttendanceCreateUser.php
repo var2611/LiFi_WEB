@@ -4,11 +4,9 @@ namespace App\Imports;
 
 use App\Models\User;
 use App\Models\UserEmployee;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
@@ -44,6 +42,23 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
         self::$total_row_count = array_values($event->getDelegate()->getTotalRows())[0];
     }
 
+    public static function afterImport(AfterImport $event)
+    {
+        /*
+           Due to static function can't access $this variable
+           $event->getConcernable() will fetch current importer's data
+       */
+        $importer_this = $event->getConcernable();
+
+//            echo json_encode($this->batch_user_data) . '<br>';
+//            exit();
+        echo 'User Created/Updated : ' . User::upsert($importer_this->batch_user_data, ['name', 'adhar_number'], ['name', 'last_name', 'updated_by']) . '<br>';
+
+        $batch_user_emp_data = import_create_user_employee_batch_data($importer_this->batch_user_data, $importer_this->company_id);
+
+        echo 'UserEmployee Created/Updated : ' . UserEmployee::upsert($batch_user_emp_data, ['company_id', 'emp_code'], ['user_id', 'user_role_id', 'company_id', 'emp_code', 'flash_code', 'created_by', 'updated_by']) . '<br>';
+    }
+
     /**
      * @var UserEmployee|null
      */
@@ -53,17 +68,6 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
         cache()->forever("current_row_{$this->season_id}", $rowIndex);
-
-        if ($rowIndex == self::$total_row_count) {
-//            echo json_encode($this->batch_user_data) . '<br>';
-//            exit();
-            echo 'User Created/Updated : ' . User::upsert($this->batch_user_data, ['name', 'adhar_number'], ['name', 'last_name', 'updated_by']) . '<br>';
-
-            $batch_user_emp_data = import_create_user_employee_batch_data($this->batch_user_data, $this->company_id);
-
-            echo 'UserEmployee Created/Updated : ' . UserEmployee::upsert($batch_user_emp_data, ['company_id', 'emp_code'], ['user_id', 'user_role_id', 'company_id', 'emp_code', 'flash_code', 'created_by', 'updated_by']) . '<br>';
-
-        }
 
         if (((string)$rowIndex)[-1] == 5) {
             $data['department'] = $row[0];

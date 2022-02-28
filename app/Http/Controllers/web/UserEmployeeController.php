@@ -6,6 +6,7 @@ namespace App\Http\Controllers\web;
 
 use App\Forms\Emp\EmployeeBankDetailForm;
 use App\Forms\Emp\EmployeeContractAmountTypeForm;
+use App\Forms\Emp\EmployeeDepartmentDataForm;
 use App\Forms\Emp\EmployeeDepartmentTypeForm;
 use App\Forms\Emp\EmployeePFDetailForm;
 use App\Forms\Emp\EmployeeRegistrationForAttForm;
@@ -193,6 +194,36 @@ class UserEmployeeController extends Controller
 
     /**
      * @param string $id
+     * @return Form|void
+     */
+    private function editFormEmpDepartmentData(string $id)
+    {
+        $model = EmpDepartmentData::whereUserId($id)->first();
+
+        if (!$model) {
+            $model = new EmpPfDetail();
+            $model->user_id = $id;
+        }
+        return $this->createFormData(
+            EmployeeDepartmentDataForm::class,
+            route('store-emp-department-data'),
+            'employee',
+            $model,
+            null
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function storeFormEmpDepartmentData(): string
+    {
+        $model = new EmpDepartmentData();
+        return $this->formStore(EmployeeDepartmentDataForm::class, $model, 'list-employee', 'employee', 'Employee Department Data');
+    }
+
+    /**
+     * @param string $id
      * @return Application|Factory|RedirectResponse|View
      */
     public function editFormEmpBankDetail(string $id)
@@ -352,7 +383,7 @@ class UserEmployeeController extends Controller
             $data = array();
             $data['formUserDetail'] = $this->editFormEmpRegistrationData($id);
             $data['formOfficeTiming'] = (new EmployeeWorkShiftController())->editFormWorkShift($id);
-//            $data['formDepartmentDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
+            $data['formDepartmentDetail'] = $this->editFormEmpDepartmentData($id);
             $data['formContractDetail'] = (new EmployeeContractController)->empContractTypeListFormCreate($id);
             $data['formBankDetail'] = $this->editFormEmpBankDetailData($id);
             $data['formPFDetail'] = $this->editFormEmpPFDetailData($id);

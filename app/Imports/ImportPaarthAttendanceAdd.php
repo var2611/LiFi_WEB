@@ -9,8 +9,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Row;
 
@@ -45,26 +45,24 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents//, WithChunkRea
         self::$total_row_count = array_values($event->getDelegate()->getTotalRows())[0];
     }
 
-    /**
-     * @var UserEmployee|null
-     */
-    public function onRow(Row $row)
+    public static function afterImport(AfterImport $event)
     {
-        $rowIndex = $row->getIndex();
-        $row = $row->toArray();
+        /*
+            Due to static function can't access $this variable
+            $event->getConcernable() will fetch current importer's data
+        */
+        $importer_this = $event->getConcernable();
 
-        if ($rowIndex == self::$total_row_count /*&& false*/) {
-//        if ($rowIndex == 14) {
 
-//            try {
+        try {
             $i = 0;
             $attendances = array();
-            foreach ($this->day_data as $days) {
+            foreach ($importer_this->day_data as $days) {
 
                 foreach ($days as $day) {
-                    $out_time =null;
-                    $in_time =null;
-                    $hours_worked =null;
+                    $out_time = null;
+                    $in_time = null;
+                    $hours_worked = null;
 
                     try {
 
@@ -99,7 +97,6 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents//, WithChunkRea
                         echo $e->getMessage() . '<br>';
                         echo json_encode($day) . '<br>';
                     }
-
                 }
             }
 
@@ -111,12 +108,19 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents//, WithChunkRea
 //            echo json_encode($this->day_data) . '<br>';
 //            echo json_encode($attendances) . '<br>';
             echo json_encode($i);
-//            } catch (\Exception $ex) {
-//                echo $ex->getMessage() . '<br>';
-//                echo json_encode($days);
-//            }
-
+        } catch (\Exception $ex) {
+            echo $ex->getMessage() . '<br>';
+            echo json_encode($days);
         }
+    }
+
+    /**
+     * @var UserEmployee|null
+     */
+    public function onRow(Row $row)
+    {
+        $rowIndex = $row->getIndex();
+        $row = $row->toArray();
 
         if (((string)$rowIndex)[-1] == 5) {
 //        if (($rowIndex) == 1475) {
@@ -161,60 +165,60 @@ class ImportPaarthAttendanceAdd implements OnEachRow, WithEvents//, WithChunkRea
 //        }
 
 //        if (($rowIndex) >= 1475 && $rowIndex < 1484) {
-            try {
-                if ($this->previous_user_index > 0) {
+        try {
+            if ($this->previous_user_index > 0) {
 
-                    if (($rowIndex - $this->previous_user_index) == 2 /*&& strtolower($row[0]) == 'arr time'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['in_time'] = $row[$i];
-                            $this->day_data[$this->j][$i]['date'] = "$this->year-$this->month-$i";
-                        }
-                    }
-                    if (($rowIndex - $this->previous_user_index) == 3 /*&& strtolower($row[0]) == 'dep time'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['out_time'] = $row[$i] ?? null;
-                        }
-                    }
-                    if (($rowIndex - $this->previous_user_index) == 4 /*&& strtolower($row[0]) == 'working hrs'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['hours_worked'] = $row[$i];
-                        }
-                    }
-                    if (($rowIndex - $this->previous_user_index) == 5 /*&& strtolower($row[0]) == 'over time'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['over_time'] = $row[$i];
-                        }
-                    }
-                    if (($rowIndex - $this->previous_user_index) == 6 /*&& strtolower($row[0]) == 'absent'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['absent'] = $row[$i];
-                        }
-                    }
-                    if (($rowIndex - $this->previous_user_index) == 7 /*&& strtolower($row[0]) == 'break'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['break'] = $row[$i];
-                        }
-                    }
-                    if (($rowIndex - $this->previous_user_index) == 8 /*&& strtolower($row[0]) == 'status'*/) {
-                        for ($i = 1; $i <= $this->days_in_month; $i++) {
-                            $this->day_data[$this->j][$i]['status'] = $row[$i];
-                            $this->day_data[$this->j][$i]['emp_code'] = $this->user_data['adhar_number'];
-                            $this->day_data[$this->j][$i]['user_id'] = $this->user_data['user_id'];
-                            $this->day_data[$this->j][$i]['name'] = $this->user_data['name'];
-                        }
-
-                        $this->user_data = null;
-                        $this->previous_user_index = 0;
-                        $this->j++;
+                if (($rowIndex - $this->previous_user_index) == 2 /*&& strtolower($row[0]) == 'arr time'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['in_time'] = $row[$i];
+                        $this->day_data[$this->j][$i]['date'] = "$this->year-$this->month-$i";
                     }
                 }
+                if (($rowIndex - $this->previous_user_index) == 3 /*&& strtolower($row[0]) == 'dep time'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['out_time'] = $row[$i] ?? null;
+                    }
+                }
+                if (($rowIndex - $this->previous_user_index) == 4 /*&& strtolower($row[0]) == 'working hrs'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['hours_worked'] = $row[$i];
+                    }
+                }
+                if (($rowIndex - $this->previous_user_index) == 5 /*&& strtolower($row[0]) == 'over time'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['over_time'] = $row[$i];
+                    }
+                }
+                if (($rowIndex - $this->previous_user_index) == 6 /*&& strtolower($row[0]) == 'absent'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['absent'] = $row[$i];
+                    }
+                }
+                if (($rowIndex - $this->previous_user_index) == 7 /*&& strtolower($row[0]) == 'break'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['break'] = $row[$i];
+                    }
+                }
+                if (($rowIndex - $this->previous_user_index) == 8 /*&& strtolower($row[0]) == 'status'*/) {
+                    for ($i = 1; $i <= $this->days_in_month; $i++) {
+                        $this->day_data[$this->j][$i]['status'] = $row[$i];
+                        $this->day_data[$this->j][$i]['emp_code'] = $this->user_data['adhar_number'];
+                        $this->day_data[$this->j][$i]['user_id'] = $this->user_data['user_id'];
+                        $this->day_data[$this->j][$i]['name'] = $this->user_data['name'];
+                    }
 
-
-            } catch (Exception $exception) {
-                echo $exception->getMessage() . '<br>';
-                echo json_encode($this->user_data);
-                echo json_encode($this->previous_user_index);
+                    $this->user_data = null;
+                    $this->previous_user_index = 0;
+                    $this->j++;
+                }
             }
+
+
+        } catch (Exception $exception) {
+            echo $exception->getMessage() . '<br>';
+            echo json_encode($this->user_data);
+            echo json_encode($this->previous_user_index);
+        }
 //        }
     }
 }

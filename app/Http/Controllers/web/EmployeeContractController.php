@@ -59,6 +59,7 @@ class EmployeeContractController extends Controller
 
         $model = EmpContract::whereUserId($id)->whereIsActive(0)->first();
 
+//        dd($model);
 
         if (empty($model)) {
             $model = new EmpContract();

@@ -33,13 +33,13 @@ Route::view('/demo_table', '/hrms.component.salary.data-attendance-overtime')->n
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
 Route::get('/demoA/{id?}', [SalaryController::class, 'editSalary'])->name('demoA');
 Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
-Route::view('/main-test', '/layouts.main_test')->name('main-test');
 
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::view('/main-test', '/layouts.main_test')->name('main-test');
+
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/demo', [HomeController::class, 'demo'])->name('demo');
-    Route::get('/demoPDF', [ExportController::class, 'exportSalarySlipPDF'])->name('demoPDF');
 
     Route::view('/dashboard', '/hrms.dashboard')->name('hr_dashboard');
     Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
@@ -63,8 +63,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sheet-import-emp-contracts', [ImportController::class, 'importEmployeesContractForm'])->name('sheet-import-emp-contracts');
     Route::post('generate-emp-contracts', [ImportController::class, 'generateEmpContractsFromSalarySheet'])->name('generate-emp-contracts');
 
-    Route::get('/report-export-download', [ExportController::class, 'index'])->name('report-export-download');
-    Route::post('/generate-export-download', [ExportController::class, 'exportData'])->name('generate-export-download');
+    Route::get('/sheet-export-salary-form', [ExportController::class, 'sheetExportSalaryForm'])->name('sheet-export-salary-form');
+    Route::post('/sheet-export-salary-download', [ExportController::class, 'sheetExportSalaryDownload'])->name('sheet-export-salary-download');
+
+    Route::get('/pdf-export-salary-slip-form', [ExportController::class, 'pdfExportSalarySlipForm'])->name('pdf-export-salary-slip-form');
+    Route::post('/pdf-export-salary-slip-download', [ExportController::class, 'pdfExportSalarySlipDownload'])->name('pdf-export-salary-slip-download');
 
     Route::get('/edit-leave-type/{id?}', [LeaveController::class, 'editFormLeaveType'])->name('edit-leave-type');
     Route::post('/store-leave-type', [LeaveController::class, 'storeFormLeaveType'])->name('store-leave-type');
@@ -117,6 +120,10 @@ Route::group(['middleware' => 'auth'], function () {
     /*Employee Department Type Forms*/
     Route::get('/edit-emp-department-type/{id?}', [UserEmployeeController::class, 'editFormEmpDepartmentType'])->name('edit-emp-department-type');
     Route::post('/store-emp-department-type', [UserEmployeeController::class, 'storeFormEmpDepartmentType'])->name('store-emp-department-type');
+
+    /*Employee Department Type Forms*/
+    Route::get('/edit-emp-department-data/{id?}', [UserEmployeeController::class, 'editFormEmpDepartmentData'])->name('edit-emp-department-data');
+    Route::post('/store-emp-department-data', [UserEmployeeController::class, 'storeFormEmpDepartmentData'])->name('store-emp-department-data');
 
     /*Over Time Type Forms*/
     Route::get('/edit-overtime-type/{id?}', [SalaryController::class, 'editFormOvertimeType'])->name('edit-overtime-type');

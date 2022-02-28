@@ -54,7 +54,7 @@ class ImportController extends Controller
             'url' => route('generate-emp-attendances')
         ]);
 
-        return view('layouts.hrms_forms', compact('form'));
+        return view('layouts.hrms_forms', compact('form'), ['import' => true]);
     }
 
     public function generateEmpAndAttendanceFromAttendanceSheet()
@@ -109,7 +109,7 @@ class ImportController extends Controller
             'url' => route('generate-emp-contracts')
         ]);
 
-        return view('layouts.hrms_forms', compact('form'));
+        return view('layouts.hrms_forms', compact('form'), ['import' => true]);
     }
 
     public function generateEmpContractsFromSalarySheet()

@@ -25,7 +25,7 @@ class ExportDownloadForm extends Form
 //                     Returns the array of short names from model relationship data
 //                    return Arr::pluck($data, 'short_lang_name');
 //                },
-                'empty_value' => '=== Select Type ==='
+                'empty_value' => '=== Select Month ==='
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);

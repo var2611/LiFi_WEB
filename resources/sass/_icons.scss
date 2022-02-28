@@ -1,0 +1,31 @@
+%menu-properties {
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    background-size: cover;
+}
+
+.icon {
+    display: inline-block;
+    background-size: cover;
+}
+
+.arrow-down-icon {
+    background-image: url("../assets/images/arrow-down-light.svg");
+    width: 14px;
+    height: 8px;
+}
+
+.active {
+    > .arrow-down-icon {
+        background-image: url("../assets/images/Arrow-Down.svg");
+        width: 14px;
+        height: 8px;
+    }
+
+    &.arrow-down-icon {
+        background-image: url("../assets/images/Arrow-Down.svg");
+        width: 14px;
+        height: 8px;
+    }
+}

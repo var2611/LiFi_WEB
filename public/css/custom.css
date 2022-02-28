@@ -183,7 +183,7 @@ body {
 .card-hr {
     padding: 20px;
     margin: 50px 0 0 50px;
-    width: 245px;
+    width: 250px;
     display: flex;
     flex-direction: row;
     cursor: pointer;
@@ -215,6 +215,7 @@ body {
 .card-list {
     width: 100%;
     display: inline-flex;
+    flex-wrap: wrap;
 }
 
 .card-list a {
