@@ -56,7 +56,11 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
         $data = salary::query()
             ->where('year', $this->year)
             ->where('month', $this->month)
-            ->with(['User', 'UserEmployee', 'UserEmployee.EmpDepartmentData.EmpDepartmentType']);
+            ->with(['User',
+                'UserEmployee',
+                'UserEmployee.EmpDepartmentData.EmpDepartmentType',
+                'UserEmployee.EmpPfDetail'
+            ]);
 
         if ($company_id != 1) {
             $data->whereHas('UserEmployee', function ($q) use ($company_id) {
