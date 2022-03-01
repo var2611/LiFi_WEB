@@ -678,7 +678,7 @@ function import_employee_hr_data($data): array
     $batch_employee_hr_data['per_day_wages'] = $data['per_day_wages'];
     $batch_employee_hr_data['basic_salary'] = $data['basic_salary'];
     $batch_employee_hr_data['gross_salary'] = $data['gross_salary'];
-    $batch_employee_hr_data['salary_hra'] = $data['hra'];
+    $batch_employee_hr_data['salary_hra'] = $data['salary_hra'];
     $batch_employee_hr_data['date_of_join'] = $data['date_of_join'];
     $batch_employee_hr_data['uan'] = $data['uan'];
     $batch_employee_hr_data['pf_number'] = $data['pf_number'];
@@ -770,18 +770,22 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                     }
                     $per_day_wages = 0;
                     $per_day_hra = 0;
-                    $per_day_wages = round($employee_contract['per_day_wages'], 2);
+//                    $per_day_wages = round($employee_contract['per_day_wages'], 2);
                     $monthly_salary_hra = 0;
 
-                    $full_month_salary = round($per_day_wages * 26, 2);
-                    if ($full_month_salary >= $cap_amount_for_hra) {
-                        $monthly_salary_hra = $full_month_salary - $cap_amount_for_hra;
-                        $full_month_salary = $full_month_salary - $monthly_salary_hra;
+//                    $full_month_salary = round($per_day_wages * 26, 2);
+//                    if ($full_month_salary >= $cap_amount_for_hra) {
+//                        $monthly_salary_hra = $full_month_salary - $cap_amount_for_hra;
+//                        $full_month_salary = $full_month_salary - $monthly_salary_hra;
+//
+//                        $per_day_wages = round($full_month_salary / 26, 2);
+//                        $per_day_hra = round($monthly_salary_hra / 26, 2);
+//                    }
 
-                        $per_day_wages = round($full_month_salary / 26, 2);
-                        $per_day_hra = round($monthly_salary_hra / 26, 2);
+                    $per_day_wages = round($employee_contract['basic_salary'] / 26, 2);
+                    if (is_numeric($employee_contract['salary_hra'])) {
+                        $per_day_hra = round($employee_contract['salary_hra'] / 26, 2);
                     }
-
                     $salary_basic = $per_day_wages;
                     $salary_hra = $per_day_hra;
                     $salary_basic_total = $per_day_wages + $per_day_hra;

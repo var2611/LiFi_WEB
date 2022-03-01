@@ -47,10 +47,10 @@ class ImportEmployeesContractDataFromSalarySheet extends Form
                 'rules' => 'required|numeric|gt:0',
                 'label' => 'Working Hours'
             ])
-            ->add('hra_cap', Field::TEXT, [
-                'rules' => 'required|numeric|gt:0',
-                'label' => 'HRA Cap Amount'
-            ])
+//            ->add('hra_cap', Field::TEXT, [
+//                'rules' => 'required|numeric|gt:0',
+//                'label' => 'HRA Cap Amount'
+//            ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);
     }
