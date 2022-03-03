@@ -40,6 +40,15 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
     public static function beforeImport(BeforeImport $event)
     {
         self::$total_row_count = array_values($event->getDelegate()->getTotalRows())[0];
+
+        $totalRows = $event->getReader()->getTotalRows();
+
+        $importer_this = $event->getConcernable();
+
+        if (filled($totalRows)) {
+            cache()->forever("total_rows_{$importer_this->season_id}", array_values($totalRows)[0]);
+            cache()->forever("start_date_{$importer_this->season_id}", now()->unix());
+        }
     }
 
     public static function afterImport(AfterImport $event)
@@ -50,13 +59,20 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
        */
         $importer_this = $event->getConcernable();
 
-//            echo json_encode($this->batch_user_data) . '<br>';
-//            exit();
+//        dd($importer_this->batch_user_data);
+
         echo 'User Created/Updated : ' . User::upsert($importer_this->batch_user_data, ['name', 'adhar_number'], ['name', 'last_name', 'updated_by']) . '<br>';
 
         $batch_user_emp_data = import_create_user_employee_batch_data($importer_this->batch_user_data, $importer_this->company_id);
 
+//        dd($batch_user_emp_data);
+
         echo 'UserEmployee Created/Updated : ' . UserEmployee::upsert($batch_user_emp_data, ['company_id', 'emp_code'], ['user_id', 'user_role_id', 'company_id', 'emp_code', 'flash_code', 'created_by', 'updated_by']) . '<br>';
+
+        cache(["end_date_{$importer_this->season_id}" => now()], now()->addMinute());
+        cache()->forget("total_rows_{$importer_this->season_id}");
+        cache()->forget("start_date_{$importer_this->season_id}");
+        cache()->forget("current_row_{$importer_this->season_id}");
     }
 
     /**
@@ -84,26 +100,6 @@ class ImportPaarthAttendanceCreateUser implements OnEachRow, WithEvents, SkipsEm
                 $this->j++;
             }
         }
-    }
-
-    public function registerEvents(): array
-    {
-        return [
-            BeforeImport::class => function (BeforeImport $event) {
-                $totalRows = $event->getReader()->getTotalRows();
-
-                if (filled($totalRows)) {
-                    cache()->forever("total_rows_{$this->season_id}", array_values($totalRows)[0]);
-                    cache()->forever("start_date_{$this->season_id}", now()->unix());
-                }
-            },
-            AfterImport::class => function (AfterImport $event) {
-                cache(["end_date_{$this->season_id}" => now()], now()->addMinute());
-                cache()->forget("total_rows_{$this->season_id}");
-                cache()->forget("start_date_{$this->season_id}");
-                cache()->forget("current_row_{$this->season_id}");
-            },
-        ];
     }
 
 //    public function chunkSize(): int

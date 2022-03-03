@@ -79,15 +79,18 @@ class ImportController extends Controller
 
                 $importAddAttendance = Excel::import(new ImportPaarthAttendanceAdd($attendance_month, $attendance_year), $file);
 
+                $this->notifyMessage(true, 'Employee Attendance Uploaded Successfully.');
                 return redirect()->back();
             } catch (ValidationException $e) {
                 $failures = $e->failures();
 
+                $this->notifyMessage(false, 'Employee Attendance Upload has error.');
                 echo json_encode($failures, JSON_PRETTY_PRINT);
             }
         } else {
-            echo 'fail';
+            $this->notifyMessage(false, 'Upload has No File found.');
         }
+        return redirect()->back();
     }
 
     public function status()
