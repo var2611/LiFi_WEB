@@ -12,53 +12,82 @@ class SalaryForm extends Form
 
         $this
             ->add('name', Field::TEXT, [
-                'rules' => 'required|max:25',
-            ])
-            ->add('salary_contract_total', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'name' => 'contract_amount',
-                'rules' => 'required|max:25',
+                'rules' => 'required|max:200',
             ])
-            ->add('total_days', Field::TEXT, [
+            ->add('emp_code', Field::TEXT, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required|max:25',
+                'rules' => 'required|max:200',
             ])
-            ->add('present_days', Field::TEXT, [
+            ->add('salary_contract_total', Field::NUMBER, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required|max:25',
+                'rules' => 'required',
             ])
-            ->add('absent_days', Field::TEXT, [
+            ->add('salary_contract_basic', Field::NUMBER, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required|max:25',
+                'rules' => 'required',
             ])
-            ->add('salary_basic', Field::TEXT, [
+            ->add('salary_contract_hra', Field::NUMBER, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required|max:25',
+                'rules' => 'required',
             ])
-            ->add('salary_hra', Field::TEXT, [
+            ->add('total_days', Field::NUMBER, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required|max:25',
-                'label' => 'HRA',
+                'id' => 'total_days',
+                'rules' => 'required',
             ])
-            ->add('salary_total', Field::TEXT, [
+            ->add('present_days', Field::NUMBER, [
+                'attr' => ['onchange' => 'calculateABDays()'],
+                'id' => 'present_days',
+                'rules' => 'required',
+            ])
+            ->add('absent_days', Field::NUMBER, [
                 'attr' => ['readonly class' => 'form-control-plaintext'],
-                'rules' => 'required|max:25',
+                'id' => 'absent_days',
+                'rules' => 'required',
             ])
-            ->add('is_active', Field::SELECT, [
-                'choices' => ['0' => 'YES', '1' => 'NO'],
-                'selected' => $this->getModel()->is_active ?? 0,
-                'empty_value' => '=== Select Type ==='
+            ->add('salary_basic', Field::NUMBER, [
+                'attr' => ['onchange' => 'calculateSalary()'],
+                'id' => 'salary_basic',
+                'rules' => 'required',
             ])
-            ->add('is_visible', Field::SELECT, [
-                'choices' => ['0' => 'YES', '1' => 'NO'],
-                'selected' => $this->getModel()->is_visible ?? 0,
-                'empty_value' => '=== Select Type ==='
+            ->add('salary_hra', Field::NUMBER, [
+                'attr' => ['onchange' => 'calculateSalary()'],
+                'id' => 'salary_hra',
+                'rules' => 'required',
             ])
-            ->add('id', Field::HIDDEN, [
-                'value' => $this->getModel()->id ?? null
+            ->add('salary_total', Field::NUMBER, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
+                'id' => 'salary_total',
+                'rules' => 'required',
             ])
-            ->add('add', Field::BUTTON_BUTTON, [
-                'wrapper' => ['class' => 'col-sm-6'],
+            ->add('salary_pf', Field::NUMBER, [
+                'attr' => ['onchange' => 'calculateSalary()'],
+                'id' => 'salary_pf',
+                'rules' => 'required',
+            ])
+            ->add('salary_advance', Field::NUMBER, [
+                'attr' => ['onchange' => 'calculateSalary()'],
+                'id' => 'salary_advance',
+                'rules' => 'required',
+            ])
+            ->add('salary_gross_earning', Field::NUMBER, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
+                'id' => 'salary_gross_earning',
+                'rules' => 'required',
+            ])
+            ->add('salary_gross_deduction', Field::NUMBER, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
+                'id' => 'salary_gross_deduction',
+                'rules' => 'required',
+            ])
+            ->add('salary_net_pay', Field::NUMBER, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
+                'id' => 'salary_net_pay',
+                'rules' => 'required',
+            ])
+            ->add('salary_id', Field::HIDDEN, [
+                'value' => $this->getModel()->salary_id ?? null
             ])
             ->add('submit', Field::BUTTON_SUBMIT, [
             ]);

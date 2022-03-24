@@ -19,6 +19,7 @@ use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use LaravelViews\LaravelViews;
 use Mockery\Exception;
+use phpDocumentor\Reflection\Types\Void_;
 use Redirect;
 
 class Controller extends BaseController
@@ -200,11 +201,12 @@ class Controller extends BaseController
     }
 
     /**
-     * @param string|null $id
      * @param string $formClassName
-     * @param Model $model
      * @param string $route
      * @param string $sidemenuName
+     * @param Model|null $model
+     * @param string|null $id
+     * @param array|null $data
      * @param string $view
      * @return Application|Factory|RedirectResponse|View
      */
@@ -221,11 +223,12 @@ class Controller extends BaseController
     }
 
     /**
-     * @param string|null $id
-     * @param string $className
-     * @param Model|null $model
+     * @param string $formClassName
      * @param string $route
      * @param string $sidemenuName
+     * @param Model|null $model
+     * @param string|null $id
+     * @param string|null $data
      * @return Form|RedirectResponse
      */
     function createFormData(string $formClassName, string $route, string $sidemenuName, Model $model = null, string $id = null, string $data = null)
@@ -290,6 +293,7 @@ class Controller extends BaseController
             $formData = $this->formStoreData($className);
 
 //        echo json_encode($formData);
+//            dd($formData);
 
             $saveData = $this->formStoreSaveModel($formData, $model);
 

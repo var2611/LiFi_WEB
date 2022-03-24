@@ -17,14 +17,15 @@ use App\Models\CompanyHrmsSetting;
 use App\Models\EmpContract;
 use App\Models\EmpContractAmountType;
 use App\Models\EmpPfDetail;
+use App\Models\FormModels\DataSalaryEdit;
 use App\Models\FormModels\DataSalarySlip;
 use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
-use App\Models\SalaryDetail;
 use App\Models\SalaryPfDetail;
 use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use LaravelViews\LaravelViews;
 use Maatwebsite\Excel\Facades\Excel;
@@ -52,7 +53,7 @@ class SalaryController extends Controller
 
     public function editFormSalaryAllowanceType(string $id = null)
     {
-        $model = new SalaryAllowanceType();
+        $model = SalaryAllowanceType::whereId($id)->first();
         return $this->createForm(
             SalaryAllowanceTypeForm::class,
             route('store-salary-allowance-type'),
@@ -83,22 +84,43 @@ class SalaryController extends Controller
         return $this->createList($laravelViews, ListOverTimeType::class, 'Overtime Type List', 'salary', route('edit-overtime-type'));
     }
 
-    public function salaryCreate(string $id = null)
+    public function editSalary(string $id = null)
     {
-        $model = new Salary();
+        $salary = Salary::whereId($id)->with(['SalaryDetail', 'UserEmployee:id,user_id,emp_code'])->first();
+
+        $model = new DataSalaryEdit();
+        $model->setSalaryData($salary);
+
         return $this->createForm(
             SalaryForm::class,
-            route('store-overtime-type'),
+            route('store-salary'),
             'salary',
             $model,
             $id
         );
     }
 
-    public function editSalary(string $id, LaravelViews $laravelViews)
+    public function storeSalary(): RedirectResponse
+    {
+
+        $form = $this->form(SalaryForm::class);
+        $form->redirectIfNotValid();
+
+//        dd($form->getFieldValues());
+
+        $model = new DataSalaryEdit();
+        $model->setFormData($form->getFieldValues());
+        $model->saveSalary();
+
+        notify()->success("Salary Updated Successfully.");
+        return redirect()->route('list-salary');
+    }
+
+    public function viewSalary(string $id, LaravelViews $laravelViews)
     {
         $salary = Salary::whereId($id)->first();
 
+//        dd($salary);
         return view('main_detail', [
             'class' => DetailListSalaryView::getName(),
             'model' => $salary,
@@ -329,8 +351,8 @@ class SalaryController extends Controller
             $salary->save();
 
             if ($salary) {
-                $this->addSalaryDetail($salary->id, $monthly_basic_salary_amount, 'Basic', 'E', 0);
-                $this->addSalaryDetail($salary->id, $monthly_hra_salary_amount, 'HRA', 'E', 0);
+                addSalaryDetail($salary->id, $monthly_basic_salary_amount, 'Basic', 'E', 0);
+                addSalaryDetail($salary->id, $monthly_hra_salary_amount, 'HRA', 'E', 0);
                 if ($salary->salary_gross_deduction > 0) {
                     if ($pf_amount > 0) {
                         $salary_pf_detail = SalaryPfDetail::whereSalaryId($salary->id)->first();
@@ -345,7 +367,7 @@ class SalaryController extends Controller
                         $salary_pf_detail->updated_by = Auth::id();
                         $salary_pf_detail->save();
 
-                        $this->addSalaryDetail($salary->id, $pf_amount, 'PF', 'D', $pf_percentage);
+                        addSalaryDetail($salary->id, $pf_amount, 'PF', 'D', $pf_percentage);
                     }
                 }
             }
@@ -356,25 +378,6 @@ class SalaryController extends Controller
         }
 //        echo json_encode($emp_list, JSON_PRETTY_PRINT);
 
-    }
-
-    private function addSalaryDetail(int $salary_id, string $amount, string $amount_type_name, string $amount_type, string $percentage)
-    {
-        $salary_detail = SalaryDetail::whereSalaryId($salary_id)
-            ->whereName($amount_type_name)
-            ->where('type', $amount_type)->first();
-
-        if (!$salary_detail) {
-            $salary_detail = new SalaryDetail();
-            $salary_detail->created_by = Auth::id();
-        }
-        $salary_detail->salary_id = $salary_id;
-        $salary_detail->name = $amount_type_name;
-        $salary_detail->type = $amount_type;
-        $salary_detail->amount = $amount;
-        $salary_detail->percentage = $percentage;
-        $salary_detail->updated_by = Auth::id();
-        $salary_detail->save();
     }
 
     public function salaryView(string $id): string

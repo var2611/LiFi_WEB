@@ -45,6 +45,56 @@ function cal() {
     }
 }
 
+function GetABDays(){
+    var ttDays = parseInt(document.getElementById("total_days").value);
+    var pDays = parseInt(document.getElementById("present_days").value);
+
+    var old_pDays = document.getElementById("present_days").defaultValue;
+    var old_aDays = document.getElementById("absent_days").defaultValue;
+    console.log("Saving id " + old_pDays);
+    console.log("Saving pDays " + pDays);
+    console.log("Saving ttDays " + ttDays);
+
+    if (pDays <= ttDays) {
+        return parseInt(ttDays - pDays);
+    }
+    alert('Present Days can not be grater than Total Days')
+    document.getElementById("present_days").value = old_pDays;
+    return parseInt(old_aDays);
+}
+
+function calculateABDays(){
+    if (document.getElementById("total_days") && document.getElementById("absent_days")) {
+        document.getElementById("absent_days").value = GetABDays();
+    }
+}
+
+function calculateSalary(){
+    var salary_basic = parseFloat(document.getElementById("salary_basic").value) || 0;
+    var salary_hra = parseFloat(document.getElementById("salary_hra").value) || 0;
+    var salary_pf = parseFloat(document.getElementById("salary_pf").value) || 0;
+    var salary_advance = parseFloat(document.getElementById("salary_advance").value) || 0;
+
+    var old_salary_basic = parseFloat(document.getElementById("salary_basic").defaultValue);
+    var old_salary_hra = parseFloat(document.getElementById("salary_hra").defaultValue);
+    var old_salary_pf = parseFloat(document.getElementById("salary_pf").defaultValue);
+    var old_salary_advance = parseFloat(document.getElementById("salary_advance").defaultValue);
+
+    var salary_total = salary_basic + salary_hra;
+    var salary_gross_earning = salary_total - salary_pf;
+    var salary_gross_deduction = salary_pf + salary_advance;
+    var salary_net_pay = salary_total - salary_gross_deduction;
+    document.getElementById("salary_total").value = salary_total;
+    document.getElementById("salary_gross_earning").value = salary_gross_earning;
+    document.getElementById("salary_gross_deduction").value = salary_gross_deduction;
+    document.getElementById("salary_net_pay").value = salary_net_pay;
+    document.getElementById("salary_basic").value = salary_basic;
+    document.getElementById("salary_hra").value = salary_hra;
+    document.getElementById("salary_pf").value = salary_pf;
+    document.getElementById("salary_advance").value = salary_advance;
+
+}
+
 async function getContractDetail() {
     jQuery(".loader").show();
     if (document.getElementById("emp_contract_type_id")) {

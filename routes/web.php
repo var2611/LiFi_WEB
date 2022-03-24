@@ -134,7 +134,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-salary-allowance-type', [SalaryController::class, 'storeFormSalaryAllowanceType'])->name('store-salary-allowance-type');
 
     /*Salary Forms*/
+    Route::get('/view-salary/{id?}', [SalaryController::class, 'viewSalary'])->name('view-salary');
     Route::get('/edit-salary/{id?}', [SalaryController::class, 'editSalary'])->name('edit-salary');
+    Route::post('/store-salary', [SalaryController::class, 'storeSalary'])->name('store-salary');
 
     /*Salary Forms*/
     Route::get('/edit-free-lifi-wifi-file', [FreeLifiWifiController::class, 'freeLiFiWiFiFileCreate'])->name('edit-free-lifi-wifi-file');

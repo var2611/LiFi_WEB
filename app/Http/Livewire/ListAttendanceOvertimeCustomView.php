@@ -48,7 +48,7 @@ class ListAttendanceOvertimeCustomView extends ListView
 
     protected function bulkActions(){
         return [
-            new SalaryAttendanceOvertimeModification
+//            new SalaryAttendanceOvertimeModification
         ];
     }
 }

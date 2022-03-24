@@ -16,6 +16,7 @@ use App\Models\FormModels\DataEmpContract;
 use App\Models\Holiday;
 use App\Models\LeaveType;
 use App\Models\Salary;
+use App\Models\SalaryDetail;
 use App\Models\User;
 use App\Models\UserEmployee;
 use Carbon\Carbon;
@@ -937,4 +938,23 @@ function validateSalaryGenerate($month, $year, Controller $controller): bool
     }
     return $is_salary_available;
 
+}
+
+function addSalaryDetail(int $salary_id, string $amount, string $amount_type_name, string $amount_type, string $percentage)
+{
+    $salary_detail = SalaryDetail::whereSalaryId($salary_id)
+        ->whereName($amount_type_name)
+        ->where('type', $amount_type)->first();
+
+    if (!$salary_detail) {
+        $salary_detail = new SalaryDetail();
+        $salary_detail->created_by = Auth::id();
+    }
+    $salary_detail->salary_id = $salary_id;
+    $salary_detail->name = $amount_type_name;
+    $salary_detail->type = $amount_type;
+    $salary_detail->amount = $amount;
+    $salary_detail->percentage = $percentage;
+    $salary_detail->updated_by = Auth::id();
+    $salary_detail->save();
 }

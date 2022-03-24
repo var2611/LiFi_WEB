@@ -3,7 +3,7 @@
 
         /* @var $salary Salary */
 
-$salary = Salary::first();
+//$salary = Salary::first();
 @endphp
 
 <div class="text-sm">
