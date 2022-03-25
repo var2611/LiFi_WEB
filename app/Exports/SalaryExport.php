@@ -40,15 +40,17 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             $salary->total_days, //H
             $salary->present_days, //I
             $salary->absent_days, //J
-            $salary->salary_basic, //K
-            $salary->salary_hra, //L
+            getSalaryDetailsData($salary->id,'E', 'Basic'), //K
+            getSalaryDetailsData($salary->id,'E', 'HRA'), //L
             $salary->salary_total, //M
-            $salary->salary_gross_deduction, //N
-            $salary->salary_gross_earning, //O
-            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->uan ?? null : null, //P
-            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->pf_number ?? null : null, //Q
-            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->abry_eligible ? 'ABRY' : null : null, //R
-            Date::dateTimeToExcel($salary->created_at), //S
+            getSalaryDetailsData($salary->id,'D', 'PF'), //N
+            getSalaryDetailsData($salary->id,'D', 'Advance'), //O
+            $salary->salary_gross_deduction, //P
+            $salary->salary_gross_earning, //Q
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->uan ?? null : null, //R
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->pf_number ?? null : null, //S
+            $salary->UserEmployee->EmpPfDetail ? $salary->UserEmployee->EmpPfDetail->abry_eligible ? 'ABRY' : null : null, //T
+            Date::dateTimeToExcel($salary->created_at), //U
 
         ];
     }
@@ -62,7 +64,8 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             ->with(['User',
                 'UserEmployee',
                 'UserEmployee.EmpDepartmentData.EmpDepartmentType',
-                'UserEmployee.EmpPfDetail'
+                'UserEmployee.EmpPfDetail',
+                'SalaryDetail'
             ]);
 
         if ($company_id != 1) {
@@ -113,11 +116,13 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             'HRA',//L
             'GROSS',//M
             'PF',//N
-            'NET_PAYABLE',//O
-            'UAN',//P
-            'PF Number',//Q
-            'ABRY',//R
-            '',//S
+            'Advance',//O
+            'Deduction',//P
+            'NET_PAYABLE',//Q
+            'UAN',//R
+            'PF Number',//S
+            'ABRY',//T
+            '',//U
         ];
     }
 }

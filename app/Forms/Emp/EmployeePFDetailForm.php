@@ -10,12 +10,15 @@ class EmployeePFDetailForm extends Form
     public function buildForm()
     {
         $this
-            ->add('account_number', Field::NUMBER, [
+            ->add('pf_number', Field::TEXT, [
                 'rules' => 'required',
                 'attr' => ['maxlength' => '25'],
-                'second_name' => 'account_number_confirmation',
-                'first_options' => ['label' => 'Account number'],
-                'second_options' => ['label' => 'Account number confirmation'],
+//                'second_name' => 'account_number_confirmation',
+//                'first_options' => ['label' => 'Account number'],
+//                'second_options' => ['label' => 'Account number confirmation'],
+            ])
+            ->add('uan', Field::TEXT, [
+                'rules' => 'required|max:50'
             ])
             ->add('bank_name', Field::TEXT, [
                 'rules' => 'required|max:50'
@@ -23,8 +26,10 @@ class EmployeePFDetailForm extends Form
             ->add('description', Field::TEXT, [
                 'rules' => 'max:400'
             ])
-            ->add('status', Field::TEXT, [
-                'rules' => 'required'
+            ->add('status', Field::SELECT, [
+                'choices' => ['1' => 'Active', '0' => 'Not-Active'],
+                'selected' => $this->getModel()->status ?? 0,
+                'empty_value' => '=== Select Type ==='
             ])
             ->add('is_active', Field::SELECT, [
                 'choices' => ['0' => 'YES', '1' => 'NO'],

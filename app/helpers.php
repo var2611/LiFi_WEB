@@ -684,8 +684,24 @@ function import_employee_hr_data($data): array
     $batch_employee_hr_data['uan'] = $data['uan'];
     $batch_employee_hr_data['pf_number'] = $data['pf_number'];
     $batch_employee_hr_data['abry_eligible'] = $data['abry_eligible'];
+    $batch_employee_hr_data['advance_salary'] = $data['advance_salary'];
+
+    //below attendance details are for Piece rate based employee
+    $batch_employee_hr_data['total_working_days'] = $data['total_working_days'];
+    $batch_employee_hr_data['total_p_days'] = $data['total_p_days'];
+    $batch_employee_hr_data['holiday'] = $data['holiday'];
+    $batch_employee_hr_data['weekly_off'] = $data['weekly_off'];
+    $batch_employee_hr_data['total_a_days'] = $data['total_a_days'];
 
     return $batch_employee_hr_data;
+}
+
+function import_emp_contract_advance_salary_entry($employee_contract_data, $company_id, DataEmpContract $dataEmpContract)
+{
+    $start_date = $dataEmpContract->start_date;
+    $end_date = $dataEmpContract->end_date;
+
+//    getMonthNameFromMonthNumber()
 }
 
 function import_emp_contract_pf_department_batch_entry($employee_contract_data, $company_id, DataEmpContract $dataEmpContract)
@@ -734,9 +750,18 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
             $searched_department_type = null;
             $logged_in_user_id = null;
             $department_type_id = null;
+            $department_type_name = null;
             $user_id = null;
             $user_name = null;
             $description = null;
+            $advance_salary = null;
+
+            //below attendance details are for Piece rate based employee
+            $total_working_days = null;
+            $total_p_days = null;
+            $holiday = null;
+            $weekly_off = null;
+            $total_a_days = null;
 
             $emp_contract_type_id = null;
             $salary_basic = 0;
@@ -755,6 +780,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
 
                 if ($searched_department_type !== false) {
                     $department_type_id = $department_types[$searched_department_type]['id'];
+                    $department_type_name = $department_types[$searched_department_type]['name'];
                 } else {
                     $department_type_id = 2;
                 }
@@ -817,12 +843,25 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                     $salary_basic = $employee_contract['gross_salary'];
                     $salary_basic_total = $salary_basic;
                     $salary_hra = $employee_contract['salary_hra'];
+                } else {
+                    $employee_salary_not_found[] = $employee_contract;
+                    continue;
                 }
 
+                $department_type_name;
+
                 $description = $employee_contract['description'];
+                $advance_salary = $employee_contract['advance_salary'];
+
+                $total_working_days = $employee_contract['total_working_days'];
+                $total_p_days = $employee_contract['total_p_days'];
+                $holiday = $employee_contract['holiday'];
+                $weekly_off = $employee_contract['weekly_off'];
+                $total_a_days = $employee_contract['total_a_days'];
 
                 $batch_employee_contract_data[$i]['user_id'] = $user_id;
                 $batch_employee_contract_data[$i]['name'] = $user_name;
+                $batch_employee_contract_data[$i]['description'] = $advance_salary;
                 $batch_employee_contract_data[$i]['date'] = getTodayDate();
                 $batch_employee_contract_data[$i]['date_of_join'] = getDBDateFrom3FormatString($employee_contract['date_of_join']);
                 $batch_employee_contract_data[$i]['start_date'] = $start_date;
@@ -861,6 +900,9 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                 $employee_not_found[] = $employee_contract;
             }
         }
+
+//        echo json_encode($batch_employee_contract_data) . '<br>';
+//        exit();
 
         echo 'Employee Department Created/Updated : ' . EmpDepartmentData::upsert($batch_employee_department_data, ['user_id', 'emp_department_type_id'], ['description', 'updated_by']) . '<br>';
 
@@ -906,7 +948,7 @@ function validateSalaryGenerate($month, $year, Controller $controller): bool
 
     $attendance_fail_message = 'You Have No Attendance In Selected Month ' . getMonthNameFromMonthNumber($month) . ' ' . $year;
 
-    if (($year == getTodayYearNumber() ? $month <! getTodayMonthNumber() : $year > getTodayYearNumber())) {
+    if (($year == getTodayYearNumber() ? $month < !getTodayMonthNumber() : $year > getTodayYearNumber())) {
         $is_salary_available = false;
         $controller->notifyMessage(false, $month_fail_message);
         return $is_salary_available;
@@ -957,4 +999,11 @@ function addSalaryDetail(int $salary_id, string $amount, string $amount_type_nam
     $salary_detail->percentage = $percentage;
     $salary_detail->updated_by = Auth::id();
     $salary_detail->save();
+}
+
+function getSalaryDetailsData(string $salary_id, string $type, string $name){
+    return SalaryDetail::whereSalaryId($salary_id)
+            ->where('type', $type)
+            ->where('name', $name)
+            ->first()->amount ?? '0';
 }

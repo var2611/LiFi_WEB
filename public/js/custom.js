@@ -84,6 +84,7 @@ function calculateSalary(){
     var salary_gross_earning = salary_total - salary_pf;
     var salary_gross_deduction = salary_pf + salary_advance;
     var salary_net_pay = salary_total - salary_gross_deduction;
+
     document.getElementById("salary_total").value = salary_total;
     document.getElementById("salary_gross_earning").value = salary_gross_earning;
     document.getElementById("salary_gross_deduction").value = salary_gross_deduction;
