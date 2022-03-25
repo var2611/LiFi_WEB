@@ -78,6 +78,9 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\UserEmployee|null $UserEmployee
  * @property string|null $date_of_join
  * @method static Builder|EmpContract whereDateOfJoin($value)
+ * @property int|null $emp_department_type_id
+ * @property-read \App\Models\EmpDepartmentType|null $EmpDepartmentType
+ * @method static Builder|EmpContract whereEmpDepartmentTypeId($value)
  */
 class EmpContract extends Model
 {
@@ -121,7 +124,7 @@ class EmpContract extends Model
 
     public function EmpContractType(): BelongsTo
     {
-        return $this->belongsTo(EmpContractType::class,'emp_contract_type_id');
+        return $this->belongsTo(EmpContractType::class, 'emp_contract_type_id');
     }
 
     public function EmpContractStatus(): BelongsTo
@@ -139,5 +142,8 @@ class EmpContract extends Model
         return $this->hasOne(EmpPfDetail::class, 'user_id', 'user_id');
     }
 
-
+    public function EmpDepartmentType(): HasOne
+    {
+        return $this->hasOne(EmpDepartmentType::class, 'id', 'emp_department_type_id');
+    }
 }

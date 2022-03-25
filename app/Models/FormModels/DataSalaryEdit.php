@@ -6,6 +6,8 @@ use App\Models\Salary;
 use App\Models\SalaryDetail;
 
 /**
+ * App\Models\FormModels\DataSalaryEdit
+ *
  * @property Salary $salary_data
  * @property int $salary_id
  * @property string|null $emp_code
@@ -24,6 +26,10 @@ use App\Models\SalaryDetail;
  * @property string|null $total_days
  * @property string|null $present_days
  * @property string|null $absent_days
+ * @method static \Illuminate\Database\Eloquent\Builder|DataSalaryEdit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DataSalaryEdit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DataSalaryEdit query()
+ * @mixin \Eloquent
  */
 class DataSalaryEdit extends \Illuminate\Database\Eloquent\Model
 {
@@ -39,10 +45,10 @@ class DataSalaryEdit extends \Illuminate\Database\Eloquent\Model
         $this->salary_contract_basic = $this->salary_data->salary_contract_basic;
         $this->salary_contract_hra = $this->salary_data->salary_contract_hra;
         $this->salary_contract_total = $this->salary_data->salary_contract_total;
-        $this->salary_basic = $this->getSalaryDetailsData('E', 'Basic');
-        $this->salary_hra = $this->getSalaryDetailsData('E', 'HRA');
-        $this->salary_pf = $this->getSalaryDetailsData('D', 'PF');
-        $this->salary_advance = $this->getSalaryDetailsData('D', 'Advance');
+        $this->salary_basic = getSalaryDetailsData($this->salary_id,'E', 'Basic');
+        $this->salary_hra = getSalaryDetailsData($this->salary_id,'E', 'HRA');
+        $this->salary_pf = getSalaryDetailsData($this->salary_id,'D', 'PF');
+        $this->salary_advance = getSalaryDetailsData($this->salary_id,'D', 'Advance');
         $this->salary_total = $this->salary_data->salary_total;
         $this->salary_gross_earning = $this->salary_data->salary_gross_earning;
         $this->salary_gross_deduction = $this->salary_data->salary_gross_deduction;
@@ -50,13 +56,6 @@ class DataSalaryEdit extends \Illuminate\Database\Eloquent\Model
         $this->total_days = $this->salary_data->total_days;
         $this->present_days = $this->salary_data->present_days;
         $this->absent_days = $this->salary_data->absent_days;
-    }
-
-    private function getSalaryDetailsData(string $type, string $name){
-        return SalaryDetail::whereSalaryId($this->salary_id)
-                ->where('type', $type)
-                ->where('name', $name)
-                ->first()->amount ?? '0';
     }
 
     public function setFormData($formData)
@@ -91,6 +90,9 @@ class DataSalaryEdit extends \Illuminate\Database\Eloquent\Model
         $salary->salary_net_pay = $this->salary_net_pay;
         $salary->present_days = $this->present_days;
         $salary->absent_days = $this->absent_days;
+
+
+
         $salary->save();
 
         addSalaryDetail($salary->id, $this->salary_basic, 'Basic', 'E', 0);

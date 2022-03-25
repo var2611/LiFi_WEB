@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmpContract;
 use App\Models\EmpContractAmountType;
 use App\Models\EmpContractType;
+use App\Models\Salary;
 use Auth;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -50,8 +52,19 @@ class HomeController extends Controller
 //        echo bcrypt('gil@wifi#lifi');
 //        echo  getTodayDateTime();
 
-        $employee_contract['abry_eligible'] = 'ABaRY';
+//        $employee_contract['abry_eligible'] = '-11';
+//        echo getMonthFromDisplayFormat("11-26-1196");
+//        echo getYearFromDisplayFormat("11-26-1996");
 
-        echo strtolower($employee_contract['abry_eligible']) === 'abry' ? 1 : 0;
+//        echo floatval($employee_contract['abry_eligible']);
+
+        $salary = Salary::whereUserId(183)
+            ->where('month', intval('01'))
+            ->where('year', intval('2022'))
+            ->first();
+
+        dd($salary);
+//        dd( intval('01'));
+
     }
 }

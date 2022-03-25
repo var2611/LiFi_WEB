@@ -170,6 +170,7 @@ class UserEmployeeController extends Controller
     {
         $model = EmpPfDetail::whereUserId($id)->first();
 
+//        dd($model);
         if (!$model) {
             $model = new EmpPfDetail();
             $model->user_id = $id;

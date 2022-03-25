@@ -61,9 +61,13 @@ class ImportParthSalarySheet implements OnEachRow, WithEvents
 
         echo 'UserEmployee Created/Updated : ' . UserEmployee::upsert($batch_user_emp_data, ['company_id', 'emp_code'], ['user_id', 'user_role_id', 'company_id', 'emp_code', 'gender', 'flash_code', 'created_by', 'updated_by']) . '<br>';
 
-        echo 'Employee Department Type Created/Updated : ' . EmpDepartmentType::upsert($importer_this->batch_department_type_data, ['name'], ['name', 'updated_by']) . '<br>';
+        echo 'Employee Department Type Created/Updated : ' . EmpDepartmentType::upsert($importer_this->batch_department_type_data, ['name', 'company_id'], ['name', 'company_id', 'updated_by']) . '<br>';
 
         import_emp_contract_pf_department_batch_entry($importer_this->employee_hr_data, $importer_this->company_id, $importer_this->dataEmpContract);
+
+        import_emp_contract_advance_salary_entry($importer_this->employee_hr_data, $importer_this->company_id, $importer_this->dataEmpContract);
+
+        import_emp_contract_pieces_employee_attendance_entry($importer_this->employee_hr_data, $importer_this->company_id, $importer_this->dataEmpContract);
     }
 
     public function mapping(): array
@@ -118,6 +122,14 @@ class ImportParthSalarySheet implements OnEachRow, WithEvents
             $data['uan'] = $row[14] ?? null;
             $data['pf_number'] = $row[15] ?? null;
             $data['abry_eligible'] = $row[16] ?? null;
+            $data['advance_salary'] = $row[17] ?? null;
+
+            //below attendance details are for Piece rate based employee
+            $data['total_working_days'] = $row[18] ?? null;
+            $data['total_p_days'] = $row[19] ?? null;
+            $data['holiday'] = $row[20] ?? null;
+            $data['weekly_off'] = $row[22] ?? null;
+            $data['total_a_days'] = $row[23] ?? null;
 //
 //            dd($data);
 
@@ -129,6 +141,7 @@ class ImportParthSalarySheet implements OnEachRow, WithEvents
 
                 if (trim($data['department'])) {
                     $this->batch_department_type_data[$this->j]['name'] = trim(strtolower($data['department']));
+                    $this->batch_department_type_data[$this->j]['company_id'] = Auth::user()->getCompanyId();
                     $this->batch_department_type_data[$this->j]['updated_by'] = Auth::id();
                     $this->batch_department_type_data[$this->j]['created_by'] = Auth::id();
                 }

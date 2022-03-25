@@ -263,6 +263,14 @@ function getDBDateFormat(): string
 }
 
 /**
+ * @return string Date Format m-d-Y
+ */
+function getDisplayDateFormat(): string
+{
+    return "m-d-Y";
+}
+
+/**
  * @return false|string Current Date
  */
 function getTodayDate()
@@ -308,6 +316,25 @@ function getMonthNameFromMonthNumber($month_number): string
     return DateTime::createFromFormat('!m', (string)$month_number)->format('F');
 }
 
+/**
+ * @param $date
+ * @return string
+ */
+function getMonthFromDisplayFormat($date): string
+{
+    $mdate = DateTime::createFromFormat(getDBDateFormat(), $date);
+    return $mdate->format("m");
+}
+
+/**
+ * @param $date
+ * @return string
+ */
+function getYearFromDisplayFormat($date): string
+{
+    $ydate = DateTime::createFromFormat(getDBDateFormat(), $date);
+    return $ydate->format("Y");
+}
 
 function getDBDateFrom3FormatString(string $time = null)
 {
@@ -701,7 +728,191 @@ function import_emp_contract_advance_salary_entry($employee_contract_data, $comp
     $start_date = $dataEmpContract->start_date;
     $end_date = $dataEmpContract->end_date;
 
-//    getMonthNameFromMonthNumber()
+    $month = getMonthFromDisplayFormat($start_date);
+    $year = getYearFromDisplayFormat($start_date);
+
+    $emp_contract_list = EmpContract::with(['UserEmployee:id,user_id,company_id', 'EmpContractType:id,name,emp_contract_amount_type_id'])
+        ->whereHas('UserEmployee', function ($q) use ($company_id) {
+            $q->where('company_id', '=', $company_id);
+        })
+        ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month")
+        ->whereYear('start_date', '=', $year)
+        ->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total', 'emp_contract_type_id'])->toArray();
+
+    $userDB = User::whereNotNull('adhar_number')->get(['id', 'name', 'middle_name', 'last_name', 'adhar_number'])->toArray();
+
+    $i = 0;
+
+    foreach ($employee_contract_data as $employee_contract) {
+        $searched_user = null;
+        $searched_department_type = null;
+
+        $user_id = null;
+        $user_name = null;
+        $advance_salary = null;
+        $employee_contract_id = null;
+        $date_today = getTodayDate();
+
+        $logged_in_user_id = Auth::id();
+
+        $searched_user = array_search($employee_contract['adhar_number'], array_column($userDB, 'adhar_number'));
+
+        if ($searched_user !== false) {
+            $user_id = $userDB[$searched_user]['id'];
+            $searched_emp_contract = array_search($user_id, array_column($emp_contract_list, 'user_id'));
+
+            $advance_salary = floatval($employee_contract['advance_salary']);
+
+            if ($searched_emp_contract !== false) {
+                $employee_contract_id = $emp_contract_list[$searched_emp_contract]['id'];
+
+                if ($advance_salary > 0) {
+                    $salary = Salary::whereUserId($user_id)
+                        ->where('month', intval($month))
+                        ->where('year', intval($year))
+                        ->first();
+
+                    if (empty($salary)) {
+                        $salary = new Salary();
+                        $salary->created_by = $logged_in_user_id;
+                    }
+
+                    $user_name = $userDB[$searched_user]['name'] . ' ' . $userDB[$searched_user]['last_name'];
+
+                    $salary->user_id = $user_id;
+                    $salary->emp_contract_id = $employee_contract_id;
+                    $salary->name = $user_name;
+                    $salary->date = $date_today;
+                    $salary->month = $month;
+                    $salary->year = $year;
+                    $salary->overtime_type_id = 1;
+                    $salary->overtime_description = null;
+                    $salary->overtime_amount = 0;
+                    $salary->updated_by = $logged_in_user_id;
+
+                    if (floatval($salary->salary_gross_deduction) > 0) {
+                        $old_advance_salary = getSalaryDetailsData($salary->id, 'D', 'Advance');
+                        $pf_salary = floatval(getSalaryDetailsData($salary->id, 'D', 'PF'));
+
+                        $salary->salary_gross_earning = (floatval($salary->salary_gross_earning) ?? 0.00) - $advance_salary;
+                        $advance_salary += $old_advance_salary;
+                        $salary_gross_deduction = $pf_salary + $advance_salary;
+                        $salary->salary_gross_deduction = $salary_gross_deduction;
+
+                    } else {
+                        $salary->salary_gross_deduction = (floatval($salary->salary_gross_deduction) ?? 0.00) + $advance_salary;
+                        $salary->salary_gross_earning = (floatval($salary->salary_gross_earning) ?? 0.00) - (floatval($salary->salary_gross_deduction) ?? 0.00);
+                    }
+
+                    $salary->salary_net_pay = $salary->salary_gross_earning;
+                    $salary->save();
+
+                    if ($salary) {
+                        addSalaryDetail($salary->id, $advance_salary, 'Advance', 'D', 0);
+                        $i++;
+                    }
+                }
+            }
+        }
+    }
+
+    echo 'Advance Salary Employee Count : ' . $i . '<br>';
+}
+
+function import_emp_contract_pieces_employee_attendance_entry($employee_contract_data, $company_id, DataEmpContract $dataEmpContract)
+{
+    $start_date = $dataEmpContract->start_date;
+    $end_date = $dataEmpContract->end_date;
+
+    $month = getMonthFromDisplayFormat($start_date);
+    $year = getYearFromDisplayFormat($start_date);
+
+    $emp_contract_list = EmpContract::with(['UserEmployee:id,user_id,company_id', 'EmpContractType:id,name,emp_contract_amount_type_id', 'EmpDepartmentType:id,name,company_id'])
+//        ->whereHas('UserEmployee', function ($q) use ($company_id) {
+//            $q->where('company_id', '=', $company_id);
+//        })
+        ->whereHas('EmpDepartmentType', function ($q) use ($company_id) {
+            $q->where('company_id', '=', $company_id);
+            $q->where('name', 'LIKE', '%piece rate%');
+        })
+        ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month")
+        ->whereYear('start_date', '=', $year)
+//        ->orWhereYear('end_date', '=', $year)
+        ->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total', 'emp_contract_type_id', 'emp_department_type_id'])->toArray();
+
+    $userDB = User::whereNotNull('adhar_number')->get(['id', 'name', 'middle_name', 'last_name', 'adhar_number'])->toArray();
+    $department_types = EmpDepartmentType::whereNotNull('name')->get(['id', 'name'])->toArray();
+
+    $i = 0;
+
+    foreach ($employee_contract_data as $employee_contract) {
+        $searched_user = null;
+        $searched_department_type = null;
+
+        $user_id = null;
+        $user_name = null;
+        $department_type_name = null;
+
+        //below attendance details are for Piece rate based employee
+        $total_working_days = null;
+        $total_p_days = null;
+        $holiday = null;
+        $weekly_off = null;
+        $total_a_days = null;
+
+        $date_today = getTodayDate();
+        $logged_in_user_id = Auth::id();
+
+        $searched_user = array_search($employee_contract['adhar_number'], array_column($userDB, 'adhar_number'));
+
+        if ($searched_user !== false) {
+            $user_id = $userDB[$searched_user]['id'];
+            $searched_emp_contract = array_search($user_id, array_column($emp_contract_list, 'user_id'));
+
+            $total_working_days = $employee_contract['total_working_days'];
+            $total_p_days = $employee_contract['total_p_days'];
+            $holiday = $employee_contract['holiday'];
+            $weekly_off = $employee_contract['weekly_off'];
+            $total_a_days = $employee_contract['total_a_days'];
+
+            if ($searched_emp_contract !== false && floatval($total_working_days) > 0 && floatval($total_p_days) > 0) {
+                $employee_contract_id = $emp_contract_list[$searched_emp_contract]['id'];
+
+                $salary = Salary::whereUserId($user_id)
+                    ->where('month', $month)
+                    ->where('year', $year)
+                    ->first();
+
+                if (empty($salary)) {
+                    $salary = new Salary();
+                    $salary->created_by = Auth::id();
+                }
+
+                $user_name = $userDB[$searched_user]['name'] . ' ' . $userDB[$searched_user]['last_name'];
+
+                $salary->user_id = $user_id;
+                $salary->emp_contract_id = $employee_contract_id;
+                $salary->name = $user_name;
+                $salary->date = $date_today;
+                $salary->month = $month;
+                $salary->year = $year;
+                $salary->total_days = $total_working_days;
+                $salary->present_days = $total_p_days;
+                $salary->absent_days = $total_a_days;
+                $salary->overtime_type_id = 1;
+                $salary->overtime_description = null;
+                $salary->overtime_amount = 0;
+                $salary->updated_by = $logged_in_user_id;
+                $salary->save();
+
+                if ($salary) {
+                    $i++;
+                }
+            }
+        }
+    }
+
+    echo 'Piece Rate Employee Count : ' . $i . '<br>';
 }
 
 function import_emp_contract_pf_department_batch_entry($employee_contract_data, $company_id, DataEmpContract $dataEmpContract)
@@ -749,7 +960,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
             $searched_user = null;
             $searched_department_type = null;
             $logged_in_user_id = null;
-            $department_type_id = null;
+            $emp_department_type_id = null;
             $department_type_name = null;
             $user_id = null;
             $user_name = null;
@@ -779,10 +990,10 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                 $user_name = $userDB[$searched_user]['name'] . ' ' . $userDB[$searched_user]['last_name'];
 
                 if ($searched_department_type !== false) {
-                    $department_type_id = $department_types[$searched_department_type]['id'];
+                    $emp_department_type_id = $department_types[$searched_department_type]['id'];
                     $department_type_name = $department_types[$searched_department_type]['name'];
                 } else {
-                    $department_type_id = 2;
+                    $emp_department_type_id = 2;
                 }
 
                 //Contract Amount type selection
@@ -848,16 +1059,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                     continue;
                 }
 
-                $department_type_name;
-
                 $description = $employee_contract['description'];
-                $advance_salary = $employee_contract['advance_salary'];
-
-                $total_working_days = $employee_contract['total_working_days'];
-                $total_p_days = $employee_contract['total_p_days'];
-                $holiday = $employee_contract['holiday'];
-                $weekly_off = $employee_contract['weekly_off'];
-                $total_a_days = $employee_contract['total_a_days'];
 
                 $batch_employee_contract_data[$i]['user_id'] = $user_id;
                 $batch_employee_contract_data[$i]['name'] = $user_name;
@@ -867,6 +1069,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
                 $batch_employee_contract_data[$i]['start_date'] = $start_date;
                 $batch_employee_contract_data[$i]['end_date'] = $end_date;
                 $batch_employee_contract_data[$i]['emp_contract_type_id'] = $emp_contract_type_id;
+                $batch_employee_contract_data[$i]['emp_department_type_id'] = $emp_department_type_id;
                 $batch_employee_contract_data[$i]['emp_contract_status_id'] = 1;
                 $batch_employee_contract_data[$i]['hours'] = $hours;
                 $batch_employee_contract_data[$i]['days'] = $days;
@@ -878,7 +1081,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
 
                 $batch_employee_department_data[$i]['description'] = $description;
                 $batch_employee_department_data[$i]['user_id'] = $user_id;
-                $batch_employee_department_data[$i]['emp_department_type_id'] = $department_type_id;
+                $batch_employee_department_data[$i]['emp_department_type_id'] = $emp_department_type_id;
                 $batch_employee_department_data[$i]['description'] = $description;
                 $batch_employee_department_data[$i]['created_by'] = $logged_in_user_id;
                 $batch_employee_department_data[$i]['updated_by'] = $logged_in_user_id;
@@ -908,7 +1111,7 @@ function import_emp_contract_pf_department_batch_entry($employee_contract_data, 
 
         echo 'Employee PF Details Created/Updated : ' . EmpPfDetail::upsert($batch_employee_pf_data, ['user_id', 'start_date'], ['bank_name', 'description', 'status', 'updated_by']) . '<br>';
 
-        echo 'Employee Contract Created/Updated : ' . EmpContract::upsert($batch_employee_contract_data, ['user_id', 'start_date'], ['name', 'description', 'date', 'end_date', 'start_time', 'hours', 'days', 'emp_contract_type_id', 'emp_contract_status_id', 'salary_basic', 'salary_hra', 'salary_total', 'emp_shift_data_id', 'updated_by']) . '<br>';
+        echo 'Employee Contract Created/Updated : ' . EmpContract::upsert($batch_employee_contract_data, ['user_id', 'start_date'], ['name', 'description', 'date', 'end_date', 'start_time', 'hours', 'days', 'emp_department_type_id', 'emp_contract_type_id', 'emp_contract_status_id', 'salary_basic', 'salary_hra', 'salary_total', 'emp_shift_data_id', 'updated_by']) . '<br>';
 
         echo 'Not Found User in DataBase : ' . json_encode($employee_not_found) . '<br>';
         echo 'Not Found Contract in DataBase : ' . json_encode($employee_contract_not_found) . '<br>';
@@ -1001,7 +1204,8 @@ function addSalaryDetail(int $salary_id, string $amount, string $amount_type_nam
     $salary_detail->save();
 }
 
-function getSalaryDetailsData(string $salary_id, string $type, string $name){
+function getSalaryDetailsData(string $salary_id, string $type, string $name)
+{
     return SalaryDetail::whereSalaryId($salary_id)
             ->where('type', $type)
             ->where('name', $name)

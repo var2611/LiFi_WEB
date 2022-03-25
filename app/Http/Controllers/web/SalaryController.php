@@ -16,6 +16,7 @@ use App\Models\Attendance;
 use App\Models\CompanyHrmsSetting;
 use App\Models\EmpContract;
 use App\Models\EmpContractAmountType;
+use App\Models\EmpDepartmentType;
 use App\Models\EmpPfDetail;
 use App\Models\FormModels\DataSalaryEdit;
 use App\Models\FormModels\DataSalarySlip;
@@ -205,8 +206,8 @@ class SalaryController extends Controller
                 $q->where('company_id', '=', $company_id);
             })
             ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month")
-            ->whereYear('start_date', '=', $year)
-            ->orWhereYear('end_date', '=', $year);
+            ->whereYear('start_date', '=', $year);
+//            ->orWhereYear('end_date', '=', $year);
 
 //            ->orWhereMonth('end_date', '>=', $month)
 //            ->whereYear('end_date', '>=', $year)
@@ -223,7 +224,7 @@ class SalaryController extends Controller
 
 //        dd($emp_contract_count);
 
-        $emp_contract_list = $emp_contract_list->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total', 'emp_contract_type_id']);
+        $emp_contract_list = $emp_contract_list->get(['id', 'user_id', 'name', 'hours', 'salary_basic', 'salary_hra', 'salary_total', 'emp_contract_type_id', 'emp_department_type_id']);
 
 //        echo json_encode(($emp_contract_list)) . '<br>';
 //        dd($emp_contract_list);
@@ -243,6 +244,10 @@ class SalaryController extends Controller
             ->whereHas('UserEmployee', function ($q) use ($company_id) {
                 $q->where('company_id', '=', $company_id);
             })->get(['id', 'user_id', 'pf_number', 'uan', 'bank_name', 'description', 'status', 'abry_eligible', 'is_visible', 'is_active'])->toArray();
+
+        $pieces_emp_department_type = EmpDepartmentType::whereCompanyId($company_id)
+            ->where('name', 'LIKE', '%piece rate%')
+            ->get('id')->toArray();
 
         $i = 0;
         $batch_salary_data = array();
@@ -292,13 +297,24 @@ class SalaryController extends Controller
 
 //            dd($attendances);
 
-            $full_working_days = $attendances['full_working_days'];
-            $half_working_days = $attendances['half_working_days'];
-            $total_working_days = $attendances['total_working_days'];
+            $salary = Salary::whereUserId($user_id)
+                ->where('month', intval($month))
+                ->where('year', intval($year))
+                ->first();
 
-            $employee_working_days = $full_working_days + $half_working_days + count($holidays);
+            if (in_array($employee_contract->emp_department_type_id, array_column($pieces_emp_department_type, 'id'))) {
+                $working_days = $salary->total_days;
+                $employee_working_days = $salary->present_days;
+                $employee_absent_days = $salary->absent_days;
+            } else {
+                $full_working_days = $attendances['full_working_days'];
+                $half_working_days = $attendances['half_working_days'];
+                $total_working_days = $attendances['total_working_days'];
 
-            $employee_absent_days = $working_days - $employee_working_days;
+                $employee_working_days = $full_working_days + $half_working_days + count($holidays);
+
+                $employee_absent_days = $working_days - $employee_working_days;
+            }
 
             $monthly_basic_salary_amount = round($employee_working_days * $salary_per_day, 2);
             $monthly_hra_salary_amount = round($employee_working_days * $salary_hra_per_day, 2);
@@ -307,10 +323,6 @@ class SalaryController extends Controller
             //PF Calculation
             $pf_search_data = array_search($user_id, array_column($emp_pf_details, 'user_id'));
 
-            $salary = Salary::whereUserId($user_id)
-                ->where('month', $month)
-                ->where('year', $year)
-                ->first();
 
             if (empty($salary)) {
                 $salary = new Salary();
@@ -332,8 +344,8 @@ class SalaryController extends Controller
             $salary->salary_basic = $monthly_basic_salary_amount;
             $salary->salary_hra = $monthly_hra_salary_amount;
             $salary->salary_total = $monthly_salary_amount;
-            $salary->salary_gross_earning = $monthly_salary_amount;
-            $salary->salary_gross_deduction = 0.00;
+            $salary->salary_gross_earning = $monthly_salary_amount - (floatval($salary->salary_gross_deduction) ?? 0.00);
+            $salary->salary_gross_deduction = (floatval($salary->salary_gross_deduction) ?? 0.00);
             $salary->overtime_type_id = 1;
             $salary->overtime_description = null;
             $salary->overtime_amount = 0;
@@ -342,8 +354,8 @@ class SalaryController extends Controller
             if ($pf_search_data !== false && $emp_pf_details[$pf_search_data]['abry_eligible'] != 1) {
                 $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100, 2);
                 if ($pf_amount > 0) {
-                    $salary->salary_gross_earning = $salary->salary_gross_earning - $pf_amount;
-                    $salary->salary_gross_deduction = $salary->salary_gross_deduction + $pf_amount;
+                    $salary->salary_gross_earning = (floatval($salary->salary_gross_earning)) - $pf_amount;
+                    $salary->salary_gross_deduction = floatval($salary->salary_gross_deduction) + $pf_amount;
                 }
             }
             $salary->salary_net_pay = $salary->salary_gross_earning;
