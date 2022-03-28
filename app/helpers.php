@@ -794,14 +794,15 @@ function import_emp_contract_advance_salary_entry($employee_contract_data, $comp
                         $old_advance_salary = getSalaryDetailsData($salary->id, 'D', 'Advance');
                         $pf_salary = floatval(getSalaryDetailsData($salary->id, 'D', 'PF'));
 
-                        $salary->salary_gross_earning = (floatval($salary->salary_gross_earning) ?? 0.00) - $advance_salary;
-                        $advance_salary += $old_advance_salary;
+//                        $advance_salary += $old_advance_salary;
                         $salary_gross_deduction = $pf_salary + $advance_salary;
+
+                        $salary->salary_gross_earning = (floatval($salary->salary_total) ?? 0.00) - $salary_gross_deduction;
                         $salary->salary_gross_deduction = $salary_gross_deduction;
 
                     } else {
                         $salary->salary_gross_deduction = (floatval($salary->salary_gross_deduction) ?? 0.00) + $advance_salary;
-                        $salary->salary_gross_earning = (floatval($salary->salary_gross_earning) ?? 0.00) - (floatval($salary->salary_gross_deduction) ?? 0.00);
+                        $salary->salary_gross_earning = (floatval($salary->salary_total) ?? 0.00) - (floatval($salary->salary_gross_deduction) ?? 0.00);
                     }
 
                     $salary->salary_net_pay = $salary->salary_gross_earning;
