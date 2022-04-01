@@ -95,7 +95,12 @@ class SalaryExport implements FromQuery, WithMapping, WithColumnFormatting, With
             'M' => NumberFormat::FORMAT_NUMBER,
             'N' => NumberFormat::FORMAT_NUMBER,
             'O' => NumberFormat::FORMAT_NUMBER,
-            'P' => NumberFormat::FORMAT_DATE_DDMMYYYY
+            'P' => NumberFormat::FORMAT_NUMBER,
+            'Q' => NumberFormat::FORMAT_NUMBER,
+            'R' => NumberFormat::FORMAT_TEXT,
+            'S' => NumberFormat::FORMAT_TEXT,
+            'T' => NumberFormat::FORMAT_TEXT,
+            'U' => NumberFormat::FORMAT_DATE_DDMMYYYY
         ];
     }
 
