@@ -69,6 +69,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/pdf-export-salary-slip-form', [ExportController::class, 'pdfExportSalarySlipForm'])->name('pdf-export-salary-slip-form');
     Route::post('/pdf-export-salary-slip-download', [ExportController::class, 'pdfExportSalarySlipDownload'])->name('pdf-export-salary-slip-download');
 
+    Route::get('/pdf-export-attendance-form', [ExportController::class, 'pdfExportAttendanceForm'])->name('pdf-export-attendance-form');
+    Route::post('/pdf-export-attendance-download', [ExportController::class, 'pdfExportAttendanceDownload'])->name('pdf-export-attendance-download');
+
     Route::get('/edit-leave-type/{id?}', [LeaveController::class, 'editFormLeaveType'])->name('edit-leave-type');
     Route::post('/store-leave-type', [LeaveController::class, 'storeFormLeaveType'])->name('store-leave-type');
 

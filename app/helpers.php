@@ -255,6 +255,14 @@ function getDBDateAndTimeFormat(): string
 }
 
 /**
+ * @return string Time Format H:i
+ */
+function getDBTimeFormat(): string
+{
+    return "H:i";
+}
+
+/**
  * @return string Date Format Y-m-d
  */
 function getDBDateFormat(): string
@@ -374,7 +382,7 @@ function transformDate($value)
     }
 }
 
-function getSundays($month, $year, $days_in_month)
+function getSundays($month, $year, $days_in_month, $dateFormat = "Y-m-d"): array
 {
     $sundays = array();
     //Create an instance of now
@@ -396,7 +404,7 @@ function getSundays($month, $year, $days_in_month)
 //Iterate over the DatePeriod instance
     foreach ($period as $date) {
         if ($date->format('w') == 0) {
-            array_push($sundays, $date->format(getDBDateFormat()) . PHP_EOL);
+            $sundays[] = $date->format($dateFormat) . PHP_EOL;
         }
     }
 

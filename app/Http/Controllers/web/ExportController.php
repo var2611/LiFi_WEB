@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\web;
 
 use App\Exports\SalaryExport;
-use App\Forms\Export\ExportDownloadForm;
+use App\Forms\Export\ExportAttendanceForm;
+use App\Forms\Export\ExportSalarySlipForm;
 use App\Http\Controllers\Controller;
 use App\Models\FormModels\DataSalarySlip;
 use App\Models\Salary;
+use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
@@ -16,7 +17,7 @@ class ExportController extends Controller
 {
     public function sheetExportSalaryForm()
     {
-        $form = $this->form(ExportDownloadForm::class, [
+        $form = $this->form(ExportSalarySlipForm::class, [
             'method' => 'POST',
             'url' => route('sheet-export-salary-download')
         ]);
@@ -26,7 +27,7 @@ class ExportController extends Controller
 
     public function sheetExportSalaryDownload()
     {
-        $form = $this->form(ExportDownloadForm::class);
+        $form = $this->form(ExportSalarySlipForm::class);
 
         $form->redirectIfNotValid();
 
@@ -51,7 +52,7 @@ class ExportController extends Controller
 
     public function pdfExportSalarySlipForm()
     {
-        $form = $this->form(ExportDownloadForm::class, [
+        $form = $this->form(ExportSalarySlipForm::class, [
             'method' => 'POST',
             'url' => route('pdf-export-salary-slip-download')
         ]);
@@ -61,7 +62,7 @@ class ExportController extends Controller
 
     public function pdfExportSalarySlipDownload()
     {
-        $form = $this->form(ExportDownloadForm::class);
+        $form = $this->form(ExportSalarySlipForm::class);
 
         $form->redirectIfNotValid();
 
@@ -123,4 +124,43 @@ class ExportController extends Controller
 //        return $pdf->download('document.pdf');
 
     }
+
+    public function pdfExportAttendanceForm()
+    {
+        $form = $this->form(ExportAttendanceForm::class, [
+            'method' => 'POST',
+            'url' => route('pdf-export-attendance-download')
+        ]);
+
+        return view('layouts.hrms_forms', compact('form'), ['export' => true]);
+    }
+
+    public function pdfExportAttendanceDownload()
+    {
+        $form = $this->form(ExportAttendanceForm::class);
+
+        $form->redirectIfNotValid();
+
+        // Do saving and other things...
+        $formData = $form->getFieldValues();
+
+        $selected_month_year = $formData['selected_month'];
+        $date = strtotime($selected_month_year);
+        $month = date('m', $date);
+        $year = date('Y', $date);
+        $companyId = Auth::user()->getCompanyId();
+
+        try {
+
+            $dpdf = Pdf::loadHTML((new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a4', 'landscape');
+
+            return $dpdf->download("Time_Sheet_of_$selected_month_year.pdf");
+//        return $data;
+        } catch (\Exception $e) {
+            echo $e;
+        }
+
+//        return (new AttendanceController)->attendanceExportData($month, $year, $companyId);
+    }
+
 }

@@ -292,6 +292,7 @@ class SalaryController extends Controller
                     count(CASE WHEN out_time is not null and hours_worked < $daily_working_hours THEN 1 else null end)/2  as half_working_days,
                     count(CASE WHEN out_time is null or hours_worked >= $daily_working_hours THEN 1 else null end)  as full_working_days")
                 ->whereMonth('date', '=', $month)
+//                ->whereYear('date', '=', $year)
                 ->whereNotIn('date', $monthly_off)
                 ->first();
 
@@ -401,6 +402,6 @@ class SalaryController extends Controller
 
 
 //        $la = new AttendanceDetailView($id);
-        return view('layouts.salary-slip', ['data_salary_slip' => $data_salary_slip, 'salary' => true])->render();
+        return view('hrms.component.export.salary-slip', ['data_salary_slip' => $data_salary_slip, 'salary' => true])->render();
     }
 }
