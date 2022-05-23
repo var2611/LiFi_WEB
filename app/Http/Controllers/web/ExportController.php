@@ -150,9 +150,11 @@ class ExportController extends Controller
         $year = date('Y', $date);
         $companyId = Auth::user()->getCompanyId();
 
+        $view = 'hrms.component.export.attendance-slip';
         try {
 
-            $dpdf = Pdf::loadHTML((new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a4', 'landscape');
+//            $dpdf = Pdf::loadHTML((new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a4', 'landscape');
+            $dpdf = Pdf::loadView($view ,(new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a4', 'landscape');
 
             return $dpdf->download("Time_Sheet_of_$selected_month_year.pdf");
 //        return $data;
@@ -160,7 +162,7 @@ class ExportController extends Controller
             echo $e;
         }
 
-//        return (new AttendanceController)->attendanceExportData($month, $year, $companyId);
+//        return view($view, (new AttendanceController)->attendanceExportData($month, $year, $companyId));
     }
 
 }

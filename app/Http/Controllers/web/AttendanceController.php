@@ -54,7 +54,7 @@ class AttendanceController extends Controller
         return view('main_detail', ['class' => DetailAttendanceView::getName(), 'model' => $result, 'att' => true])->render();
     }
 
-    public function attendanceExportData(int $month, int $year, string $companyId): string
+    public function attendanceExportData(int $month, int $year, string $companyId)
     {
         $holidays = getHolidayDateOfCompanyByMonth($companyId, $month, $year);
 
@@ -76,12 +76,22 @@ class AttendanceController extends Controller
             $q->where('company_id', '=', $companyId);
         });
 
-        $attendanceData = $attendanceData->get();
+        $attendanceData = $attendanceData->take(2)->get();
 
 //        echo json_encode($attendanceData) . '<br>';
 //        dd($attendanceData);
 
 //        $la = new AttendanceDetailView($id);
+        return [
+            'data_attendance_slip' => $attendanceData,
+            'daysInMonth' => $daysInMonth,
+            'sundays' => $sundays,
+            'holidays' => $holidays,
+            'companyData' => $companyData,
+            'monthName' => $monthName,
+            'month' => $month,
+            'year' => $year
+        ];
         return view('hrms.component.export.attendance-slip',
             [
                 'data_attendance_slip' => $attendanceData,
