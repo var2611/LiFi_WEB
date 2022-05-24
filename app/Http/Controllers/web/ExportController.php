@@ -154,7 +154,7 @@ class ExportController extends Controller
         try {
 
 //            $dpdf = Pdf::loadHTML((new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a4', 'landscape');
-            $dpdf = Pdf::loadView($view ,(new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a4', 'landscape');
+            $dpdf = Pdf::loadView($view ,(new AttendanceController)->attendanceExportData($month, $year, $companyId))->setPaper('a3', 'landscape');
 
             return $dpdf->download("Time_Sheet_of_$selected_month_year.pdf");
 //        return $data;

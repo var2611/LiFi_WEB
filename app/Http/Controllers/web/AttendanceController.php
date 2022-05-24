@@ -76,7 +76,7 @@ class AttendanceController extends Controller
             $q->where('company_id', '=', $companyId);
         });
 
-        $attendanceData = $attendanceData->take(2)->get();
+        $attendanceData = $attendanceData->get();
 
 //        echo json_encode($attendanceData) . '<br>';
 //        dd($attendanceData);

@@ -21,8 +21,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Salary Punching</title>
     <style type="text/css">
-        tbody:before, tbody:after {
-            display: none;
+        .page-break {
+            page-break-after: always;
         }
 
         body {
@@ -30,9 +30,10 @@
         }
 
         table {
+            /*font-size: 12px;*/
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
+            text-align: center;
             table-layout: fixed;
         }
 
@@ -53,6 +54,10 @@
             margin-right: auto;
         }
 
+        tbody {
+            min-width: 100%;
+        }
+
     </style>
 </head>
 <body>
@@ -67,7 +72,7 @@
     <table>
         <thead>
         <tr>
-            <th></th>
+            <th style="width:5%"></th>
             @for($i = 1; $i <= $daysInMonth; $i++)
 
                 <th>{{ $i }}</th>
@@ -75,16 +80,21 @@
             @endfor
         </tr>
         </thead>
-        @for($j = 0; $j < sizeof($data_attendance_slip); $j++)
-            @php
+    </table>
+</div>
 
-                $empCode = $data_attendance_slip[$j]['UserEmployee']['emp_code'];
-                $empName = $data_attendance_slip[$j]['name'];
+@for($j = 1; $j <= sizeof($data_attendance_slip); $j++)
+    @php
 
-            @endphp
+        $empCode = $data_attendance_slip[$j-1]['UserEmployee']['emp_code'];
+        $empName = $data_attendance_slip[$j-1]['name'];
+
+    @endphp
+    <div>
+        <table>
             <tbody>
             <tr>
-                <td style="border-top: 1px solid;">{{ $empCode }}</td>
+                <td style="width:6%;border-top: 1px solid;">{{ $empCode }}</td>
                 <td style="text-align: center; border-top: 1px solid;" colspan="4">{{ $empName }}</td>
                 <td style="text-align: right; border-top: 1px solid;" colspan="5">Shift :</td>
                 <td style="text-align: center; border-top: 1px solid;" colspan="0">GEN</td>
@@ -93,11 +103,15 @@
                 <td style="text-align: center;border-top: 1px solid;" colspan="15"></td>
             </tr>
             </tbody>
+        </table>
+    </div>
+    <div>
+        <table>
             <tbody>
             <tr>
                 <!-- 5 -->
                 <td rowspan="6"
-                    style="border-top: 1px dashed;border-bottom: 1px dashed;line-height: 2em;border-right: 1px solid;">
+                    style="width:5%;border-top: 1px dashed;border-bottom: 1px dashed;line-height: 2em;border-right: 1px solid;">
                     <div>&nbsp;</div>
                     <div>In</div>
                     <div>out</div>
@@ -119,7 +133,7 @@
                             $weekOff = 'WO';
                             $inTime = '-';
                         }
-                        $attendanceDetails = json_decode($data_attendance_slip[0]['att_' . $i]);
+                        $attendanceDetails = json_decode($data_attendance_slip[$j-1]['att_' . $i]);
                         if (isset($attendanceDetails)){
                             $inTime = $attendanceDetails[0] ?? '';
                             $outTime = $attendanceDetails[1] ?? ' ';
@@ -139,19 +153,24 @@
                     <td rowspan="6"
                         style="border-top: 1px dashed;border-bottom: 1px dashed;line-height: 2em; @if($i != $daysInMonth)border-right: 1px solid; @endif">
                         <div>&nbsp;{{ $weekOff ?? '' }}</div>
-                        <div>&nbsp;{{ $inTime }}&nbsp;</div>
-                        <div>&nbsp;{{ $outTime }}&nbsp;</div>
-                        <div>&nbsp;{{ $duration }}&nbsp;</div>
-                        <div> &nbsp;</div>
-                        <div> 00:00</div>
-                        <div> &nbsp;</div>
+                        <div>{{ $inTime }}</div>
+                        <div>{{ $outTime }}</div>
+                        <div>{{ $duration }}</div>
+                        <div>&nbsp;</div>
+                        <div>00:00</div>
+                        <div>&nbsp;</div>
                     </td>
 
             @endfor
             </tbody>
-        @endfor
+        </table>
+    </div>
 
-    </table>
-</div>
+    @if(($j%3) == 0)
+        <div class="page-break"></div>
+    @endif
+@endfor
+
+
 </body>
 </html>
