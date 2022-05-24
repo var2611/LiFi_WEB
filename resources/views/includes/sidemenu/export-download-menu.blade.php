@@ -15,5 +15,8 @@
         <a href="{{ route('pdf-export-salary-slip-form') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Salary Slip</span>
         </a>
+        <a href="{{ route('pdf-export-attendance-form') }}" class="list-group-item list-group-item-action bg-dark text-white">
+            <span class="menu-collapsed">Attendance Data</span>
+        </a>
     </div>
 @endsection
