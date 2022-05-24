@@ -28,7 +28,7 @@
         });
     </script>
 
-    <div class="card-list">
+    <div class="card-list flex-wrap">
         @if(Auth::user()->isHR() || Auth::user()->isAdmin())
             <a href="{{ route('list-emp-attendance') }}">
                 @else

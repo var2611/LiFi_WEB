@@ -32,7 +32,7 @@
         table {
             /*font-size: 12px;*/
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: inherit;
             text-align: center;
             table-layout: fixed;
         }
@@ -44,12 +44,13 @@
         div p {
             width: 100%;
             display: flex;
+            margin: 0;
+            padding: 0;
             text-align: center;
         }
 
         table {
             border: 1px solid black;
-            border-bottom: none;
             margin-left: auto;
             margin-right: auto;
         }
@@ -94,13 +95,13 @@
         <table>
             <tbody>
             <tr>
-                <td style="width:6%;border-top: 1px solid;">{{ $empCode }}</td>
-                <td style="text-align: center; border-top: 1px solid;" colspan="4">{{ $empName }}</td>
-                <td style="text-align: right; border-top: 1px solid;" colspan="5">Shift :</td>
-                <td style="text-align: center; border-top: 1px solid;" colspan="0">GEN</td>
-                <td style="text-align: right;border-top: 1px solid; " colspan="5">Present Days :</td>
-                <td style="text-align: center;border-top: 1px solid;" colspan="1">24</td>
-                <td style="text-align: center;border-top: 1px solid;" colspan="15"></td>
+                <td style="width:6%;">{{ $empCode }}</td>
+                <td style="text-align: center;" colspan="4">{{ $empName }}</td>
+                <td style="text-align: right;" colspan="5">Shift :</td>
+                <td style="text-align: center;" colspan="0">GEN</td>
+                <td style="text-align: right;" colspan="5">Present Days :</td>
+                <td style="text-align: center;" colspan="1">24</td>
+                <td style="text-align: center" colspan="15"></td>
             </tr>
             </tbody>
         </table>
@@ -110,8 +111,7 @@
             <tbody>
             <tr>
                 <!-- 5 -->
-                <td rowspan="6"
-                    style="width:5%;border-top: 1px dashed;border-bottom: 1px dashed;line-height: 2em;border-right: 1px solid;">
+                <td rowspan="6" style="width:5%;line-height: 2em;border-right: 1px solid">
                     <div>&nbsp;</div>
                     <div>In</div>
                     <div>out</div>
@@ -151,7 +151,7 @@
                     @endphp
 
                     <td rowspan="6"
-                        style="border-top: 1px dashed;border-bottom: 1px dashed;line-height: 2em; @if($i != $daysInMonth)border-right: 1px solid; @endif">
+                        style="line-height: 2em;@if($i != $daysInMonth)border-right: 1px solid; @endif">
                         <div>&nbsp;{{ $weekOff ?? '' }}</div>
                         <div>{{ $inTime }}</div>
                         <div>{{ $outTime }}</div>
@@ -160,7 +160,6 @@
                         <div>00:00</div>
                         <div>&nbsp;</div>
                     </td>
-
             @endfor
             </tbody>
         </table>

@@ -316,6 +316,7 @@ body {
     font-size: 16px;
 }
 
+
 @media screen and (max-height: 450px) {
   /*  .sidenav {
         padding-top: 15px;
@@ -327,6 +328,10 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
+
+    .d-flex-c {
+        flex-direction: column;
+    }
 
     /*.w-screen-text h1 {
         font-size: 22px;
