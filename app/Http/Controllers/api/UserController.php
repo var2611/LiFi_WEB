@@ -294,13 +294,22 @@ class UserController extends Controller
     {
         $rules = [
             'mobile' => 'required',
+//            'firebase_token' => 'required',
         ];
+
 
         if ($this->ApiValidator($request->all(), $rules)) {
             $mobile = $request->mobile;
+            $firebase_token = $request->firebase_token ?? null;
 
             $user = User::whereMobile($mobile)->first();
             if (!empty($user)) {
+
+                if (isset($firebase_token)) {
+                    $user->firebase_token = $firebase_token;
+                    $user->save();
+                }
+
                 $user_employee = UserEmployee::whereUserId($user->id)->first();
                 $data['token'] = create_user_auth_token($user);
 
@@ -326,7 +335,7 @@ class UserController extends Controller
                     $this->set_return_response_success($data, "User Validation Success, need to register.");
                 }
             } else {
-                $user = att_register_user($mobile, "New User");
+                $user = att_register_user($mobile, "New User", $firebase_token);
                 if (!empty($user)) {
                     $data['token'] = create_user_auth_token($user);
                     $data['is_valid_user'] = true;

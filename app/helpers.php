@@ -141,11 +141,14 @@ function generate_random_string(int $length = 6): string
     return $randomString;
 }
 
-function att_register_user(string $mobile, string $name): ?User
+function att_register_user(string $mobile, string $name,string $firebase_token = null): ?User
 {
     try {
         $input['mobile'] = $mobile;
         $input['name'] = $name;
+        if (isset($firebase_token)){
+            $input['firebase_token'] = $firebase_token;
+        }
         $checkUserExist = User::whereMobile($input['mobile'])->first();
         if (empty($checkUserExist)) {
             $input['password'] = bcrypt('1234');
