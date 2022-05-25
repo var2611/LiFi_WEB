@@ -306,8 +306,7 @@ class UserController extends Controller
             if (!empty($user)) {
 
                 if (isset($firebase_token)) {
-                    $user->firebase_token = $firebase_token;
-                    $user->save();
+                    saveFirebaseToken($user->id, $firebase_token);
                 }
 
                 $user_employee = UserEmployee::whereUserId($user->id)->first();
@@ -359,18 +358,25 @@ class UserController extends Controller
     {
         $rules = [
             'mobile' => 'required',
+//            'firebase_token' => 'required',
         ];
 
         if ($this->ApiValidator($request->all(), $rules)) {
 
             try {
                 $mobile = $request->mobile;
+                $firebase_token = $request->firebase_token ?? null;
 
-                $data = UserEmployee::whereUserId(User::whereMobile($mobile)->first()->id)
+                $user = UserEmployee::whereUserId(User::whereMobile($mobile)->first()->id)
                     ->with(['User'])
                     ->first();
-                if (!empty($data)) {
-                    $this->set_return_response_success($data, "User Details.");
+                if (!empty($user)) {
+
+                    if (isset($firebase_token)) {
+                        saveFirebaseToken($user->id, $firebase_token);
+                    }
+
+                    $this->set_return_response_success($user, "User Details.");
                 } else {
                     $this->set_return_response_no_data_found();
                 }

@@ -141,12 +141,12 @@ function generate_random_string(int $length = 6): string
     return $randomString;
 }
 
-function att_register_user(string $mobile, string $name,string $firebase_token = null): ?User
+function att_register_user(string $mobile, string $name, string $firebase_token = null): ?User
 {
     try {
         $input['mobile'] = $mobile;
         $input['name'] = $name;
-        if (isset($firebase_token)){
+        if (isset($firebase_token)) {
             $input['firebase_token'] = $firebase_token;
         }
         $checkUserExist = User::whereMobile($input['mobile'])->first();
@@ -1222,4 +1222,13 @@ function getSalaryDetailsData(string $salary_id, string $type, string $name)
             ->where('type', $type)
             ->where('name', $name)
             ->first()->amount ?? '0';
+}
+
+function saveFirebaseToken(string $userId, string $firebaseToken)
+{
+    $user = User::whereId($userId)->first();
+    if ($user->firebase_token != $firebaseToken) {
+        $user->firebase_token = $firebaseToken;
+        $user->save();
+    }
 }
