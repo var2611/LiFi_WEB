@@ -367,16 +367,16 @@ class UserController extends Controller
                 $mobile = $request->mobile;
                 $firebase_token = $request->firebase_token ?? null;
 
-                $user = UserEmployee::whereUserId(User::whereMobile($mobile)->first()->id)
+                $userEmployee = UserEmployee::whereUserId(User::whereMobile($mobile)->first()->id)
                     ->with(['User'])
                     ->first();
-                if (!empty($user)) {
+                if (!empty($userEmployee)) {
 
                     if (isset($firebase_token)) {
-                        saveFirebaseToken($user->id, $firebase_token);
+                        saveFirebaseToken($userEmployee->User->id, $firebase_token);
                     }
 
-                    $this->set_return_response_success($user, "User Details.");
+                    $this->set_return_response_success($userEmployee, "User Details.");
                 } else {
                     $this->set_return_response_no_data_found();
                 }
