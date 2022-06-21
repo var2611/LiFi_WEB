@@ -24,6 +24,7 @@ use App\Models\ImportPublicWifiSeasonData;
 use App\Models\OvertimeType;
 use App\Models\Salary;
 use App\Models\SalaryAllowanceType;
+use App\Models\SalaryDetail;
 use App\Models\SalaryPfDetail;
 use Auth;
 use Illuminate\Http\RedirectResponse;
@@ -323,6 +324,19 @@ class SalaryController extends Controller
 
             //PF Calculation
             $pf_search_data = array_search($user_id, array_column($emp_pf_details, 'user_id'));
+
+            $advanceSalary = 0;
+            if($salary){
+                $advanceData = SalaryDetail::whereSalaryId($salary->id)
+                    ->whereName('Advance')
+                    ->where('type', 'D')
+                    ->first(['amount']);
+
+                if ($advanceData){
+                    $advanceSalary = $advanceData->amount;
+                    $salary->salary_gross_deduction = $advanceSalary;
+                }
+            }
 
 
             if (empty($salary)) {

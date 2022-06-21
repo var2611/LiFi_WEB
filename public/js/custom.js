@@ -67,6 +67,43 @@ function calculateABDays(){
     if (document.getElementById("total_days") && document.getElementById("absent_days")) {
         document.getElementById("absent_days").value = GetABDays();
     }
+
+    var total_days = parseFloat(document.getElementById("total_days").value) || 0;
+    var absent_days = parseFloat(document.getElementById("absent_days").value) || 0;
+    var present_days = parseFloat(document.getElementById("present_days").value) || 0;
+    var salary_advance = parseFloat(document.getElementById("salary_advance").value) || 0;
+    var salary_contract_basic = parseFloat(document.getElementById("salary_contract_basic").value) || 0;
+    var salary_contract_hra = parseFloat(document.getElementById("salary_contract_hra").value) || 0;
+    var salary_contract_total = parseFloat(document.getElementById("salary_contract_total").value) || 0;
+
+    var old_total_days = parseFloat(document.getElementById("total_days").defaultValue);
+    var old_absent_days = parseFloat(document.getElementById("absent_days").defaultValue);
+    var old_present_days = parseFloat(document.getElementById("present_days").defaultValue);
+    var old_salary_basic = parseFloat(document.getElementById("salary_basic").defaultValue);
+    var old_salary_hra = parseFloat(document.getElementById("salary_hra").defaultValue);
+    var old_salary_pf = parseFloat(document.getElementById("salary_pf").defaultValue);
+    var old_salary_advance = parseFloat(document.getElementById("salary_advance").defaultValue);
+
+    // var salary_total = (salary_contract_total / total_days) * present_days;
+    var salary_basic = (salary_contract_basic / total_days) * present_days;
+    var salary_hra = (salary_contract_hra / total_days) * present_days;
+
+    var pf_percentage = (old_salary_pf * 100) / old_salary_basic;
+    var salary_pf = (pf_percentage / 100) * salary_basic;
+
+    var salary_total = salary_basic + salary_hra;
+    var salary_gross_earning = salary_total - salary_pf;
+    var salary_gross_deduction = salary_pf + salary_advance;
+    var salary_net_pay = salary_total - salary_gross_deduction;
+
+    document.getElementById("salary_total").value = salary_total;
+    document.getElementById("salary_gross_earning").value = salary_gross_earning;
+    document.getElementById("salary_gross_deduction").value = salary_gross_deduction;
+    document.getElementById("salary_net_pay").value = salary_net_pay;
+    document.getElementById("salary_basic").value = salary_basic;
+    document.getElementById("salary_hra").value = salary_hra;
+    document.getElementById("salary_pf").value = salary_pf;
+
 }
 
 function calculateSalary(){

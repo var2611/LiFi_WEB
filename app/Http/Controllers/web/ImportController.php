@@ -147,4 +147,12 @@ class ImportController extends Controller
             echo 'fail';
         }
     }
+
+    public function importLatLongDataForm(){
+        return (new LatLongInternetController())->createImportDataForm();
+    }
+
+    public function generateLatLongData(){
+        echo (new LatLongInternetController())->saveLatLongDataToDatabase();
+    }
 }

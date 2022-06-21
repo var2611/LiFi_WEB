@@ -9,6 +9,8 @@
             /* @var $earning_data SalaryDetail*/
             /* @var $deduction_data SalaryDetail*/
             /* @var $row_count int*/
+
+    $nill = ucfirst('nil');
 @endphp
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -26,10 +28,10 @@
     {{--        }--}}
     {{--    </style>--}}
 
-{{--    @php--}}
-{{--        /* main font will be set on locale based */--}}
-{{--        $mainFontFamily = app()->getLocale() === 'ar' ? 'DejaVu Sans' : 'Noto Sans';--}}
-{{--    @endphp--}}
+    {{--    @php--}}
+    {{--        /* main font will be set on locale based */--}}
+    {{--        $mainFontFamily = app()->getLocale() === 'ar' ? 'DejaVu Sans' : 'Noto Sans';--}}
+    {{--    @endphp--}}
 
     {{-- main css --}}
     <style type="text/css">
@@ -39,7 +41,7 @@
 
         * {
             {{--font-family: '{{ $mainFontFamily }}';--}}
-            font-family: "DejaVu Sans", sans-serif;
+                 font-family: "DejaVu Sans", sans-serif;
         }
 
         body, th, td, h5 {
@@ -146,14 +148,33 @@
 </head>
 
 <body style="background-image: none; background-color: #fff;">
-@foreach($data_salary_slips as $data_salary_slip)
+@for($j = 1; $j <= sizeof($data_salary_slips); $j++)
+    {{--@foreach($data_salary_slips as $data_salary_slip)--}}
 
     @php
+        $data_salary_slip = $data_salary_slips[$j-1];
 
         $earning_data = $data_salary_slip->getEarningData();
         $deduction_data = $data_salary_slip->getDeductionData();
 
-        $row_count = count($earning_data) >= count($deduction_data) ? count($earning_data) : count($deduction_data);
+        $row_count = max(count($earning_data), count($deduction_data));
+
+        $salary_month = $data_salary_slip->salary_month;
+        $salary_year = $data_salary_slip->salary_year;
+        $emp_code = $data_salary_slip->emp_code;
+        $emp_name = $data_salary_slip->name;
+        $pf_number = $data_salary_slip->pf_number ?? $nill;
+        $departmentType = ucfirst($data_salary_slip->departmentType);
+        $description = $data_salary_slip->description;
+        $uan = $data_salary_slip->uan ?? ucfirst('nil');
+        $total_days = $data_salary_slip->total_days;
+        $present_days = $data_salary_slip->present_days;
+        $absent_days = $data_salary_slip->absent_days;
+        $salary_total = $data_salary_slip->salary_total;
+        $salary_gross_deduction = $data_salary_slip->salary_gross_deduction;
+        $salary_net_pay = $data_salary_slip->salary_net_pay;
+        $salary_net_pay_in_words = strtoupper($data_salary_slip->salary_net_pay_in_words);
+
     @endphp
     <div class="container">
         <div class="header">
@@ -161,7 +182,7 @@
                 <div class="col-12" style="text-align: center">
                     <h1 class="text-center" style="margin: 0">Payslip</h1>
                     <span
-                        class="text-center">Payment slip for the month of {{ $data_salary_slip->salary_month . ' ' . $data_salary_slip->salary_year }}</span>
+                        class="text-center">Payment slip for the month of {{ $salary_month . ' ' . $salary_year }}</span>
                 </div>
             </div>
 
@@ -174,22 +195,22 @@
                 <table style="width: 50%">
                     <thead>
                     <tr>
-                        <td style="width: 50%"><b>EMP Code: </b>{{ $data_salary_slip->emp_code }}</td>
-                        <td style="width: 50%"><b>EMP Name: </b>{{ $data_salary_slip->name }}</td>
+                        <td style="width: 50%"><b>EMP Code: </b>{{ $emp_code }}</td>
+                        <td style="width: 50%"><b>EMP Name: </b>{{ $emp_name }}</td>
                     </tr>
                     </thead>
                     <thead>
                     <tr>
-                        <td style="width: 50%"><b>PF No.: </b>{{ $data_salary_slip->pf_number ?? ucfirst('nil') }}</td>
-                        <td style="width: 50%"><b>Mode of Pay: </b>{{ ucfirst('nil') }}</td>
+                        <td style="width: 50%"><b>PF No.: </b>{{ $pf_number }}</td>
+                        <td style="width: 50%"><b>Mode of Pay: </b>{{ $nill }}</td>
                     </tr>
                     </thead>
                     <thead>
                     <tr>
-                        <td style="width: 50%"><b>Designation: </b>{{ ucfirst($data_salary_slip->departmentType) }}
-                            ({{ $data_salary_slip->description}})
+                        <td style="width: 50%"><b>Designation: </b>{{ $departmentType }}
+                            ({{ $description }})
                         </td>
-                        <td style="width: 50%"><b>UAN.: </b>{{ $data_salary_slip->uan ?? ucfirst('nil') }}</td>
+                        <td style="width: 50%"><b>UAN.: </b>{{ $uan }}</td>
                     </tr>
                     </thead>
                 </table>
@@ -206,9 +227,9 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td style="width: 50%">{{ $data_salary_slip->total_days }}</td>
-                        <td style="width: 50%">{{ $data_salary_slip->present_days }}</td>
-                        <td style="width: 50%">{{ $data_salary_slip->absent_days }}</td>
+                        <td style="width: 50%">{{ $total_days }}</td>
+                        <td style="width: 50%">{{ $present_days }}</td>
+                        <td style="width: 50%">{{ $absent_days }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -228,20 +249,27 @@
 
                     <tbody>
                     @for($i = 0; $i < $row_count; $i++)
+                        @php
+                            $earning_name = $earning_data[$i]->name ?? '';
+                            $earning_amount = getFormattedAmountCurrency($earning_data[$i]->amount ?? 0.00);
+                            $deduction_name = $deduction_data[$i]->name ?? '';
+                            $deduction_amount = getFormattedAmountCurrency($deduction_data[$i]->amount ?? 0.00);
+
+                        @endphp
                         <tr>
-                            <td style="width: 50%">{{ $earning_data[$i]->name ?? '' }}</td>
-                            <td style="width: 50%">{{ getFormattedAmountCurrency($earning_data[$i]->amount ?? 0.00) }}</td>
-                            <td style="width: 50%">{{ $deduction_data[$i]->name ?? '' }}</td>
-                            <td style="width: 50%">{{ getFormattedAmountCurrency($deduction_data[$i]->amount ?? 0.00) }}</td>
+                            <td style="width: 50%">{{ $earning_name }}</td>
+                            <td style="width: 50%">{{ $earning_amount }}</td>
+                            <td style="width: 50%">{{ $deduction_name }}</td>
+                            <td style="width: 50%">{{ $deduction_amount }}</td>
                         </tr>
                     @endfor
                     </tbody>
                     <tbody>
                     <tr>
                         <td style="width: 50%">Total Earning</td>
-                        <td style="width: 50%">{{ $data_salary_slip->salary_total }}</td>
+                        <td style="width: 50%">{{ $salary_total }}</td>
                         <td style="width: 50%">Total Deductions</td>
-                        <td style="width: 50%">{{ $data_salary_slip->salary_gross_deduction }}</td>
+                        <td style="width: 50%">{{ $salary_gross_deduction }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -251,9 +279,9 @@
             <table class="mt-10" style="width: 100%">
                 <thead>
                 <tr>
-                    <td class="label" style="width: 50%">Net Pay: {{ ($data_salary_slip->salary_net_pay) }}</td>
+                    <td class="label" style="width: 50%">Net Pay: {{ ($salary_net_pay) }}</td>
                     <td class="border-th" style="width: 50%">In Words<br/>
-                        {{ strtoupper($data_salary_slip->salary_net_pay_in_words) }}
+                        {{ $salary_net_pay_in_words }}
                     </td>
                 </tr>
                 </thead>
@@ -269,7 +297,9 @@
 
         </div>
     </div>
-    <div class="page-break"></div>
-@endforeach
+    @if(($j%2) == 0)
+        <div class="page-break"></div>
+    @endif
+@endfor
 </body>
 </html>

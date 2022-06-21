@@ -35,7 +35,8 @@
         "livewire/livewire": "^2.4",
         "maatwebsite/excel": "^3.1",
         "mckenziearts/laravel-notify": "^2.2",
-        "ycs77/laravel-form-builder-bs4": "^1.0"
+        "ycs77/laravel-form-builder-bs4": "^1.0",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.9",

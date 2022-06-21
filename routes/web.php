@@ -8,6 +8,7 @@ use App\Http\Controllers\web\FreeLifiWifiController;
 use App\Http\Controllers\web\HolidayController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\ImportController;
+use App\Http\Controllers\web\LatLongInternetController;
 use App\Http\Controllers\web\LeaveController;
 use App\Http\Controllers\web\SalaryController;
 use App\Http\Controllers\web\UserEmployeeController;
@@ -34,6 +35,7 @@ Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicW
 Route::get('/demoA/{id?}', [SalaryController::class, 'editSalary'])->name('demoA');
 Route::view('/salary-slip', '/layouts.salary-slip-demo')->name('salary-slip');
 
+Route::get('/test', [LatLongInternetController::class, 'test'])->name('test');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/main-test', '/layouts.main_test')->name('main-test');
@@ -62,6 +64,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/sheet-import-emp-contracts', [ImportController::class, 'importEmployeesContractForm'])->name('sheet-import-emp-contracts');
     Route::post('generate-emp-contracts', [ImportController::class, 'generateEmpContractsFromSalarySheet'])->name('generate-emp-contracts');
+
+    Route::get('/sheet-import-lat-long-data', [ImportController::class, 'importLatLongDataForm'])->name('sheet-import-lat-long-data');
+    Route::post('/generate-lat-long-data', [ImportController::class, 'generateLatLongData'])->name('generate-lat-long-data');
 
     Route::get('/sheet-export-salary-form', [ExportController::class, 'sheetExportSalaryForm'])->name('sheet-export-salary-form');
     Route::post('/sheet-export-salary-download', [ExportController::class, 'sheetExportSalaryDownload'])->name('sheet-export-salary-download');
@@ -173,6 +178,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/list-salary-allowance-type', [SalaryController::class, 'salaryAllowanceTypeList'])->name('list-salary-allowance-type');
     Route::get('/list-overtime-type', [SalaryController::class, 'overtimeTypeList'])->name('list-overtime-type');
     Route::get('/list-emp-work-shift', [EmployeeWorkShiftController::class, 'listEmpWorkShiftView'])->name('list-emp-work-shift');
+    Route::get('/lat-long-non-internet-data', [LatLongInternetController::class, 'listLatLongNonInternetData'])->name('lat-long-non-internet-data');
 
     /*HRMS List --End------------------------------------------------------------------*/
 

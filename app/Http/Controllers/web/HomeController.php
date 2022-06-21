@@ -32,10 +32,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $companyData = $user->getCompanyData();
-
-        return view('hrms.dashboard', $companyData);
+        return view('hrms.dashboard');
     }
 
     public function welcome(Request $request)
