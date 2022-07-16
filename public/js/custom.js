@@ -96,13 +96,13 @@ function calculateABDays(){
     var salary_gross_deduction = salary_pf + salary_advance;
     var salary_net_pay = salary_total - salary_gross_deduction;
 
-    document.getElementById("salary_total").value = salary_total;
-    document.getElementById("salary_gross_earning").value = salary_gross_earning;
-    document.getElementById("salary_gross_deduction").value = salary_gross_deduction;
-    document.getElementById("salary_net_pay").value = salary_net_pay;
-    document.getElementById("salary_basic").value = salary_basic;
-    document.getElementById("salary_hra").value = salary_hra;
-    document.getElementById("salary_pf").value = salary_pf;
+    document.getElementById("salary_total").value = salary_total.toFixed(2);
+    document.getElementById("salary_gross_earning").value = salary_gross_earning.toFixed(2);
+    document.getElementById("salary_gross_deduction").value = salary_gross_deduction.toFixed(2);
+    document.getElementById("salary_net_pay").value = salary_net_pay.toFixed(2);
+    document.getElementById("salary_basic").value = salary_basic.toFixed(2);
+    document.getElementById("salary_hra").value = salary_hra.toFixed(2);
+    document.getElementById("salary_pf").value = salary_pf.toFixed(2);
 
 }
 
@@ -122,14 +122,14 @@ function calculateSalary(){
     var salary_gross_deduction = salary_pf + salary_advance;
     var salary_net_pay = salary_total - salary_gross_deduction;
 
-    document.getElementById("salary_total").value = salary_total;
-    document.getElementById("salary_gross_earning").value = salary_gross_earning;
-    document.getElementById("salary_gross_deduction").value = salary_gross_deduction;
-    document.getElementById("salary_net_pay").value = salary_net_pay;
-    document.getElementById("salary_basic").value = salary_basic;
-    document.getElementById("salary_hra").value = salary_hra;
-    document.getElementById("salary_pf").value = salary_pf;
-    document.getElementById("salary_advance").value = salary_advance;
+    document.getElementById("salary_total").value = salary_total.toFixed(2);
+    document.getElementById("salary_gross_earning").value = salary_gross_earning.toFixed(2);
+    document.getElementById("salary_gross_deduction").value = salary_gross_deduction.toFixed(2);
+    document.getElementById("salary_net_pay").value = salary_net_pay.toFixed(2);
+    document.getElementById("salary_basic").value = salary_basic.toFixed(2);
+    document.getElementById("salary_hra").value = salary_hra.toFixed(2);
+    document.getElementById("salary_pf").value = salary_pf.toFixed(2);
+    document.getElementById("salary_advance").value = salary_advance.toFixed(2);
 
 }
 
