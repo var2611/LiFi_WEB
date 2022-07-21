@@ -82,14 +82,14 @@ class DataSalaryEdit extends \Illuminate\Database\Eloquent\Model
     public function saveSalary(){
         $salary = Salary::whereId($this->salary_id)->first();
 
-        $salary->salary_basic = $this->salary_basic;
-        $salary->salary_hra = $this->salary_hra;
-        $salary->salary_total = $this->salary_total;
-        $salary->salary_gross_earning = $this->salary_gross_earning;
-        $salary->salary_gross_deduction = $this->salary_gross_deduction;
-        $salary->salary_net_pay = $this->salary_net_pay;
-        $salary->present_days = $this->present_days;
-        $salary->absent_days = $this->absent_days;
+        $salary->salary_basic = round($this->salary_basic,2);
+        $salary->salary_hra = round($this->salary_hra,2);
+        $salary->salary_total = round($this->salary_total,2);
+        $salary->salary_gross_earning = round($this->salary_gross_earning,2);
+        $salary->salary_gross_deduction = round($this->salary_gross_deduction,2);
+        $salary->salary_net_pay = round($this->salary_net_pay,2);
+        $salary->present_days = round($this->present_days,2);
+        $salary->absent_days = round($this->absent_days,2);
 
 
 

@@ -1232,3 +1232,40 @@ function saveFirebaseToken(string $userId, string $firebaseToken)
         $user->save();
     }
 }
+
+function getEnglishToHindi(string $englishWord): string
+{
+    switch ($englishWord) {
+        case "Basic":
+            return "मूल वेतन";
+        case "HRA":
+            return "घर भाड़ा";
+        case "Advance":
+            return "एडवान्स";
+        case "PF":
+            return "भविष्य निधि ";
+        case "OT":
+            return "ओवर टाइम";
+        case "Designation":
+            return "पद";
+        case "Gross Salary":
+            return "सम्पूर्ण वेतन";
+        case "Deductions":
+            return "कटौती";
+        case "Attendance":
+            return "mifLFkfr";
+//            return "उपस्थिति";
+        case "Name":
+            return "नाम";
+        case "DA":
+            return "महंगाई भत्ता";
+        case "PT":
+            return "व्यवसायकर";
+        case "Conveyance":
+            return "यात्रा भत्ता";
+        case "Net Payable":
+            return "नेट भुगतान";
+
+    }
+    return "";
+}

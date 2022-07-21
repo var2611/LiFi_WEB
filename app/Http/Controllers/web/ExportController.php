@@ -12,6 +12,7 @@ use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use View;
 
 class ExportController extends Controller
 {
@@ -77,7 +78,8 @@ class ExportController extends Controller
         $salary = Salary::with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])
             ->where('month', $month)
             ->where('year', $year)
-            ->get(['id', 'user_id', 'name', 'date', 'month', 'year', 'total_days', 'present_days', 'absent_days', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
+            ->limit(3)
+            ->get(['id', 'user_id', 'name', 'date', 'month', 'year','month_days','week_off_days', 'total_days', 'present_days', 'absent_days', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
 
 //        foreach ($salary as $sal) {
         $data_salary_slips = array();
@@ -86,34 +88,18 @@ class ExportController extends Controller
             $data_salary_slips[] = new DataSalarySlip($sal);
 
         }
-//        $pdf = PDF::getPdf();
-//        $mpdf = $pdf->getMpdf();
-        // get instance
-//        $pdf->stream();
-//        $view = 'layouts.salary-slip';
-        $view = 'layouts.salary-slip-demo';
-//        $data = View::make($view, ['data_salary_slips' => $data_salary_slips])->render();
 
+        $view = 'hrms.component.export.salary-slip-hindi';
+
+//        $viewTest = 'hrms.component.export.salary-slip-demo';
+//        $viewTest = 'hrms.component.export.salary-slip-hindi';
+//        $dataTest = View::make($viewTest, ['data_salary_slips' => $data_salary_slips])->render();
 
         try {
 
-//            $pdf = new LaravelMpdf();
-//            $pdf->getMpdf()->WriteHTML($data);
-
-            $dpdf = Pdf::loadView($view, ['data_salary_slips' => $data_salary_slips]);
-//            $dpdf = Pdf::loadHTML($data);
-//            $dpdf->render();
-//
-//            $dpdf->getDomPDF()
-//                ->getOptions()
-//                ->setIsRemoteEnabled(true);
-//            $pdf = PDF::loadView($view, ['data_salary_slips' => $data_salary_slips]);
-//            $pdf->getMpdf()->WriteHTML($stylesheet1, HTMLParserMode::HEADER_CSS);
-//            $pdf->getMpdf()->WriteHTML($stylesheet2, HTMLParserMode::HEADER_CSS);
-//            $pdf->getMpdf()->WriteHTML($data, HTMLParserMode::DEFAULT_MODE);
-
+            $dpdf = Pdf::loadView($view, ['data_salary_slips' => $data_salary_slips])->setPaper('a3', 'portrait');
             return $dpdf->download("$selected_month_year.pdf");
-//        return $data;
+//        return $dataTest;
         } catch (\Exception $e) {
             echo $e;
         }

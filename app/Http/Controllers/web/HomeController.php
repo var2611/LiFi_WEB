@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
-use App\Models\EmpContract;
-use App\Models\EmpContractAmountType;
-use App\Models\EmpContractType;
 use App\Models\Salary;
 use Auth;
 use Illuminate\Contracts\Support\Renderable;
@@ -55,10 +52,18 @@ class HomeController extends Controller
 
 //        echo floatval($employee_contract['abry_eligible']);
 
-        $salary = Salary::whereUserId(183)
-            ->where('month', intval('01'))
-            ->where('year', intval('2022'))
-            ->first();
+        $month = 5;
+        $year = 2022;
+        $company_id = 4;
+
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $sundays = getSundays($month, $year, $days_in_month);
+        $holidays = getHolidayDateOfCompanyByMonth($company_id, $month, $year);
+        $monthly_off = array_unique(array_merge($holidays, $sundays));
+
+        $salary = Salary::where('month', $month)
+            ->where('year', $year)
+            ->update(['month_days' => $days_in_month, 'week_off_days' => count($monthly_off)]);
 
         dd($salary);
 //        dd( intval('01'));

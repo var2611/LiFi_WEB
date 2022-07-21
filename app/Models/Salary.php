@@ -93,6 +93,10 @@ use Illuminate\Support\Carbon;
  * @property-read Collection|SalaryDetail[] $SalaryDetail
  * @property-read int|null $salary_detail_count
  * @property-read SalaryPfDetail|null $SalaryPfDetail
+ * @property int|null $month_days
+ * @property int|null $week_off_days
+ * @method static Builder|Salary whereMonthDays($value)
+ * @method static Builder|Salary whereWeekOffDays($value)
  */
 class Salary extends Model
 {
@@ -103,6 +107,8 @@ class Salary extends Model
         'date',
         'month',
         'year',
+        'month_days',
+        'week_off_days',
         'total_days',
         'present_days',
         'absent_days',

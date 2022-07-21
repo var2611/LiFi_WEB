@@ -353,6 +353,8 @@ class SalaryController extends Controller
             $salary->salary_contract_basic = $salary_contract_basic;
             $salary->salary_contract_hra = $salary_contract_hra;
             $salary->salary_contract_total = $salary_contract_total;
+            $salary->month_days = $days_in_month;
+            $salary->week_off_days = count($monthly_off);
             $salary->total_days = $working_days;
             $salary->present_days = $employee_working_days;
             $salary->absent_days = $employee_absent_days;
