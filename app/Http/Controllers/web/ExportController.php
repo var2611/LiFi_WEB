@@ -78,8 +78,8 @@ class ExportController extends Controller
         $salary = Salary::with(['UserEmployee:id,user_id,emp_code', 'UserEmployee.EmpDepartmentData:id,user_id,emp_department_type_id,description', 'UserEmployee.EmpDepartmentData.EmpDepartmentType:id,name', 'UserEmployee.EmpPfDetail:id,user_id,pf_number,uan,bank_name,description,status'])
             ->where('month', $month)
             ->where('year', $year)
-            ->limit(3)
-            ->get(['id', 'user_id', 'name', 'date', 'month', 'year','month_days','week_off_days', 'total_days', 'present_days', 'absent_days', 'salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
+//            ->limit(3)
+            ->get(['id', 'user_id', 'name', 'date', 'month', 'year','month_days','week_off_days', 'total_days', 'present_days', 'absent_days', 'salary_contract_basic', 'salary_contract_basic', 'salary_contract_basic','salary_basic', 'salary_hra', 'salary_total', 'salary_gross_earning', 'salary_gross_deduction', 'salary_net_pay']);
 
 //        foreach ($salary as $sal) {
         $data_salary_slips = array();
@@ -92,7 +92,7 @@ class ExportController extends Controller
         $view = 'hrms.component.export.salary-slip-hindi';
 
 //        $viewTest = 'hrms.component.export.salary-slip-demo';
-//        $viewTest = 'hrms.component.export.salary-slip-hindi';
+        $viewTest = 'hrms.component.export.salary-slip-hindi';
 //        $dataTest = View::make($viewTest, ['data_salary_slips' => $data_salary_slips])->render();
 
         try {

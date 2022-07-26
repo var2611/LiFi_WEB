@@ -20,12 +20,19 @@
             page-break-after: always;
         }
 
-        {{--@font-face {--}}
-        {{--    font-family: "Poppins";--}}
-        {{--    src: url('{{public_path()}}/fonts/Poppins-Regular.ttf') format("truetype");--}}
-        {{--    font-weight: 400;--}}
-        {{--    font-style: normal;--}}
-        {{--}--}}
+        @font-face {
+            font-family: "NotoSans";
+            src: url('{{public_path()}}/fonts/NotoSans-Regular.ttf') format("truetype");
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "NotoSans";
+            src: url('{{public_path()}}/fonts/NotoSans-Bold.ttf') format("truetype");
+            font-weight: 700;
+            font-style: normal;
+        }
 
         @font-face {
             font-family: "kruti-dev";
@@ -35,6 +42,11 @@
         }
 
         * {
+            font-family: "NotoSans", serif;
+        }
+
+        .hindi {
+            font-size: 14px;
             font-family: "kruti-dev", serif;
         }
 
@@ -143,7 +155,7 @@
             <div style="width: 100%; border: solid 2px #000000"></div>
 
             <div class="invoice-summary">
-                <div class="text-center" style="margin-top: 20px">
+                <div class="text-center" style="margin-top: 5px">
                     <span><b>Wages Slip for the Month Of : </b>{{ $data_salary_slip->salary_month . ' ' . $data_salary_slip->salary_year }}</span>
                 </div>
                 <div class="row" style="width: 100%">
@@ -152,7 +164,7 @@
                             <thead>
                             <tr>
                                 <td style="width: 20%"><b>EMP Code</b></td>
-                                <td style="width: 20%;text-align: start"><b>{{getEnglishToHindi("EMP Code")}}</b></td>
+                                <td class="hindi" style="width: 20%;text-align: start">{{getEnglishToHindi("EMP Code")}}</td>
                                 <td style="width: 5%"><b>:</b></td>
                                 <td style="width: 55%">{{ $data_salary_slip->emp_code }}</td>
                             </tr>
@@ -160,7 +172,7 @@
                             <thead>
                             <tr>
                                 <td style="width: 20%"><b>EMP Name</b></td>
-                                <td style="width: 20%;text-align: start"><b>{{getEnglishToHindi("Name")}}</b></td>
+                                <td class="hindi" style="width: 20%;text-align: start">{{getEnglishToHindi("Name")}}</td>
                                 <td style="width: 5%"><b>:</b></td>
                                 <td style="width: 55%;text-align: start">{{ $data_salary_slip->name }}</td>
                             </tr>
@@ -168,7 +180,7 @@
                             <thead>
                             <tr>
                                 <td style="width: 20%"><b>Designation</b></td>
-                                <td style="width: 20%"><b>{{getEnglishToHindi("Designation")}}</b></td>
+                                <td class="hindi" style="width: 20%">{{getEnglishToHindi("Designation")}}</td>
                                 <td style="width: 5%"><b>:</b></td>
                                 <td style="width: 55%">{{ ucfirst($data_salary_slip->departmentType) }}
                                     ({{ $data_salary_slip->description}})
@@ -178,7 +190,7 @@
                             <thead>
                             <tr>
                                 <td style="width: 20%"><b>UAN.</b></td>
-                                <td style="width: 20%"><b>{{getEnglishToHindi("UAN")}}</b></td>
+                                <td class="hindi" style="width: 20%">{{getEnglishToHindi("UAN")}}</td>
                                 <td style="width: 5%"><b>:</b></td>
                                 <td style="width: 55%">{{ $data_salary_slip->uan ?? ucfirst('nil') }}</td>
                             </tr>
@@ -186,7 +198,7 @@
                             <thead>
                             <tr>
                                 <td style="width: 20%"><b>PF No.</b></td>
-                                <td style="width: 20%"><b>{{getEnglishToHindi("PF No")}}</b></td>
+                                <td class="hindi" style="width: 20%">{{getEnglishToHindi("PF No")}}</td>
                                 <td style="width: 5%"><b>:</b></td>
                                 <td style="width: 55%">{{ $data_salary_slip->pf_number ?? ucfirst('nil') }}</td>
                             </tr>
@@ -220,7 +232,7 @@
                             </thead>
                             <thead>
                             <tr>
-                                <td>{{getEnglishToHindi("Attendance")}}</td>
+                                <td class="hindi" style="text-align: center">{{getEnglishToHindi("Attendance")}}</td>
                                 <th>{{$data_salary_slip->present_days}}</th>
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
@@ -236,7 +248,7 @@
                 </div>
             </div>
             <div style="width: 100%; border: solid 1px #000000"></div>
-            <div style="margin-top: 10px; margin-bottom: 10px">
+            <div style="/*margin-bottom: 10px*/">
                 <table style="width: 100%">
                     <thead>
                     <tr>
@@ -253,17 +265,17 @@
                 </table>
             </div>
             <div style="width: 100%; border: solid 1px #000000"></div>
-            <div style="margin-top: 10px; margin-bottom: 10px">
+            <div style="/*margin-top: 5px; margin-bottom: 10px*/">
                 <table style="width: 100%">
                     <thead>
                     <tr>
                         <td style="width: 18%; text-align: start">Basic Salary + DA</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("Basic")}}
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Basic")}}
                             + {{getEnglishToHindi("DA")}}</td>
                         <td style="width: 7%; text-align: start">{{$data_salary_slip->salary_contract_basic}}</td>
                         <td style="width: 7%; text-align: start">{{$data_salary_slip->salary_basic}}</td>
                         <td style="width: 18%; text-align: start">PF</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("PF")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("PF")}}</td>
                         <td style="width: 7%; text-align: start">{{$data_salary_slip->pf_amount}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                     </tr>
@@ -271,11 +283,11 @@
                     <thead>
                     <tr>
                         <td style="width: 18%; text-align: start">Spl.Allow</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("Allow")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Allow")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 18%; text-align: start">PT</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("PT")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("PT")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                     </tr>
@@ -283,11 +295,11 @@
                     <thead>
                     <tr>
                         <td style="width: 18%; text-align: start">HRA</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("HRA")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("HRA")}}</td>
                         <td style="width: 7%; text-align: start">{{$data_salary_slip->salary_contract_hra}}</td>
                         <td style="width: 7%; text-align: start">{{$data_salary_slip->salary_hra}}</td>
                         <td style="width: 18%; text-align: start">Loan</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("Loan")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Loan")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                     </tr>
@@ -295,11 +307,11 @@
                     <thead>
                     <tr>
                         <td style="width: 18%; text-align: start">Conveyance</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("Conveyance")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Conveyance")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 18%; text-align: start">Advance</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("Advance")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Advance")}}</td>
                         <td style="width: 7%; text-align: start">{{$data_salary_slip->advance_amount}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                     </tr>
@@ -307,11 +319,11 @@
                     <thead>
                     <tr>
                         <td style="width: 18%; text-align: start">OT</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("OT")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("OT")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 18%; text-align: start">ESIC</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("ESIC")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("ESIC")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                     </tr>
@@ -323,7 +335,7 @@
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 18%; text-align: start">TDS</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("TDS")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("TDS")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                     </tr>
@@ -335,9 +347,9 @@
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
                         <td style="width: 18%; text-align: start">LWF</td>
-                        <td style="width: 18%; text-align: start">{{getEnglishToHindi("LWF")}}</td>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("LWF")}}</td>
                         <td style="width: 7%; text-align: start">&nbsp;</td>
-                        <td style="width: 7%; text-align: start">{{getEnglishToHindi("Net Payable")}}</td>
+                        <td class="hindi" style="width: 7%; text-align: start">{{getEnglishToHindi("Net Payable")}}</td>
                     </tr>
                     </thead>
                 </table>
@@ -348,12 +360,12 @@
                     <thead>
                     <tr>
                         <th style="width: 18%; text-align: start"><b>Gross Salary</b></th>
-                        <th style="width: 18%; text-align: start"><b>{{getEnglishToHindi("Gross Salary")}}</b></th>
-                        <th style="width: 7%; text-align: start"><b>{{$data_salary_slip->salary_contract_total}}</b>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Gross Salary")}}</td>
+                        <th style="width: 7%; text-align: start">{{$data_salary_slip->salary_contract_total}}
                         </th>
                         <th style="width: 7%; text-align: start"><b>{{$data_salary_slip->salary_total}}</b></th>
                         <th style="width: 18%; text-align: start"><b>Deductions</b></th>
-                        <th style="width: 18%; text-align: start"><b>{{getEnglishToHindi("Deductions")}}</b></th>
+                        <td class="hindi" style="width: 18%; text-align: start">{{getEnglishToHindi("Deductions")}}</td>
                         <th style="width: 7%; text-align: start"><b>{{$data_salary_slip->salary_gross_deduction}}</b>
                         </th>
                         <th style="width: 7%; text-align: start"><b>{{$data_salary_slip->salary_net_pay}}</b></th>

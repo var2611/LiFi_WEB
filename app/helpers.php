@@ -1237,34 +1237,34 @@ function getEnglishToHindi(string $englishWord): string
 {
     switch ($englishWord) {
         case "Basic":
-            return "मूल वेतन";
+            return "ewy osru";
         case "HRA":
-            return "घर भाड़ा";
+            return "?kj HkkM+k";
         case "Advance":
-            return "एडवान्स";
+            return ",MokUl";
         case "PF":
-            return "भविष्य निधि ";
+            return "Hkfo\"; fufèk";
         case "OT":
-            return "ओवर टाइम";
+            return "vksoj Vkbe";
         case "Designation":
-            return "पद";
+            return "in";
         case "Gross Salary":
-            return "सम्पूर्ण वेतन";
+            return "lEiw.kZ osru";
         case "Deductions":
-            return "कटौती";
+            return "dVkSrh";
         case "Attendance":
             return "mifLFkfr";
 //            return "उपस्थिति";
         case "Name":
-            return "नाम";
+            return "uke";
         case "DA":
-            return "महंगाई भत्ता";
+            return "egaxkbZ HkÙkk";
         case "PT":
-            return "व्यवसायकर";
+            return "O;olk;dj";
         case "Conveyance":
-            return "यात्रा भत्ता";
+            return ";k=k HkÙkk";
         case "Net Payable":
-            return "नेट भुगतान";
+            return "usV Hkqxrku";
 
     }
     return "";
