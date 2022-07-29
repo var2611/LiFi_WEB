@@ -138,7 +138,7 @@ async function getContractDetail() {
     if (document.getElementById("contract_type_id")) {
 
         var contract_type_id = document.getElementById('contract_type_id').options[document.getElementById('contract_type_id').selectedIndex].value
-        alert(parseInt(contract_type_id));
+        // alert(parseInt(contract_type_id));
         var user_id = document.getElementsByName('user_id')[0].value;
 
         let url = "{{ route('edit-emp-contract', ':id', ':user_id') }}";
