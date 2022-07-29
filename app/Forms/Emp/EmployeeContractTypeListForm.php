@@ -14,10 +14,12 @@ class EmployeeContractTypeListForm extends Form
     {
         $contractTypes = EmpContractType::whereCompanyId(Auth::user()->getCompanyId())->get(['id', 'name'])->toArray();
 
+//        dd($contractTypes);
+
         $this
-            ->add('emp_contract_type_id', Field::SELECT, [
+            ->add('contract_type_id', Field::SELECT, [
                 'attr' => ['onchange' => 'getContractDetail()'],
-                'id' => 'emp_contract_type_id',
+//                'id' => 'contract_i',
                 'choices' => Arr::pluck($contractTypes, 'name', 'id'),
                 'empty_value' => '=== Select Type ===',
                 'rules' => 'required',

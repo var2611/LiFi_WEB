@@ -25,7 +25,7 @@
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade" role="tabpanel" id="tab_tab1">
+        <div class="tab-pane fade show active" role="tabpanel" id="tab_tab1">
             {!! form($data['formUserDetail']) !!}
         </div>
         <div class="tab-pane fade" role="tabpanel" id="tab_tab2">
@@ -34,7 +34,7 @@
 {{--        <div class="tab-pane fade" role="tabpanel" id="tab_tab3">--}}
 {{--            {!! form($data['formDepartmentDetail']) !!}--}}
 {{--        </div>--}}
-        <div class="tab-pane fade show active" role="tabpanel" id="tab_tab4">
+        <div class="tab-pane fade" role="tabpanel" id="tab_tab4">
             {!! form($data['formContractDetail']) !!}
 
             <div class="loader" id="loader"></div>

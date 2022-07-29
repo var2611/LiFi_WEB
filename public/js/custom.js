@@ -135,17 +135,17 @@ function calculateSalary(){
 
 async function getContractDetail() {
     jQuery(".loader").show();
-    if (document.getElementById("emp_contract_type_id")) {
+    if (document.getElementById("contract_type_id")) {
 
-        var contract_type_id = document.getElementById('emp_contract_type_id').options[document.getElementById('emp_contract_type_id').selectedIndex].value
-        // alert(parseInt(contract_type_id));
+        var contract_type_id = document.getElementById('contract_type_id').options[document.getElementById('contract_type_id').selectedIndex].value
+        alert(parseInt(contract_type_id));
         var user_id = document.getElementsByName('user_id')[0].value;
 
         let url = "{{ route('edit-emp-contract', ':id', ':user_id') }}";
         url = url.replace(':id', contract_type_id);
         url = url.replace(':user_id', user_id);
 
-        // alert((APP_URL));
+        // alert((user_id));
         await sleep(2000)
         $('#details').load(APP_URL + '/edit-emp-contract/' + contract_type_id + '/' + user_id);
         // document.location.href=url;

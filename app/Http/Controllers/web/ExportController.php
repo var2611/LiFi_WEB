@@ -97,7 +97,7 @@ class ExportController extends Controller
 
         try {
 
-            $dpdf = Pdf::loadView($view, ['data_salary_slips' => $data_salary_slips])->setPaper('a3', 'portrait');
+            $dpdf = Pdf::loadView($view, ['data_salary_slips' => $data_salary_slips])->setPaper('a3');
             return $dpdf->download("$selected_month_year.pdf");
 //        return $dataTest;
         } catch (\Exception $e) {
