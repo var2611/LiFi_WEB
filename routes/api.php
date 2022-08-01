@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('att/saveAttDetails', [LiFiAttendanceController::class, 'saveAttendanceWithDetails']);
     Route::post('att/userDetails', [UserController::class, 'att_user_details']);
     Route::post('att/attRegisterEmployee', [UserController::class, 'att_register_employee']);
+    Route::post('att/lifiLockValidation', [LiFiAttendanceController::class, 'lifiLockValidation']);
 
 
 });

@@ -152,7 +152,7 @@ class LiFiAttendanceController extends Controller
         return $this->return_response();
     }
 
-    private function saveAtt($flash_code)
+    private function saveAtt($flash_code): ?Attendance
     {
         $userEmployee = UserEmployee::whereFlashCode($flash_code)
             ->with(['User'])
@@ -304,5 +304,31 @@ class LiFiAttendanceController extends Controller
         }
 
         return $this->return_response();
+    }
+
+    public function lifiLockValidation(Request $request)
+    {
+        $rules = [
+            'flash_code' => 'required',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+            $flash_code = $request->flash_code;
+
+            $userEmployee = UserEmployee::whereFlashCode($flash_code)
+                ->with(['User'])
+                ->first();
+
+            if ($userEmployee == null) {
+                $this->return_response_att_error("No User Found");
+            } else {
+                if ($userEmployee) {
+                    $user_name = getUserNameFromFlashCode($flash_code);
+                    $this->return_response_att("1," . $user_name . ",");
+                } else {
+                    $this->return_response_att_error("Something Went Wrong Please Try Again");
+                }
+            }
+        }
     }
 }
