@@ -3,7 +3,7 @@
        class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
             <span class="fa fa-graduation-cap fa-fw mr-3"></span>
-            <span class="menu-collapsed">Import / Upload</span>
+            <span class="menu-collapsed">Lat Long Data</span>
             <span class="submenu-icon ml-auto"></span>
         </div>
     </a>
