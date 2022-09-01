@@ -15,9 +15,5 @@
         <a href="{{ route('sheet-import-emp-contracts') }}" class="list-group-item list-group-item-action bg-dark text-white">
             <span class="menu-collapsed">Salary Contract Import</span>
         </a>
-        <a href="{{ route('sheet-import-lat-long-data') }}" class="list-group-item list-group-item-action bg-dark text-white">
-            <span class="menu-collapsed">Lat Long Data</span>
-        </a>
-
     </div>
 @endsection

@@ -182,4 +182,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     /*HRMS List --End------------------------------------------------------------------*/
 
+    Route::get('/sheet-export-lat-long-data-download', [LatLongInternetController::class, 'listLatLongFilterDataExport'])->name('sheet-export-lat-long-data-download');
 });

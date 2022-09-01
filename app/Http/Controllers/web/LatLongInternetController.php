@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exports\LatLongInternetExport;
 use App\Forms\Import\ImportLatLongDataForm;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\ListLatLongInternetDataView;
@@ -12,6 +13,7 @@ use DB;
 use LaravelViews\LaravelViews;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
 class LatLongInternetController extends Controller
 {
@@ -43,7 +45,7 @@ class LatLongInternetController extends Controller
             'url' => route('generate-lat-long-data')
         ]);
 
-        return view('layouts.hrms_forms', compact('form'), ['import' => true]);
+        return view('layouts.hrms_forms', compact('form'), ['lat_long' => true]);
     }
 
     public function saveLatLongDataToDatabase(): string
@@ -80,6 +82,18 @@ class LatLongInternetController extends Controller
 
     public function listLatLongNonInternetData(LaravelViews $laravelViews): string
     {
-        return $this->createList($laravelViews, ListLatLongInternetDataView::class, 'Lat-Long Non Internet Data', 'import');
+        return $this->createList($laravelViews, ListLatLongInternetDataView::class, 'Lat-Long Non Internet Data', 'lat_long', route('sheet-export-lat-long-data-download'));
+    }
+
+    public function listLatLongFilterDataExport()
+    {
+        try {
+//            $data =  new LatLongInternetExport();
+            return Excel::download(new LatLongInternetExport(), "LatLongNearData.xlsx");
+        } catch (Exception|\PhpOffice\PhpSpreadsheet\Exception $e) {
+            dd($e);
+        }
+
+//        return redirect()->back();
     }
 }

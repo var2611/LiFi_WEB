@@ -316,15 +316,15 @@ class LiFiAttendanceController extends Controller
             $flash_code = $request->flash_code;
 
             $userEmployee = UserEmployee::whereFlashCode($flash_code)
-                ->with(['User'])
+                ->with(['User:id,name'])
                 ->first();
 
             if ($userEmployee == null) {
                 $this->return_response_att_error("No User Found");
             } else {
                 if ($userEmployee) {
-                    $user_name = getUserNameFromFlashCode($flash_code);
-                    $this->return_response_att("1," . $user_name . ",");
+//                    $user_name = getUserNameFromFlashCode($flash_code);
+                    $this->return_response_att("1," . $userEmployee->User->name . ",");
                 } else {
                     $this->return_response_att_error("Something Went Wrong Please Try Again");
                 }

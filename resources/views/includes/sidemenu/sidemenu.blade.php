@@ -6,3 +6,4 @@
 @extends('includes.sidemenu.emp-contract-menu')
 @extends('includes.sidemenu.import-upload-menu')
 @extends('includes.sidemenu.export-download-menu')
+@extends('includes.sidemenu.lat-long-internet-menu')

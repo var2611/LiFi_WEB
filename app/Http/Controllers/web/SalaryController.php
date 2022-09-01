@@ -206,8 +206,8 @@ class SalaryController extends Controller
             ->whereHas('UserEmployee', function ($q) use ($company_id) {
                 $q->where('company_id', '=', $company_id);
             })
-            ->whereRaw("MONTH(`start_date`) BETWEEN $month AND $month")
-            ->whereYear('start_date', '=', $year);
+            ->whereRaw("CONCAT($month, $year) BETWEEN CONCAT(MONTH(`start_date`), YEAR(`start_date`)) AND CONCAT(MONTH(`end_date`), YEAR(`end_date`))");
+//            ->whereYear('start_date', '=', $year);
 //            ->orWhereYear('end_date', '=', $year);
 
 //            ->orWhereMonth('end_date', '>=', $month)

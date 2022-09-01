@@ -7,10 +7,10 @@
         <!-- Bootstrap List Group -->
         <ul class="list-group">
             <!-- Separator with title -->
-        {{--                    <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">--}}
-        {{--                        <small>MAIN MENU</small>--}}
-        {{--                    </li>--}}
-        <!-- /END Separator -->
+            {{--                    <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">--}}
+            {{--                        <small>MAIN MENU</small>--}}
+            {{--                    </li>--}}
+            <!-- /END Separator -->
             <!-- Menu with submenu -->
             <a href="#" data-toggle="sidebar-colapse"
                class="bg-dark list-group-item list-group-item-action d-flex align-items-center">
@@ -42,7 +42,7 @@
             @yield('export-download-menu')
 
             <a href="{{ route('list-holiday') }}"
-                   class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+               class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-tree fa-fw mr-3"></span>
                     <span class="menu-collapsed">Holiday</span>
@@ -64,6 +64,9 @@
                     {{--                            <span class="submenu-icon ml-auto"></span>--}}
                 </div>
             </a>
+            @if(Auth::user()->isAdmin())
+                @yield('lat-long-internet-menu')
+            @endif
 
         </ul><!-- List Group END-->
     </div><!-- sidebar-container END -->
