@@ -3,6 +3,7 @@
 namespace App\Forms\Emp;
 
 use App\Models\UserRole;
+use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
@@ -10,7 +11,7 @@ class EmployeeRegistrationForAttForm extends Form
 {
     public function buildForm()
     {
-        $user_role = UserRole::get(['id', 'name'])->toArray();
+        $armyUserRole = UserRole::whereIn('id', [6,8])->get(['id', 'name'])->toArray();
 
         $this
             ->add('emp_code', Field::TEXT, [
@@ -18,7 +19,22 @@ class EmployeeRegistrationForAttForm extends Form
             ])
             ->add('name', Field::TEXT, [
                 'rules' => 'required'
-            ])
+            ]);
+
+        if (\Auth::user()->isArmy()) {
+            $this
+                ->add('user_role_id', Field::SELECT, [
+                    'choices' => Arr::pluck($armyUserRole, 'name', 'id'),
+//                'choices' => ['en' => 'English', 'fr' => 'French'],
+//                'selected' => function ($data) {
+//                    // Returns the array of short names from model relationship data
+//                    return Arr::pluck($data, 'name');
+//                },
+                    'empty_value' => '=== Select Driver ===',
+                    'label' => 'Select Role'
+                ]);
+        }
+        $this
             ->add('last_name', Field::TEXT, [
                 'rules' => 'required'
             ])

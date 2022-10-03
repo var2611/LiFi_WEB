@@ -26,11 +26,14 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return Renderable
+     * @return
      */
     public function index()
     {
-        return view('hrms.dashboard');
+        if (Auth::user()->isArmy()) {
+            return redirect()->route('army-dashboard');
+        }
+        return redirect()->route('hr_dashboard');
     }
 
     public function welcome(Request $request)

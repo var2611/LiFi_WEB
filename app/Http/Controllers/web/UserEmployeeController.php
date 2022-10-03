@@ -194,27 +194,6 @@ class UserEmployeeController extends Controller
     }
 
     /**
-     * @param string $id
-     * @return Form|void
-     */
-    private function editFormEmpDepartmentData(string $id)
-    {
-        $model = EmpDepartmentData::whereUserId($id)->first();
-
-        if (!$model) {
-            $model = new EmpPfDetail();
-            $model->user_id = $id;
-        }
-        return $this->createFormData(
-            EmployeeDepartmentDataForm::class,
-            route('store-emp-department-data'),
-            'employee',
-            $model,
-            null
-        );
-    }
-
-    /**
      * @return string
      */
     public function storeFormEmpDepartmentData(): string
@@ -396,5 +375,26 @@ class UserEmployeeController extends Controller
 
             return redirect()->route('list-employee');
         }
+    }
+
+    /**
+     * @param string $id
+     * @return Form|void
+     */
+    private function editFormEmpDepartmentData(string $id)
+    {
+        $model = EmpDepartmentData::whereUserId($id)->first();
+
+        if (!$model) {
+            $model = new EmpPfDetail();
+            $model->user_id = $id;
+        }
+        return $this->createFormData(
+            EmployeeDepartmentDataForm::class,
+            route('store-emp-department-data'),
+            'employee',
+            $model,
+            null
+        );
     }
 }

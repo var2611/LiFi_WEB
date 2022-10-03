@@ -18,7 +18,7 @@
                     <span id="collapse-icon" class="fa fa-2x mr-3"></span>
                 </div>
             </a>
-            <a href="{{route('hr_dashboard')}}"
+            <a href="{{route('home')}}"
                class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-dashboard fa-fw mr-3"></span>

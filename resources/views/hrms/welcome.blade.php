@@ -25,7 +25,7 @@
         <div class="center text-white"><h5>Welcome</h5></div>
         <div class="center text-white mt-5">
             <ul class="li-margin text-decoration-none flex justify-content-center">
-                <li><a href="{{ route('hr_dashboard') }}"><i class="fas fa-arrow-left"></i>Dashboard</a></li>
+                <li><a href="{{ route('home') }}"><i class="fas fa-arrow-left"></i>Dashboard</a></li>
                 <li><a href="#">Profile<i class="fas fa-arrow-right"></i></a></li>
             </ul>
         </div>

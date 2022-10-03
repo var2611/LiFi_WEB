@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserEmployee;
+use App\Models\VehicleUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,47 +15,6 @@ use Mockery\Exception;
 
 class UserController extends Controller
 {
-
-    function send($mobile, $message)
-    {
-        # code...
-        print_r($mobile);
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "{ \"sender\": \"NVTECH\", \"route\": \"4\", \"country\": \"91\", \"sms\":
-    [ { \"message\": \"$message\", \"to\": [ \"$mobile\"] }]}",
-            CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => 0,
-            CURLOPT_HTTPHEADER => array(
-                "authkey: 322008AkMnr19Q75e63638eP1",
-                "content-type: application/json"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        print_r($response);
-        print_r($err);
-
-        curl_close($curl);
-
-//if ($err) {
-// print_r( $err);
-//} else {
-//showResultFailed();
-//}
-    }
-
     public function demo1()
     {
 
@@ -316,7 +276,7 @@ class UserController extends Controller
                     $application_code = $request->header('ApplicationCode') ?? '';
 
                     if ($application_code == 'BGAUSS') {
-                        $allowed_roles = array(1, 2, 3);
+                        $allowed_roles = array(1, 2, 3, 7);
                         if (in_array($user_employee->user_role_id, $allowed_roles)) {
 
                             $data['is_valid_user'] = true;
@@ -420,9 +380,81 @@ class UserController extends Controller
             } catch (Exception $exception) {
                 $this->set_return_response_exception($exception);
             }
+        }
+        return $this->return_response();
+    }
 
+    public function armyVehicleRegistration(Request $request): JsonResponse
+    {
+        $rules = [
+            'vehicle_number' => 'required'
+        ];
+
+        $user = Auth::user();
+
+        if ($this->ApiValidator($request->all(), $rules) && $user->isArmy()) {
+            $vehicle_number = $request->vehicle_number;
+
+            $vehicle = User::whereMobile($vehicle_number)->first();
+
+            if ($vehicle) {
+
+                $alreadyRegisteredVehicle = VehicleUser::whereVehicleId($vehicle->id)->whereIsActive(0)->first();
+
+                $assignVehicle = false;
+
+                if ($alreadyRegisteredVehicle) {
+                    if ($alreadyRegisteredVehicle->user_id == $user->id) {
+                        $this->set_return_response_unsuccessful("Vehicle is already assigned to your account.");
+                    } else {
+                        $alreadyRegisteredVehicle->is_active = 1;
+                        $alreadyRegisteredVehicle->save();
+                        $assignVehicle = true;
+                    }
+                } else {
+                    $assignVehicle = true;
+                }
+
+                if ($assignVehicle) {
+                    $vehicle_user = new VehicleUser();
+                    $vehicle_user->user_id = $user->id;
+                    $vehicle_user->vehicle_id = $vehicle->id;
+                    $vehicle_user->start_time = getTodayDateTime();
+                    $result = $vehicle_user->save();
+
+                    if ($result) {
+                        $this->set_return_response_success(null, "Vehicle User Registration Successful.");
+                    } else {
+                        $this->set_return_response_unsuccessful("Vehicle Registration has failed, Please try again.");
+                    }
+                }
+
+            } else {
+                $this->set_return_response_unsuccessful("Provided vehicle Number is not registered in system.");
+            }
         }
 
+        return $this->return_response();
+    }
+
+    public function getRegisteredVehicleList(Request $request): JsonResponse
+    {
+        $rules = [
+//            'vehicle_number' => 'required'
+        ];
+
+        $user = Auth::user();
+
+        if ($this->ApiValidator($request->all(), $rules) && $user->isArmy()) {
+            $vehicleUsers = VehicleUser::whereUserId($user->id)
+                ->with(['Vehicle:id,name,mobile'])
+                ->get(['id', 'user_id', 'vehicle_id', 'start_time', 'end_time', 'is_active']);
+            if ($vehicleUsers) {
+                $this->set_return_response_success($vehicleUsers, "Vehicle User List.");
+            } else {
+                $this->set_return_response_unsuccessful("No Record Found.");
+            }
+        }
         return $this->return_response();
     }
 

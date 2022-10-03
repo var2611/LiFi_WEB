@@ -163,6 +163,16 @@ class User extends Authenticatable
     /**
      * @return bool
      */
+    public function isArmy(): bool
+    {
+        $userRole = Auth::user()->UserEmployee->user_role_id;
+        return $userRole == 6;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function isFreeLiFiWiFi(): bool
     {
         $companyId = Auth::user()->getCompanyId();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\web\ArmyController;
 use App\Http\Controllers\web\AttendanceController;
 use App\Http\Controllers\web\EmployeeContractController;
 use App\Http\Controllers\web\EmployeeWorkShiftController;
@@ -29,7 +30,7 @@ Route::redirect('/', '/login');
 //Route::redirect('/home', '/admin');
 Auth::routes();
 
-Route::view('/dashboard', '/dashboard')->name('dashboard');
+//Route::view('/dashboard', '/dashboard')->name('dashboard');
 Route::view('/demo_table', '/hrms.component.salary.data-attendance-overtime')->name('demo_table');
 Route::get('/fetchPublicWiFiData', [FreeLifiWifiController::class, 'fetchPublicWiFiData'])->name('fetchPublicWiFiData');
 Route::get('/demoA/{id?}', [SalaryController::class, 'editSalary'])->name('demoA');
@@ -95,6 +96,10 @@ Route::group(['middleware' => 'auth'], function () {
     /*Employee Forms*/
     Route::get('/edit-emp-registration-att', [UserEmployeeController::class, 'editFormEmpRegistrationForAtt'])->name('edit-emp-registration-att');
     Route::post('/store-emp-registration-att', [UserEmployeeController::class, 'storeFormEmpRegistrationForAtt'])->name('store-emp-registration-att');
+
+    /*Vehicle Forms*/
+    Route::get('/edit-vehicle-registration-army', [ArmyController::class, 'editFormVehicleRegistrationForArmy'])->name('edit-vehicle-registration-army');
+    Route::post('/store-vehicle-registration-army', [ArmyController::class, 'storeFormVehicleRegistrationForArmy'])->name('store-vehicle-registration-army');
 
     /*Employee Registration Forms*/
     Route::get('/edit-emp-registration', [UserEmployeeController::class, 'editFormEmpRegistration'])->name('edit-emp-registration');
@@ -162,6 +167,7 @@ Route::group(['middleware' => 'auth'], function () {
     /*HRMS List --Start------------------------------------------------------------------*/
 
     Route::get('/list-employee', [UserEmployeeController::class, 'listEmp'])->name('list-employee');
+    Route::get('/list-vehicle', [ArmyController::class, 'listVehicle'])->name('list-vehicle');
     Route::get('/list-role', [UserEmployeeController::class, 'listUserRoles'])->name('list-role');
     Route::get('/list-emp-attendance', [AttendanceController::class, 'listEmpAttendances'])->name('list-emp-attendance');
     Route::get('/list-my-attendance', [AttendanceController::class, 'listMyAttendances'])->name('list-my-attendance');
@@ -179,6 +185,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/list-overtime-type', [SalaryController::class, 'overtimeTypeList'])->name('list-overtime-type');
     Route::get('/list-emp-work-shift', [EmployeeWorkShiftController::class, 'listEmpWorkShiftView'])->name('list-emp-work-shift');
     Route::get('/lat-long-non-internet-data', [LatLongInternetController::class, 'listLatLongNonInternetData'])->name('lat-long-non-internet-data');
+    Route::get('/army-dashboard', [ArmyController::class, 'index'])->name('army-dashboard');
 
     /*HRMS List --End------------------------------------------------------------------*/
 

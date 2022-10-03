@@ -30,8 +30,7 @@ class LiFiAttendanceController extends Controller
 
     /**
      * Login for Smart Pole only with
-     * new pole user creation via MAC-
-     * Address.
+     * new pole user creation via MAC-Address.
      *
      * @param Request $request
      */
@@ -325,6 +324,32 @@ class LiFiAttendanceController extends Controller
                 if ($userEmployee) {
 //                    $user_name = getUserNameFromFlashCode($flash_code);
                     $this->return_response_att("1," . $userEmployee->User->name . ",");
+                } else {
+                    $this->return_response_att_error("Something Went Wrong Please Try Again");
+                }
+            }
+        }
+    }
+
+    public function armyGateVerification(Request $request)
+    {
+        $rules = [
+            'flash_code' => 'required',
+        ];
+
+        if ($this->ApiValidator($request->all(), $rules)) {
+            $flash_code = $request->flash_code;
+
+            $userEmployee = UserEmployee::whereFlashCode($flash_code)
+                ->with(['User:id,name'])
+                ->first();
+
+            if ($userEmployee == null) {
+                $this->return_response_att_error("No User Found");
+            } else {
+                if ($userEmployee) {
+//                    $user_name = getUserNameFromFlashCode($flash_code);
+                    $this->return_response_att("1," . $userEmployee->User->getFullName() . ",");
                 } else {
                     $this->return_response_att_error("Something Went Wrong Please Try Again");
                 }

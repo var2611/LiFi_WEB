@@ -36,7 +36,7 @@ Route::post('poleTime', [PoleController::class, 'getCurrentTime']);
  * */
 
 
-Route::post('demo1', [UserController::class, 'demo1']);
+//Route::post('demo1', [UserController::class, 'demo1']);
 Route::post('createUser', [UserController::class, 'createUser']);
 Route::post('createUser1', [UserController::class, 'createUser1']);
 Route::post('smsToMobile', [UserController::class, 'smsToMobile']);
@@ -76,15 +76,20 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('poleMain', [PoleController::class, 'poleMain']);
     Route::get('poleLastUpdateStatus', [PoleController::class, 'pole_last_update_status']);
 
-    //POLE Application API
+    //POLE Application API.
     Route::get('editPoleDayData', [PoleController::class, 'edit_pole_day_data']);
 
-    //LiFi Attendance API
+    //LiFi Attendance API.
     Route::post('att/saveAtt', [LiFiAttendanceController::class, 'saveAttendance']);
     Route::post('att/saveAttDetails', [LiFiAttendanceController::class, 'saveAttendanceWithDetails']);
     Route::post('att/userDetails', [UserController::class, 'att_user_details']);
     Route::post('att/attRegisterEmployee', [UserController::class, 'att_register_employee']);
     Route::post('att/lifiLockValidation', [LiFiAttendanceController::class, 'lifiLockValidation']);
+
+    //ARMY LiFi Vehicle Gate API.
+    Route::post('lifi/armyGateVerification', [LiFiAttendanceController::class, 'armyGateVerification']);
+    Route::post('lifi/armyVehicleRegistration', [UserController::class, 'armyVehicleRegistration']);
+    Route::post('lifi/getRegisteredVehicleList', [UserController::class, 'getRegisteredVehicleList']);
 
 
 });

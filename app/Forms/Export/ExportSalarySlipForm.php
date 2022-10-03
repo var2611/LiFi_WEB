@@ -11,7 +11,10 @@ class ExportSalarySlipForm extends Form
 {
     public function buildForm()
     {
-        $salary_month = Salary::selectRaw("CONCAT(MONTHNAME(str_to_date(month,'%m')), ' ', year) as salary_month, month, year")->distinct()->orderBy('month')->get();
+        $salary_month = Salary::selectRaw("CONCAT(MONTHNAME(str_to_date(month,'%m')), ' ', year) as salary_month, month, year")
+            ->distinct()
+            ->orderBy('month')
+            ->get();
 
 //        echo json_encode($salary_month) . '<br>';
 //        dd($salary_month);

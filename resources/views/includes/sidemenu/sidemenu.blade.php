@@ -1,9 +1,6 @@
-@extends('includes.sidemenu.main')
-@extends('includes.sidemenu.att-menu')
-@extends('includes.sidemenu.emp-menu')
-@extends('includes.sidemenu.leave-menu')
-@extends('includes.sidemenu.salary-menu')
-@extends('includes.sidemenu.emp-contract-menu')
-@extends('includes.sidemenu.import-upload-menu')
-@extends('includes.sidemenu.export-download-menu')
-@extends('includes.sidemenu.lat-long-internet-menu')
+@if(Auth::user()->isHR() || Auth::user()->isAdmin())
+    @extends('includes.sidemenu.hrms-menu')
+@endif
+@if(Auth::user()->isArmy())
+    @extends('includes.sidemenu.army-menu')
+@endif

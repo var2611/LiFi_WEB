@@ -76,7 +76,7 @@ body {
 .sidebar-expanded {
     background: #343a40 !important;
     left: 0;
-    width: 230px;
+    width: 280px;
 }
 
 .sidebar-collapsed {

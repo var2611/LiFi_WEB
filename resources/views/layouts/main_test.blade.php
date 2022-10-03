@@ -21,7 +21,7 @@
     <div class="navbar-top">
         <div class="navbar-top-left">
             <div class="brand-logo">
-                <a href="{{ route('hr_dashboard') }}">
+                <a href="{{ route('home') }}">
                         <img src="{{ asset('images/logo_nav.svg') }}"
                              alt="{{ config('app.name') }}"/>
                 </a>

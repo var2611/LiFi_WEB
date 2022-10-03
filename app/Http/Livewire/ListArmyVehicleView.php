@@ -10,7 +10,7 @@ use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
 
-class ListEmployeeView extends TableView
+class ListArmyVehicleView extends TableView
 {
     public $searchBy = ['name', 'mobile', 'UserEmployee.emp_code'];
     protected $paginate = 20;
@@ -30,7 +30,7 @@ class ListEmployeeView extends TableView
         if ($company_id != 1) {
             $data->whereHas('UserEmployee', function ($q) use ($company_id) {
                 $q->where('company_id', '=', $company_id);
-                $q->where('user_role_id', '!=', '7');
+                $q->where('user_role_id', '=', '7');
             });
 //            $data = $data->whereCompanyId($company_id);
         }
@@ -48,8 +48,7 @@ class ListEmployeeView extends TableView
         return [
             Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
-            Header::title('Last Name'),
-            Header::title('Mobile'),
+            Header::title('Vehicle No'),
             Header::title('Flash Code')->sortBy('flash_code'),
             Header::title('created at')->sortBy('created_at')
         ];
@@ -65,7 +64,6 @@ class ListEmployeeView extends TableView
         return [
             $model->UserEmployee->emp_code ?? '',
             $model->name,
-            $model->last_name,
             $model->mobile,
             $model->UserEmployee->flash_code ?? '',
             $model->created_at->diffForHumans()
@@ -75,7 +73,7 @@ class ListEmployeeView extends TableView
     protected function actionsByRow()
     {
         return [
-            new RedirectAction("edit-user-profile", 'See user', 'edit'),
+//            new RedirectAction("edit-user-profile", 'See user', 'edit'),
         ];
     }
 }
