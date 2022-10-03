@@ -450,7 +450,8 @@ class UserController extends Controller
                 ->with(['Vehicle:id,name,mobile'])
                 ->get(['id', 'user_id', 'vehicle_id', 'start_time', 'end_time', 'is_active']);
             if ($vehicleUsers) {
-                $this->set_return_response_success($vehicleUsers, "Vehicle User List.");
+                $data["vehicles"] = $vehicleUsers;
+                $this->set_return_response_success($data, "Vehicle User List.");
             } else {
                 $this->set_return_response_unsuccessful("No Record Found.");
             }
