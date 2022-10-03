@@ -42,7 +42,8 @@ class Controller extends BaseController
         'unauthorised' => 412,
         'already_exist' => 409,
         'validation' => 422,
-        'something_wrong' => 405
+        'something_wrong' => 405,
+        'error' => 202
     ];
 
     public function ApiValidator($fields, $rules): bool
@@ -184,7 +185,7 @@ class Controller extends BaseController
 
     public function set_return_response_unsuccessful($message)
     {
-        $this->status = $this->statusArr['something_wrong'];
+        $this->status = $this->statusArr['error'];
         $this->response['data'] = null;
         $this->response['message'] = $message;
         $this->response['api_status_code'] = 403;
