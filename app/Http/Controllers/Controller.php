@@ -187,7 +187,7 @@ class Controller extends BaseController
         $this->status = $this->statusArr['something_wrong'];
         $this->response['data'] = null;
         $this->response['message'] = $message;
-        $this->response['api_status_code'] = 405;
+        $this->response['api_status_code'] = 403;
         $this->response['response_status'] = 1;
     }
 
