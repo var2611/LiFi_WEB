@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\ImportLatLongNonInternetData;
 use App\Models\Salary;
 use Auth;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use LaravelViews\LaravelViews;
 
@@ -28,7 +30,7 @@ class HomeController extends Controller
      *
      * @return
      */
-    public function index()
+    public function index(): RedirectResponse
     {
         if (Auth::user()->isArmy()) {
             return redirect()->route('army-dashboard');
@@ -38,7 +40,8 @@ class HomeController extends Controller
 
     public function welcome(Request $request)
     {
-        if (Auth::user()->isFreeLiFiWiFi()) {
+        $user = Auth::user();
+        if ($user->isFreeLiFiWiFi()) {
             return redirect()->route('list-free-lifi-wifi-file');
         }
         return view('hrms.welcome');

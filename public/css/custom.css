@@ -9,6 +9,10 @@ body {
 /*    justify-content: center;*/
 /*}*/
 
+.navbar{
+    z-index: 1;
+}
+
 .loader {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3498db; /* Blue */
@@ -101,15 +105,17 @@ body {
     display: flex;
 }
 
-.bg img {
-    position: fixed;
+.mt-50 {
+    margin-top: 5%;
 }
 
-.bg-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background-color: #1a202c;
+.hr-flex-column {
+    flex-direction: row;
+}
+
+.font-size {
+    font-size: 3.2rem;
+    font-weight: bold;
 }
 
 .center {
@@ -377,6 +383,10 @@ body {
 
     .info-box {
         margin-top: 10px;
+    }
+
+    .hr-flex-column {
+        flex-direction: column;
     }
 
 }

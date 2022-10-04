@@ -31,7 +31,8 @@ class VehicleRegistrationForArmyForm extends Form
 //                    return Arr::pluck($data, 'name');
 //                },
                 'empty_value' => '=== Select Driver ===',
-                'label' => 'Driver Employee Code'
+                'label' => 'Driver Employee Code',
+                'rules' => 'required'
             ])
             ->add('name', Field::TEXT, [
                 'rules' => 'required'

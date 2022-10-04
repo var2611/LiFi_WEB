@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\ArmyController;
 use App\Http\Controllers\api\attendance\AttendanceController;
 use App\Http\Controllers\api\attendance\LiFiAttendanceController;
 use App\Http\Controllers\api\pole\LiFiPoleController;
@@ -87,9 +88,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('att/lifiLockValidation', [LiFiAttendanceController::class, 'lifiLockValidation']);
 
     //ARMY LiFi Vehicle Gate API.
-    Route::post('lifi/armyGateVerification', [LiFiAttendanceController::class, 'armyGateVerification']);
-    Route::post('lifi/armyVehicleRegistration', [UserController::class, 'armyVehicleRegistration']);
-    Route::post('lifi/getRegisteredVehicleList', [UserController::class, 'getRegisteredVehicleList']);
+    Route::post('lifi/armyGateVerification', [ArmyController::class, 'armyGateVerification']);
+    Route::post('lifi/armyVehicleRegistration', [ArmyController::class, 'armyVehicleRegistration']);
+    Route::post('lifi/getRegisteredVehicleList', [ArmyController::class, 'getRegisteredVehicleList']);
 
 
 });

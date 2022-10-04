@@ -46,6 +46,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|VehicleUser whereUserId($value)
  * @method static Builder|VehicleUser whereVehicleId($value)
  * @mixin Eloquent
+ * @property-read \App\Models\User $User
+ * @property-read \App\Models\User $Vehicle
  */
 class VehicleUser extends Model
 {

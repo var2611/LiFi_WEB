@@ -66,8 +66,7 @@ class ArmyController extends Controller
             VehicleRegistrationForArmyForm::class,
             route('store-vehicle-registration-army'),
             'employee',
-            $model,
-            null
+            $model
         );
 
         return view('layouts.hrms_forms', compact('form'));
