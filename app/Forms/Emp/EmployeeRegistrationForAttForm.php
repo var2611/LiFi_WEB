@@ -30,7 +30,7 @@ class EmployeeRegistrationForAttForm extends Form
 //                    // Returns the array of short names from model relationship data
 //                    return Arr::pluck($data, 'name');
 //                },
-                    'empty_value' => '=== Select Driver ===',
+                    'empty_value' => '=== Select Role ===',
                     'label' => 'Select Role'
                 ]);
         }

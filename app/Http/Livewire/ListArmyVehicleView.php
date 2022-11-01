@@ -25,7 +25,7 @@ class ListArmyVehicleView extends TableView
         $company_id = Auth::user()->getCompanyId();
 
         $data = User::query()
-            ->with(['UserEmployee', 'UserEmployee.UserRole:id,name']);
+            ->with(['UserEmployee', 'UserEmployee.UserRole:id,name', 'VehicleDrivers:id,vehicle_id,driver_id', 'VehicleDrivers.Driver:id,name']);
 
         if ($company_id != 1) {
             $data->whereHas('UserEmployee', function ($q) use ($company_id) {
@@ -34,6 +34,9 @@ class ListArmyVehicleView extends TableView
             });
 //            $data = $data->whereCompanyId($company_id);
         }
+
+//        dd($data->get());
+
 
         return $data;
     }
@@ -49,6 +52,7 @@ class ListArmyVehicleView extends TableView
             Header::title('Employee Code')->sortBy('emp_code'),
             Header::title('Name'),
             Header::title('Vehicle No'),
+            Header::title('Driver Name'),
             Header::title('Flash Code')->sortBy('flash_code'),
             Header::title('created at')->sortBy('created_at')
         ];
@@ -65,6 +69,7 @@ class ListArmyVehicleView extends TableView
             $model->UserEmployee->emp_code ?? '',
             $model->name,
             $model->mobile,
+            $model->VehicleDrivers->Driver->name,
             $model->UserEmployee->flash_code ?? '',
             $model->created_at->diffForHumans()
         ];
@@ -73,7 +78,7 @@ class ListArmyVehicleView extends TableView
     protected function actionsByRow()
     {
         return [
-//            new RedirectAction("edit-user-profile", 'See user', 'edit'),
+            new RedirectAction("edit-army-vehicle-profile", 'Edit Profile', 'edit'),
         ];
     }
 }

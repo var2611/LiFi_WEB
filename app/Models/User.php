@@ -78,6 +78,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereAdharNumber($value)
  * @property string|null $middle_name
  * @method static Builder|User whereMiddleName($value)
+ * @property-read VehicleDriver|null $VehicleDrivers
  */
 class User extends Authenticatable
 {
@@ -141,6 +142,11 @@ class User extends Authenticatable
         return $this->hasOne(UserApi::class, 'user_id');
     }
 
+    public function VehicleDrivers(): HasOne
+    {
+        return $this->hasOne(VehicleDriver::class, 'vehicle_id');
+    }
+
     /**
      * @return bool
      */
@@ -199,6 +205,6 @@ class User extends Authenticatable
 
     public function getFullName(): string
     {
-        return $this->name . ' '. ($this->middle_name ? $this->middle_name . ' ' : '') . $this->last_name;
+        return $this->name . ' ' . ($this->middle_name ? $this->middle_name . ' ' : '') . $this->last_name;
     }
 }

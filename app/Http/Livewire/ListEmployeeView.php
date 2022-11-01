@@ -74,8 +74,13 @@ class ListEmployeeView extends TableView
 
     protected function actionsByRow()
     {
+        $user = Auth::user();
+        $editProfile = null;
+        if ($user->isArmy())
+            $editProfile = new RedirectAction("edit-army-profile", 'See user', 'edit');
+        else $editProfile = new RedirectAction("edit-user-profile", 'See user', 'edit');
         return [
-            new RedirectAction("edit-user-profile", 'See user', 'edit'),
+            $editProfile
         ];
     }
 }

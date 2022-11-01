@@ -272,21 +272,21 @@ class SalaryController extends Controller
 
             //Contract Amount type wise Calculation
             if ($employee_contract->EmpContractType->emp_contract_amount_type_id == $daily_contract_amount_id) {
-                $salary_contract_basic = round($employee_contract->salary_basic, 2) * $working_days;
-                $salary_per_day = round($employee_contract->salary_basic, 2);
-                $salary_hra_per_day = round($employee_contract->salary_hra, 2);
+                $salary_contract_basic = round($employee_contract->salary_basic) * $working_days;
+                $salary_per_day = round($employee_contract->salary_basic);
+                $salary_hra_per_day = round($employee_contract->salary_hra);
 
                 $salary_contract_hra = $salary_hra_per_day * 26;
 
             } elseif ($employee_contract->EmpContractType->emp_contract_amount_type_id == $monthly_contract_amount_id) {
-                $salary_contract_basic = round($employee_contract->salary_basic, 2);
-                $salary_per_day = round($salary_contract_basic / ($working_days ?? 1), 2);
-                $salary_hra_per_day = round($employee_contract->salary_hra / ($working_days ?? 1), 2);
+                $salary_contract_basic = round($employee_contract->salary_basic);
+                $salary_per_day = round($salary_contract_basic / ($working_days ?? 1));
+                $salary_hra_per_day = round($employee_contract->salary_hra / ($working_days ?? 1));
 
-                $salary_contract_hra = round($employee_contract->salary_hra, 2);
+                $salary_contract_hra = round($employee_contract->salary_hra);
             }
 
-            $salary_contract_total = round(($salary_contract_hra + $salary_contract_basic), 2);
+            $salary_contract_total = round(($salary_contract_hra + $salary_contract_basic));
 
             $attendances = Attendance::whereUserId($user_id)
                 ->selectRaw("count(id) as total_working_days,
@@ -318,8 +318,8 @@ class SalaryController extends Controller
                 $employee_absent_days = $working_days - $employee_working_days;
             }
 
-            $monthly_basic_salary_amount = round($employee_working_days * $salary_per_day, 2);
-            $monthly_hra_salary_amount = round($employee_working_days * $salary_hra_per_day, 2);
+            $monthly_basic_salary_amount = round($employee_working_days * $salary_per_day);
+            $monthly_hra_salary_amount = round($employee_working_days * $salary_hra_per_day);
             $monthly_salary_amount = $monthly_basic_salary_amount + $monthly_hra_salary_amount;
 
             //PF Calculation
@@ -369,7 +369,7 @@ class SalaryController extends Controller
 
             $pf_amount = 0;
             if ($pf_search_data !== false && $emp_pf_details[$pf_search_data]['abry_eligible'] != 1) {
-                $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100, 2);
+                $pf_amount = round(($monthly_basic_salary_amount * $pf_percentage) / 100);
                 if ($pf_amount > 0) {
                     $salary->salary_gross_earning = (floatval($salary->salary_gross_earning)) - $pf_amount;
                     $salary->salary_gross_deduction = floatval($salary->salary_gross_deduction) + $pf_amount;

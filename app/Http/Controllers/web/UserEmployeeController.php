@@ -371,7 +371,7 @@ class UserEmployeeController extends Controller
             return view('hrms.edit-user-profile', ['data' => $data]);
         } else {
 
-            $this->notifyMessage(false, 'Select user is invalid. Please Contact Site Administrator.');
+            $this->notifyMessage(false, 'Selected user is invalid. Please Contact Site Administrator.');
 
             return redirect()->route('list-employee');
         }

@@ -8,18 +8,21 @@ use Illuminate\Support\Arr;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
-class VehicleRegistrationForArmyForm extends Form
+class VehicleModificationForArmyForm extends Form
 {
     public function buildForm()
     {
+
         $driverList = UserEmployee::whereUserRoleId(8)
             ->whereCompanyId(Auth::user()->getCompanyId())
             ->with(['User:id,name'])
             ->get()
             ->toArray();
 
+//        dd($driverList);
         $this
             ->add('emp_code', Field::TEXT, [
+                'attr' => ['readonly class' => 'form-control-plaintext'],
                 'rules' => 'required',
                 'label' => 'Vehicle Number'
             ])
@@ -32,12 +35,12 @@ class VehicleRegistrationForArmyForm extends Form
 //                },
                 'empty_value' => '=== Select Driver ===',
                 'label' => 'Driver Employee Code',
-                'rules' => 'required'
+                'rules' => 'required',
+                'selected' => $this->getModel()->driver_id ?? null
             ])
             ->add('flash_code', Field::TEXT, [
                 'rules' => 'required'
             ])
-
             ->add('name', Field::TEXT, [
                 'rules' => 'required'
             ])

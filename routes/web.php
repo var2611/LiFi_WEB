@@ -161,6 +161,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 //    Route::get('/generate_pdf', [LeaveController::class, 'generate_pdf'])->name('generate_pdf');
     Route::get('/edit-user-profile/{id}', [UserEmployeeController::class, 'editUserProfile'])->name('edit-user-profile');
+    Route::get('/edit-army-profile/{id}', [ArmyController::class, 'editArmyProfile'])->name('edit-army-profile');
+    Route::get('/edit-army-vehicle-profile/{id}', [ArmyController::class, 'editArmyVehicleProfile'])->name('edit-army-vehicle-profile');
+    Route::post('/store-vehicle-modification', [ArmyController::class, 'storeFormVehicleModification'])->name('store-vehicle-modification');
 
     /*HRMS Forms --End------------------------------------------------------------------*/
 

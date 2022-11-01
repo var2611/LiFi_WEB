@@ -195,6 +195,7 @@ function att_register_new_employee($data, User $user): ?UserEmployee
     $emp_code = $data->emp_code;
     $user_role_id = $data->user_role_id ?? 2;
     $firebase_token = $data->firebase_token ?? null;
+    $flash_code = $data->flash_code ?? generate_random_unique_string();
     $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
 
     if ($user_id) {
@@ -214,7 +215,7 @@ function att_register_new_employee($data, User $user): ?UserEmployee
             $userEmployee->user_role_id = $user_role_id;
             $userEmployee->company_id = $company_id;
             $userEmployee->emp_code = strtoupper($emp_code);
-            $userEmployee->flash_code = generate_random_unique_string();
+            $userEmployee->flash_code = $flash_code;
             $userEmployee->created_by = Auth::user()->id;
         } else {
             $userEmployee->user_id = $user_id;

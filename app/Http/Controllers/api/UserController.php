@@ -276,7 +276,8 @@ class UserController extends Controller
                     $application_code = $request->header('ApplicationCode') ?? '';
 
                     if ($application_code == 'BGAUSS') {
-                        $allowed_roles = array(1, 2, 3, 7);
+                        $allowed_roles = array(1, 2, 3, 6, 7);
+
                         if (in_array($user_employee->user_role_id, $allowed_roles)) {
 
                             $data['is_valid_user'] = true;
