@@ -43,13 +43,14 @@ class LatLongInternetExport implements FromQuery, WithMapping, WithColumnFormatt
             $row->zone,//E
             $row->state,//F
             $row->file_name,//G
-            $nearData->distance,//H
-            $nearData->group_id,//I
-            $nearData->name,//J
-            $nearData->latitude,//K
-            $nearData->longitude,//L
-            $nearData->state,//M
-            $nearData->file_name,//N
+            $row->district,//H
+            $nearData->distance,//I
+            $nearData->group_id,//J
+            $nearData->name,//K
+            $nearData->latitude,//L
+            $nearData->longitude,//M
+            $nearData->state,//N
+            $nearData->file_name,//O
         ];
     }
 
@@ -68,13 +69,14 @@ class LatLongInternetExport implements FromQuery, WithMapping, WithColumnFormatt
             'E' => NumberFormat::FORMAT_TEXT,
             'F' => NumberFormat::FORMAT_TEXT,
             'G' => NumberFormat::FORMAT_TEXT,
-            'H' => NumberFormat::FORMAT_NUMBER_00,
-            'I' => NumberFormat::FORMAT_NUMBER,
-            'J' => NumberFormat::FORMAT_TEXT,
-            'K' => '0.0000',
+            'H' => NumberFormat::FORMAT_TEXT,
+            'I' => NumberFormat::FORMAT_NUMBER_00,
+            'J' => NumberFormat::FORMAT_NUMBER,
+            'K' => NumberFormat::FORMAT_TEXT,
             'L' => '0.0000',
-            'M' => NumberFormat::FORMAT_TEXT,
+            'M' => '0.0000',
             'N' => NumberFormat::FORMAT_TEXT,
+            'O' => NumberFormat::FORMAT_TEXT,
         ];
     }
 
@@ -88,13 +90,14 @@ class LatLongInternetExport implements FromQuery, WithMapping, WithColumnFormatt
             'ZONE',//E
             'STATE',//F
             'FILE_NAME',//G
-            'DISTANCE',//H
-            'GROUP_ID',//I
-            'NAME',//J
-            'LATITUDE',//K
-            'LONGITUDE',//L
-            'STATE',//M
-            'FILE_NAME',//N
+            'DISTRICT',//H
+            'DISTANCE',//I
+            'GROUP_ID',//J
+            'NAME',//K
+            'LATITUDE',//L
+            'LONGITUDE',//M
+            'STATE',//N
+            'FILE_NAME',//O
         ];
     }
 }

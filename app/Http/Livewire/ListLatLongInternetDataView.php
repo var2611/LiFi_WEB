@@ -11,7 +11,7 @@ use LaravelViews\Views\TableView;
 
 class ListLatLongInternetDataView extends TableView
 {
-    public $searchBy = ['user_name', 'emp_code'];
+    public $searchBy = ['district'];
     protected $paginate = 20;
 
     /**
@@ -30,15 +30,12 @@ class ListLatLongInternetDataView extends TableView
             Header::title('Group ID')->sortBy('group_id'),
             Header::title('Name')->sortBy('name'),
             Header::title('Lat-Long'),
-            Header::title('Zone')->sortBy('zone'),
-            Header::title('State')->sortBy('state'),
             Header::title('File Name')->sortBy('file_name'),
             Header::title('Distance'),
             Header::title('Group ID'),
             Header::title('Name'),
             Header::title('Lat-Long'),
-            Header::title('State'),
-            Header::title('File Name')
+            Header::title('File Name'),
         ];
     }
 
@@ -69,14 +66,11 @@ class ListLatLongInternetDataView extends TableView
             $model->group_id,
             $model->name,
             $model->latitude . ', ' . $model->longitude,
-            $model->zone,
-            $model->state,
             $model->file_name,
             $nearData->distance,
             $nearData->group_id,
             $nearData->name,
             $nearData->latitude . ', ' . $nearData->longitude,
-            $nearData->state,
             $nearData->file_name,
 
         ];
