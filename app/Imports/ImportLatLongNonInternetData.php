@@ -46,6 +46,8 @@ class ImportLatLongNonInternetData implements OnEachRow, WithEvents, WithChunkRe
 // set TRUE;
         DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
 
+        echo $importer_this->j .'<br>';
+
         echo 'Non Internet Lat-Long Data : ' . \App\Models\ImportLatLongNonInternetData::upsert($importer_this->batch_non_internet_data, ['name', 'latitude', 'longitude'], [
                 'group_id', 'name', 'latitude', 'longitude', 'block', 'district', 'zone', 'state', 'file_name', 'created_by', 'updated_by'
             ]) . '<br>';
