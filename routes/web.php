@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\web\ArmyController;
 use App\Http\Controllers\web\AttendanceController;
+use App\Http\Controllers\web\ConfigController;
 use App\Http\Controllers\web\EmployeeContractController;
 use App\Http\Controllers\web\EmployeeWorkShiftController;
 use App\Http\Controllers\web\ExportController;
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/login');
+Route::get('/clear/route', [ConfigController::class, 'clearRoute'])->name('clearRoute');
+
 //Route::redirect('/home', '/admin');
 /*Employee IdCard*/
 Route::get('/emp/{id}', [UserEmployeeController::class, 'getEmployeeIdCard'])->name('get-emp-id-card');
