@@ -18,19 +18,22 @@ use App\Http\Livewire\ListUserRole;
 use App\Models\EmpBankDetail;
 use App\Models\EmpContractAmountType;
 use App\Models\EmpDepartmentData;
+use App\Models\EmpDepartmentType;
 use App\Models\EmpPfDetail;
 use App\Models\FormModels\DataEmpRegFor;
 use App\Models\User;
 use App\Models\UserEmployee;
 use App\Models\UserRole;
 use Auth;
-use Illuminate\Contracts\Foundation\Application;
+ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
 use Kris\LaravelFormBuilder\Form;
 use LaravelViews\LaravelViews;
+use Intervention\Image\Facades\Image;
 
 class UserEmployeeController extends Controller
 {
@@ -47,9 +50,16 @@ class UserEmployeeController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function editFormEmpRegistrationForAtt()
+    public function editFormEmpRegistrationForAtt(?string $id = null)
     {
-        $model = new UserEmployee();
+        if($id == null){
+            $model = new UserEmployee();
+        }else {
+            $userEmp = UserEmployee::whereUserId($id)->with('User')->first();
+            $empRegForAttForm = new DataEmpRegFor($userEmp);
+            $model = $empRegForAttForm->attDataUpdate($userEmp);
+        }
+
         $form = $this->createFormData(
             EmployeeRegistrationForAttForm::class,
             route('store-emp-registration-att'),
@@ -67,13 +77,81 @@ class UserEmployeeController extends Controller
     public function storeFormEmpRegistrationForAtt(): RedirectResponse
     {
         $formData = $this->formStoreData(EmployeeRegistrationForAttForm::class);
+        $image = request()->file('id_photo');
+
+
+//        $validatedData = request()->validate([
+//            'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
+//
+//            'name' => 'required|string|max:255',
+//            'last_name' => 'required|string|max:255',
+//            'emp_code' => 'required|string|max:255',
+//
+//            'mobile' => 'required|digits:10',
+//
+//
+//        ]);
+
+//        if ($validatedData->fails()) {
+//            return redirect()
+//                ->back()
+//                ->withErrors($validatedData)
+//                ->withInput();
+//        }
+
+
+
+//        $uploadedFilePath = null;
+//         if (request()->hasFile('id_photo')) {
+//             $uploadedFilePath = request()->file('id_photo')->store('uploads', 'public');
+//        dd($uploadedFilePath);
+//        }
+//        // Step 3: Prepare data for processing
+//        $formData = $this->formStoreData(EmployeeRegistrationForAttForm::class);
+//        $empRegForAttForm = new DataEmpRegFor($formData);
+//        $empRegForAttForm = $empRegForAttForm->attData();
+//
+//        // Step 4: Attach the uploaded file path to the form data (if needed)
+//        if ($uploadedFilePath) {
+//            $empRegForAttForm->id_photo = $uploadedFilePath;
+//        }
+
         $empRegForAttForm = new DataEmpRegFor($formData);
         $empRegForAttForm = $empRegForAttForm->attData();
 
         $user = att_register_user($empRegForAttForm->mobile, "New User");
-        $user_employee = att_register_new_employee($empRegForAttForm, $user);
+        $user_employee =  att_register_new_employee($empRegForAttForm, $user,$image);
 
-        if ($user_employee) {
+//        dd($user_employee);
+         if ($user_employee) {
+            if ($image!=null) {
+                if($image->isValid()){
+                $compressedImage = Image::make($image);
+
+                $aspectRatio = $compressedImage->width() / $compressedImage->height();
+
+                $compressedImage->encode('jpg', 20); // Adjust quality as needed
+
+                $compressedImage->resize(500 * $aspectRatio, 500);
+
+                $filename = "id_card_".$user_employee->flash_code.".".$image->getClientOriginalExtension();
+
+                $compressedSize = strlen($compressedImage->stream());
+
+                $formattedSize = formatFileSize($compressedSize);
+
+                $imagePath = 'public/navtech/id_photo/' . $filename;
+
+//                if (Storage::exists($imagePath)) {
+//                    return redirect()
+//                        ->back()
+//                        ->withErrors(['id_photo' => 'The file already exists. Please upload a different image.'])
+//                        ->withInput();
+//                }
+
+                Storage::put($imagePath, $compressedImage->stream());
+                }
+            }
             notify()->success('Employee Has Been Registered.');
         } else {
             notify()->error('Employee Registration Has some errors please try again or contact Admin.');
@@ -175,6 +253,7 @@ class UserEmployeeController extends Controller
             $model = new EmpPfDetail();
             $model->user_id = $id;
         }
+
         return $this->createFormData(
             EmployeePFDetailForm::class,
             route('store-emp-pf-detail'),
@@ -396,5 +475,28 @@ class UserEmployeeController extends Controller
             $model,
             null
         );
+    }
+
+    public function getEmployeeIdCard(string $id){
+
+        $userEmployee = UserEmployee::whereFlashCode($id)->first();
+          if ($userEmployee) {
+
+                $user = $userEmployee->user()->where('is_active','1')->select(['name', 'last_name', 'mobile'])->get()->toArray();
+                $department = EmpDepartmentType::where('id', $userEmployee->emp_department_type_id)->pluck('name')->first();
+                $designation = UserRole::where('id', $userEmployee->user_role_id)->pluck('name')->first();
+                $details = [
+                      'name' => $user[0]['name'],
+                      'last_name' => $user[0]['last_name'],
+                      'department' => $department,
+                      'designation' => $designation,
+                      'emp_code' => $userEmployee->emp_code,
+                      'date_of_joining' => $userEmployee->date_of_joining,
+                      'blood_group' => $userEmployee->blood_group,
+                      'id_photo' => $userEmployee->id_photo,
+                      'gender' => $userEmployee->gender,
+                    ];
+            }
+        return view('layouts.id_card', compact('details', ));
     }
 }

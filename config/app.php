@@ -161,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -174,7 +175,7 @@ return [
 //        Barryvdh\DomPDF\ServiceProvider::class,
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        ConsoleTVs\Charts\ChartsServiceProvider::class,
+//        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -242,6 +243,10 @@ return [
 
 //        'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class
+
+
+
     ],
 
 ];

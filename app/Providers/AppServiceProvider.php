@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use App\Charts\SampleChart;
-use ConsoleTVs\Charts\Registrar as Charts;
-use Illuminate\Support\ServiceProvider;
+ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,10 +22,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Charts $charts)
-    {
-        $charts->register([
-            SampleChart::class
-        ]);
-    }
+//    public function boot(Charts $charts)
+//    {
+//        $charts->register([
+//            SampleChart::class
+//        ]);
+//    }
 }

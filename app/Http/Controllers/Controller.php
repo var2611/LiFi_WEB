@@ -232,7 +232,7 @@ class Controller extends BaseController
      * @param string|null $data
      * @return Form|RedirectResponse
      */
-    function createFormData(string $formClassName, string $route, string $sidemenuName, Model $model = null, string $id = null, string $data = null)
+    function createFormData(string $formClassName, string $route, string $sidemenuName, $model = null, string $id = null, string $data = null)
     {
         try {
             if (empty($model) && $id) {

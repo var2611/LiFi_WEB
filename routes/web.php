@@ -28,6 +28,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 //Route::redirect('/home', '/admin');
+/*Employee IdCard*/
+Route::get('/emp/{id}', [UserEmployeeController::class, 'getEmployeeIdCard'])->name('get-emp-id-card');
+
 Auth::routes();
 
 //Route::view('/dashboard', '/dashboard')->name('dashboard');
@@ -94,8 +97,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-user-role', [UserEmployeeController::class, 'storeFormUserRole'])->name('store-user-role');
 
     /*Employee Forms*/
-    Route::get('/edit-emp-registration-att', [UserEmployeeController::class, 'editFormEmpRegistrationForAtt'])->name('edit-emp-registration-att');
+    Route::get('/edit-emp-registration-att/{id?}', [UserEmployeeController::class, 'editFormEmpRegistrationForAtt'])->name('edit-emp-registration-att');
     Route::post('/store-emp-registration-att', [UserEmployeeController::class, 'storeFormEmpRegistrationForAtt'])->name('store-emp-registration-att');
+
 
     /*Vehicle Forms*/
     Route::get('/edit-vehicle-registration-army', [ArmyController::class, 'editFormVehicleRegistrationForArmy'])->name('edit-vehicle-registration-army');

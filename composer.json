@@ -8,9 +8,9 @@
     ],
     "authors": [
         {
-            "name": "Vardhan Suthar",
-            "email": "vardhan@proglan.com",
-            "homepage": "https://proglan.com"
+            "name": "a",
+            "email": "a",
+            "homepage": "a"
         }
     ],
     "license": "MIT",
@@ -20,11 +20,12 @@
         "ext-curl": "*",
         "ext-intl": "^7.4",
         "ext-json": "*",
+        "ext-pdo": "*",
         "barryvdh/laravel-dompdf": "^v1.0.0-beta2",
-        "consoletvs/charts": "7.*",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.3",
         "guzzlehttp/guzzle": "^7.4",
+        "intervention/image": "*",
         "kris/laravel-form-builder": "^1.40",
         "laravel-views/laravel-views": "^v2.3.0",
         "laravel/framework": "^8.12",
@@ -35,8 +36,7 @@
         "livewire/livewire": "^2.4",
         "maatwebsite/excel": "^3.1",
         "mckenziearts/laravel-notify": "^2.2",
-        "ycs77/laravel-form-builder-bs4": "^1.0",
-        "ext-pdo": "*"
+        "ycs77/laravel-form-builder-bs4": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.9",

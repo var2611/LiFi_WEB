@@ -15,7 +15,7 @@ class AlterColumnsUniqueInUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unique('mobile');
-            $table->unique('email',);
+//            $table->unique('email',);
             $table->unique('mac_address');
             $table->unique( 'adhar_number');
         });

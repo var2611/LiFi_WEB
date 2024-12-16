@@ -1,5 +1,6 @@
 <?php $user = Auth::user() ?? null; $companyData = null; ?>
 <?php if ($user) $companyData = $user->getCompanyData() ?? null; ?>
+
 @section('header')
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
@@ -7,8 +8,9 @@
                   {{ config('app.name', 'Laravel') }}
                 </a>--}}
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ URL::asset($companyData ?"images/" . $companyData->logo : "images/logo_nav.svg"  ) }}"
-                     class="logo"
+                <img src="/logo.png"
+{{--                <img src="{{ URL::asset($c  ompanyData ? $companyData->logo : "images/logo.png"  ) }}"--}}
+                     class="w-25"
                      alt="logo"></a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -33,11 +35,11 @@
                             </li>
                         @endif
 
-                        {{--                        @if (Route::has('register'))--}}
-                        {{--                            <li class="nav-item">--}}
-                        {{--                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>--}}
-                        {{--                            </li>--}}
-                        {{--                        @endif--}}
+                                                @if (Route::has('register'))
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                                    </li>
+                                                @endif
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

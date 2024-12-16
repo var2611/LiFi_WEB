@@ -78,7 +78,7 @@ class ListEmployeeView extends TableView
         $editProfile = null;
         if ($user->isArmy())
             $editProfile = new RedirectAction("edit-army-profile", 'See user', 'edit');
-        else $editProfile = new RedirectAction("edit-user-profile", 'See user', 'edit');
+        else $editProfile = new RedirectAction("edit-emp-registration-att", 'See user', 'edit');
         return [
             $editProfile
         ];

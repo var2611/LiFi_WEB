@@ -1,4 +1,5 @@
 $(function() {
+
     $(document).click(function(e) {
         var target = e.target;
         if(!$(target).parents('.dropdown-open').length || $(target).is('li') || $(target).is('a')) {

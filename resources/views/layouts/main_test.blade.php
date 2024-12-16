@@ -22,7 +22,7 @@
         <div class="navbar-top-left">
             <div class="brand-logo">
                 <a href="{{ route('home') }}">
-                        <img src="{{ asset('images/logo_nav.svg') }}"
+                        <img src="{{ asset('logo.png') }}"
                              alt="{{ config('app.name') }}"/>
                 </a>
             </div>

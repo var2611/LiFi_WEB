@@ -57,6 +57,16 @@ function getYearListArray(): array
     return ['2021' => '2021', '2022' => '2022'];
 }
 
+function formatFileSize($size)
+{
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+    for ($i = 0; $size > 1024; $i++) {
+        $size /= 1024;
+    }
+
+    return round($size, 2) . ' ' . $units[$i];
+}
 function sendSMS($mobile, $message)
 {
     # code...
@@ -156,6 +166,8 @@ function att_register_user(string $mobile, string $name, string $firebase_token 
             if (!empty($user)) {
                 return $user;
             }
+        } else {
+            return $checkUserExist;
         }
 
     } catch (Exception $exception) {
@@ -186,20 +198,102 @@ function att_register_user_with_adhar(string $adhar_number, string $name): ?User
     return null;
 }
 
-function att_register_new_employee($data, User $user): ?UserEmployee
+//function att_register_new_employee($data, User $user,$image=null): ?UserEmployee
+//{
+////    dd($data);
+//    $name = $data->name;
+//    $user_id = $user->id ?? null;
+//    $last_name = $data->last_name ?? '';
+//    $middle_name = $data->middle_name ?? '';
+//    $emp_code = $data->emp_code;
+//    $gender = $data->gender;
+//    $date_of_joining = $data->date_of_joining;
+//    $emp_department_type_id = $data->emp_department_type_id;
+//    $blood_group = $data->blood_group;
+//    $date_of_birth = $data->date_of_birth;
+//
+//    $user_role_id = $data->user_role_id ?? 2;
+//    $firebase_token = $data->firebase_token ?? null;
+//
+//    $flash_code = $data->flash_code ?? generate_random_unique_string();
+//    $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
+//    $image = $data->id_photo ?? null;
+//
+//    if ($user_id) {
+//
+//        $user->name = $name;
+//        $user->middle_name = $middle_name;
+//        $user->last_name = $last_name;
+//        if ($firebase_token) {
+//            $user->firebase_token = $firebase_token;
+//        }
+//        $user->updated_by = Auth::user()->id;
+//        $user->save();
+//        $userEmployee = UserEmployee::whereUserId($user_id)->first();
+//        $userFlashCode = UserEmployee::whereUserId($user_id)->value('flash_code');
+//        dd($userFlashCode);
+//
+//        if (empty($userEmployee)) {
+//            $userEmployee = new UserEmployee();
+//            $userEmployee->user_id = $user_id;
+//            $userEmployee->user_role_id = $user_role_id;
+//            $userEmployee->company_id = $company_id;
+//            $userEmployee->emp_code = strtoupper($emp_code);
+//            $userEmployee->gender = $gender;
+//            $userEmployee->id_photo = "id_card_".$userFlashCode.".".$data->id_photo->getClientOriginalExtension();
+//
+//            $userEmployee->date_of_joining = $date_of_joining;
+//            $userEmployee->emp_department_type_id = $emp_department_type_id;
+//            $userEmployee->blood_group = $blood_group;
+//            $userEmployee->date_of_birth = $date_of_birth;
+//
+//            $userEmployee->flash_code = $flash_code;
+//            $userEmployee->created_by = Auth::user()->id;
+//        } else {
+//            $userEmployee->user_id = $user_id;
+//            $userEmployee->company_id = $company_id;
+//            $userEmployee->emp_code = strtoupper($emp_code);
+//            $userEmployee->gender = $gender;
+//            $userEmployee->user_role_id = $user_role_id;
+//            $userEmployee->date_of_joining = $date_of_joining;
+//            $userEmployee->emp_department_type_id = $emp_department_type_id;
+//            $userEmployee->blood_group = $blood_group;
+//            $userEmployee->date_of_birth = $date_of_birth;
+//             if($image!=null){
+////                 $userFlashcode = UserEmployee::whereFlashCode($user_id)->first();
+//
+//                 $userEmployee->id_photo = "id_card_".$userFlashCode.".".$data->id_photo->getClientOriginalExtension();
+//            }
+//
+//
+//        }
+//        $userEmployee->updated_by = Auth::user()->id;
+//        $userEmployee->save();
+//        return $userEmployee;
+//    }
+//    return null;
+//}
+function att_register_new_employee($data, User $user, $image = null): ?UserEmployee
 {
     $name = $data->name;
     $user_id = $user->id ?? null;
     $last_name = $data->last_name ?? '';
     $middle_name = $data->middle_name ?? '';
     $emp_code = $data->emp_code;
+    $gender = $data->gender;
+    $date_of_joining = $data->date_of_joining;
+    $emp_department_type_id = $data->emp_department_type_id;
+    $blood_group = $data->blood_group;
+    $date_of_birth = $data->date_of_birth;
+
     $user_role_id = $data->user_role_id ?? 2;
     $firebase_token = $data->firebase_token ?? null;
+
     $flash_code = $data->flash_code ?? generate_random_unique_string();
     $company_id = $data->company_id ?? Auth::user()->getCompanyId() ?? 1;
+    $image = $data->id_photo ?? null;
 
     if ($user_id) {
-
         $user->name = $name;
         $user->middle_name = $middle_name;
         $user->last_name = $last_name;
@@ -208,26 +302,50 @@ function att_register_new_employee($data, User $user): ?UserEmployee
         }
         $user->updated_by = Auth::user()->id;
         $user->save();
+
         $userEmployee = UserEmployee::whereUserId($user_id)->first();
+
         if (empty($userEmployee)) {
             $userEmployee = new UserEmployee();
             $userEmployee->user_id = $user_id;
             $userEmployee->user_role_id = $user_role_id;
             $userEmployee->company_id = $company_id;
             $userEmployee->emp_code = strtoupper($emp_code);
+            $userEmployee->gender = $gender;
+            $userEmployee->date_of_joining = $date_of_joining;
+            $userEmployee->emp_department_type_id = $emp_department_type_id;
+            $userEmployee->blood_group = $blood_group;
+            $userEmployee->date_of_birth = $date_of_birth;
             $userEmployee->flash_code = $flash_code;
             $userEmployee->created_by = Auth::user()->id;
-        } else {
-            $userEmployee->user_id = $user_id;
-            $userEmployee->company_id = $company_id;
-            $userEmployee->emp_code = strtoupper($emp_code);
+            $userEmployee->save();
+
+            $userEmployee = UserEmployee::whereUserId($user_id)->first();
         }
+
+        if ($image) {
+            $userEmployee->id_photo = "id_card_" . $userEmployee->flash_code . "." . $data->id_photo->getClientOriginalExtension();
+        }
+
+        // Update other fields in UserEmployee
+        $userEmployee->company_id = $company_id;
+        $userEmployee->emp_code = strtoupper($emp_code);
+        $userEmployee->gender = $gender;
+        $userEmployee->user_role_id = $user_role_id;
+        $userEmployee->date_of_joining = $date_of_joining;
+        $userEmployee->emp_department_type_id = $emp_department_type_id;
+        $userEmployee->blood_group = $blood_group;
+        $userEmployee->date_of_birth = $date_of_birth;
         $userEmployee->updated_by = Auth::user()->id;
+
         $userEmployee->save();
         return $userEmployee;
     }
+
     return null;
 }
+
+
 
 function getLeaveTypeIDByName(string $leave_type)
 {

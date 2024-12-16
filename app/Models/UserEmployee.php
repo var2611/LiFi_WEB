@@ -63,7 +63,12 @@ class UserEmployee extends Model
         'user_id',
         'user_role_id',
         'emp_code',
+        'id_photo',
         'gender',
+        'date_of_joining',
+        'emp_department_type_id',
+        'blood_group',
+        'date_of_birth',
         'flash_code',
         'created_by',
         'updated_by',
@@ -91,6 +96,11 @@ class UserEmployee extends Model
     public function Company(): BelongsTo
     {
         return $this->belongsTo(CompanyHrmsSetting::class, 'company_id');
+    }
+
+    public function EmpDepartmentType(): HasOne
+    {
+        return $this->hasOne(EmpDepartmentType::class, 'id', 'emp_department_type_id');
     }
 
     public function EmpPfDetail(): HasOne

@@ -2,6 +2,8 @@
 
 namespace App\Models\FormModels;
 
+use App\Models\User;
+use App\Models\UserEmployee;
 use Auth;
 
 /**
@@ -38,6 +40,30 @@ class DataEmpRegFor
         $this->last_name = $this->formData['last_name'] ?? null;
         $this->middle_name = $this->formData['middle_name'] ?? null;
         $this->mobile = $this->formData['mobile'] ?? null;
+        $this->id_photo = $this->formData['id_photo'] ?? null;
+        $this->gender = $this->formData['gender'] ?? null;
+        $this->date_of_joining = $this->formData['date_of_joining'] ?? null;
+        $this->emp_department_type_id = $this->formData['emp_department_type_id'] ?? null;
+        $this->user_role_id = $this->formData['user_role_id'] ?? null;
+        $this->blood_group = $this->formData['blood_group'] ?? null;
+        $this->date_of_birth = $this->formData['date_of_birth'] ?? null;
+        return $this;
+    }
+
+    public function attDataUpdate(UserEmployee $userEmployee): DataEmpRegFor
+    {
+        $this->emp_code = $userEmployee->emp_code;
+        $this->name = $userEmployee->User->name;
+        $this->last_name = $userEmployee->User->last_name;
+        $this->middle_name = $userEmployee->User->middle_name;
+        $this->mobile = $userEmployee->User->mobile;
+        $this->gender = $userEmployee->gender;
+        $this->id_photo = $userEmployee->id_photo;
+        $this->date_of_joining = $userEmployee->date_of_joining;
+        $this->emp_department_type_id = $userEmployee->emp_department_type_id;
+        $this->user_role_id = $userEmployee->user_role_id;
+        $this->blood_group = $userEmployee->blood_group;
+        $this->date_of_birth = $userEmployee->date_of_birth;
         return $this;
     }
 
@@ -61,6 +87,12 @@ class DataEmpRegFor
         $this->user_role_id = $this->formData['user_role_id'] ?? null;
         $this->company_id = Auth::user()->getCompanyId() ?? 1;
         $this->emp_code = $this->formData['emp_code'] ?? null;
+        $this->gender = $this->formData['gender'] ?? null;
+        $this->date_of_joining = $this->formData['date_of_joining'] ?? null;
+        $this->id_photo = $this->formData['id_photo'] ?? null;
+        $this->emp_department_type_id = $this->formData['emp_department_type_id'] ?? null;
+        $this->blood_group = $this->formData['blood_group'] ?? null;
+        $this->date_of_birth = $this->formData['date_of_birth'] ?? null;
         $this->is_active = $this->formData['is_active'] ?? 0;
         $this->is_visible = $this->formData['is_visible'] ?? 0;
         return $this;
