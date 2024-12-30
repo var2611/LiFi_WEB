@@ -99,8 +99,6 @@ class UserEmployeeController extends Controller
 //                ->withInput();
 //        }
 
-
-
 //        $uploadedFilePath = null;
 //         if (request()->hasFile('id_photo')) {
 //             $uploadedFilePath = request()->file('id_photo')->store('uploads', 'public');

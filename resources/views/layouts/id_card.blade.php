@@ -13,7 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #FAFAFA;
+            background-color: #646464;
             flex-direction: column;
             width: 100%;
             /*height: 100%;*/
@@ -33,11 +33,11 @@
         }
 
         .header .logo {
-            height: 6rem;
+            height: 2.2rem;
         }
 
         .header .title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
         }
 
@@ -114,14 +114,14 @@
 </head>
 <body class="blur">
 <div class="header">
-    <img src="/logo.png"
+    <img src="/logo-white-02.svg"
          class="logo "
          alt="logo">
     <div class="title">Employee Verification Portal</div>
 </div>
 <div class="adjust text-white">
         <div class="id-card">
-            <img src="{{ asset('/storage/navtech/id_photo/id_card_7EX0yV.jpeg')}}" alt="Employee Photo" class="photo">
+            <img src="{{ asset('/storage/navtech/id_photo/'.$details['id_photo'])}}" alt="Employee Photo" class="photo">
             <div class="name text-white">{{ $details['name'] }}&nbsp{{ $details['last_name'] }}</div>
             <div class="designation text-white">{{ $details['designation'] }}</div>
             <div class="details text-white">
