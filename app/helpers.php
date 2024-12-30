@@ -300,6 +300,7 @@ function att_register_new_employee($data, User $user, $image = null): ?UserEmplo
         if ($firebase_token) {
             $user->firebase_token = $firebase_token;
         }
+        $user->is_active = 1;
         $user->updated_by = Auth::user()->id;
         $user->save();
 
@@ -317,6 +318,7 @@ function att_register_new_employee($data, User $user, $image = null): ?UserEmplo
             $userEmployee->blood_group = $blood_group;
             $userEmployee->date_of_birth = $date_of_birth;
             $userEmployee->flash_code = $flash_code;
+            $userEmployee->is_active = 1;
             $userEmployee->created_by = Auth::user()->id;
             $userEmployee->save();
 
@@ -336,6 +338,7 @@ function att_register_new_employee($data, User $user, $image = null): ?UserEmplo
         $userEmployee->emp_department_type_id = $emp_department_type_id;
         $userEmployee->blood_group = $blood_group;
         $userEmployee->date_of_birth = $date_of_birth;
+        $userEmployee->is_active = 1;
         $userEmployee->updated_by = Auth::user()->id;
 
         $userEmployee->save();

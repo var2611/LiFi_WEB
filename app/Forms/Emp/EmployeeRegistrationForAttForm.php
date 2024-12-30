@@ -19,7 +19,7 @@ class EmployeeRegistrationForAttForm extends Form
                 return !is_null($item['id']) && !is_null($item['name']);
             })
             ->toArray();
-        $user_role = UserRole::whereIn('id', [10])->get(['id', 'name'])->toArray();
+        $user_role = UserRole::whereNotIn('id',[1,2,3,4,5,6,7,8])->get(['id', 'name'])->toArray();
         $model = $this->getModel();
 
         $this

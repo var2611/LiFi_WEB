@@ -47,6 +47,7 @@ class DataEmpRegFor
         $this->user_role_id = $this->formData['user_role_id'] ?? null;
         $this->blood_group = $this->formData['blood_group'] ?? null;
         $this->date_of_birth = $this->formData['date_of_birth'] ?? null;
+        $this->is_active = 1;
         return $this;
     }
 
@@ -64,6 +65,7 @@ class DataEmpRegFor
         $this->user_role_id = $userEmployee->user_role_id;
         $this->blood_group = $userEmployee->blood_group;
         $this->date_of_birth = $userEmployee->date_of_birth;
+        $this->is_active = 1;
         return $this;
     }
 
@@ -76,7 +78,7 @@ class DataEmpRegFor
         $this->mobile = $this->formData['mobile'] ?? null;
         $this->email = $this->formData['email'] ?? null;
         $this->mac_address = $this->formData['mac_address'] ?? null;
-        $this->is_active = $this->formData['is_active'] ?? 0;
+        $this->is_active = 1;
         $this->is_visible = $this->formData['is_visible'] ?? 0;
         return $this;
     }
@@ -93,7 +95,7 @@ class DataEmpRegFor
         $this->emp_department_type_id = $this->formData['emp_department_type_id'] ?? null;
         $this->blood_group = $this->formData['blood_group'] ?? null;
         $this->date_of_birth = $this->formData['date_of_birth'] ?? null;
-        $this->is_active = $this->formData['is_active'] ?? 0;
+        $this->is_active = 1 ;
         $this->is_visible = $this->formData['is_visible'] ?? 0;
         return $this;
     }

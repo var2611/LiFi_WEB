@@ -25,7 +25,7 @@ use App\Models\User;
 use App\Models\UserEmployee;
 use App\Models\UserRole;
 use Auth;
- use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -118,7 +118,6 @@ class UserEmployeeController extends Controller
 
         $empRegForAttForm = new DataEmpRegFor($formData);
         $empRegForAttForm = $empRegForAttForm->attData();
-
         $user = att_register_user($empRegForAttForm->mobile, "New User");
         $user_employee =  att_register_new_employee($empRegForAttForm, $user,$image);
 
@@ -480,10 +479,10 @@ class UserEmployeeController extends Controller
     public function getEmployeeIdCard(string $id){
 
         $userEmployee = UserEmployee::whereFlashCode($id)->first();
-          if ($userEmployee) {
+           if ($userEmployee!=null) {
 
                 $user = $userEmployee->user()->where('is_active','1')->select(['name', 'last_name', 'mobile'])->get()->toArray();
-                $department = EmpDepartmentType::where('id', $userEmployee->emp_department_type_id)->pluck('name')->first();
+                 $department = EmpDepartmentType::where('id', $userEmployee->emp_department_type_id)->pluck('name')->first();
                 $designation = UserRole::where('id', $userEmployee->user_role_id)->pluck('name')->first();
                 $details = [
                       'name' => $user[0]['name'],
